@@ -235,11 +235,11 @@
 \begin{frame}[fragile]
   \frametitle{希尔排序分析}
   \begin{easylist} \easyitem
-    & shell排序的时间性能优于直接插入排序!
+    & 希尔排序的时间性能优于直接插入排序!
     
-    & shell排序开始时增量$d$较大(这使得分组较多,每组记录少),故各组内直接插入较快,后
-    来增量$d$渐小(各组记录渐多),但组内元素已经比较接近有序状态,所以新的一趟排序过
-    程也比较快。
+    & 希尔排序开始时增量$d$较大(这使得分组较多,每组记录少),故各组内直接插入较
+    快,后来增量$d$渐小(各组记录渐多),但组内元素已经比较接近有序状态,所以新的一趟
+    排序过程也比较快。
 
     & 希尔排序的复杂度分析很复杂
 
@@ -261,3 +261,44 @@
   \end{infobox}
 \end{frame}
 
+
+\subsection{交换排序}
+\begin{frame}[fragile]
+  \frametitle{}
+  \begin{sectionbox}{交换排序}
+    \begin{itemize}
+    \item 冒泡排序
+    \item 快速排序
+    \end{itemize}
+  \end{sectionbox}
+\end{frame}
+
+\subsubsection{冒泡排序}
+\begin{frame}[fragile, allowframebreaks]
+  \frametitle{冒泡排序（Bubble Sort)}
+  \begin{infobox}{算法思想}
+    比较相邻两个结点,较大的结点往下移,较小的往上移,使得每轮比较结束后最大的沉到最
+    后.
+  \end{infobox}
+
+  \newpage
+  
+  \begin{center}
+    \begin{tabular}{|p{0.6cm}|p{0.6cm}|p{0.6cm}|p{0.6cm}|p{0.6cm}|p{0.6cm}|p{0.6cm}|}
+      \hline
+      49 & 38 & 38 & 38 & 38 & 13 & \cellcolor{red!15} 13 \\
+      38 & 49 & 49 & 49 & 13 & 27 & \cellcolor{red!15} 27 \\
+      65 & 65 & 65 & 13 & 27 & 38 & \cellcolor{red!15} 38 \\
+      97 & 76 & 13 & 27 & 49 & \cellcolor{red!15} 49 & ~ \\
+      76 & 13 & 27 & 49 & \cellcolor{red!15} 49 & ~  & ~ \\
+      13 & 27 & 49 & \cellcolor{red!15}  65 &    &    &   \\
+      27 & 49 & \cellcolor{red!15}  76 &    &    &    &   \\
+      49 & \cellcolor{red!15} 97 &    &    &    &    &   \\
+      \hline  
+    \end{tabular}
+  \end{center}
+  第1列为原始序列；第2列为第1趟排序后的结果，第3列为第2趟排序后结果 $\cdots$
+
+  最后一个数字为本趟排序挑选出的最大数字。
+  
+\end{frame}

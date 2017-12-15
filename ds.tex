@@ -62,6 +62,17 @@ coltitle=black}
 
 \pgfmathsetmacro{\myinnersep}{2}% inner sep in mm
 
+
+\usepackage[tikz]{bclogo}  %see http://mirrors.ctan.org/graphics/bclogo/README
+\DeclareGraphicsRule{.mps}{eps}{*}{} %解决xelatex处理bclogo时的mps问题
+
+\newcommand{\warnbox}[2]{ 
+    \begin{bclogo}[couleur=yellow!10, logo=\bctakecare, ombre=true]{#1}
+    #2
+    \end{bclogo}
+}
+
+
 \usepackage{forest}
 \forestset{
   default preamble={
@@ -121,6 +132,25 @@ coltitle=black}
   \end{center}
 }
 
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+
+\NewEnviron{infobox}[1]{
+  \begin{center}
+    \begin{tcolorbox}[width=0.9\textwidth, title={#1},enhanced, colframe=red,colback=white,
+      arc=1mm,colbacktitle=red!10,
+      fonttitle=\bfseries,coltitle=black,
+      attach boxed title to top left=
+      {xshift=3.2mm,yshift=-0.50mm},
+      boxed title style={skin=enhancedfirst jigsaw,
+        size=small,arc=1mm,bottom=-1mm,
+        interior style={fill=none,
+          top color=red!30!white,
+          bottom color=red!20!white}}]
+      \BODY
+    \end{tcolorbox}
+  \end{center}
+}
 
 \usepackage{pgfplots}
 \usepgfplotslibrary{external}  %缓存tikz的结果
@@ -131,20 +161,6 @@ coltitle=black}
     -jobname "\image" "\texsource"}}
 %\tikzexternalize
 
-
-\usepackage[tikz]{bclogo}  %see http://mirrors.ctan.org/graphics/bclogo/README
-\DeclareGraphicsRule{.mps}{eps}{*}{} %解决xelatex处理bclogo时的mps问题
-\newcommand{\infobox}[2]{ 
-    \begin{bclogo}[couleur=yellow!10, logo=\bcfleur, ombre=true]{#1}
-    #2
-    \end{bclogo}
-}
-\newcommand{\warnbox}[2]{ 
-    \begin{bclogo}[couleur=yellow!10, logo=\bctakecare, ombre=true]{#1}
-    #2
-    \end{bclogo}
-}
-\newcommand{\kpt}{{\color{red}$\ast$}}
 
 
 %\usetheme[height=8mm]{Madrid} % Favorite theme is Madrid! 
@@ -202,8 +218,8 @@ coltitle=black}
 
 
 %自定义的一些命令，方便使用
-\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
-  \node[shape=circle,draw,inner sep=1.5pt] (char) {#1};}}
+\newcommand*\circled[2][black]{\tikz[baseline=(char.base)]{
+  \node[shape=circle,draw=#1,inner sep=1.5pt] (char) {#2};}}
 
 
 %\newcommand*{\hei}{\fontfamily{FZLanTingHeiS-H-GB}\selectfont}
@@ -265,8 +281,8 @@ coltitle=black}
 %\date[\initclock\tdtime]{\today}  
 \frame{\titlepage}
 
- \include{search}
- \input{sorting}
+% \include{search}
+\input{sorting}
 
 \end{document}
 

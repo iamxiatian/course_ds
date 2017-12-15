@@ -1,5 +1,4 @@
-\section{Sorting}
-
+\section{内部排序}
 
 \begin{frame}[plain]
   \begin{outlinebox}{内部排序大纲}
@@ -24,6 +23,7 @@
   \end{outlinebox}
 \end{frame}
 
+\subsection{排序的基本概念}
 \begin{frame}[fragile]
   \frametitle{排序}
   \begin{easylist} \easyitem
@@ -67,6 +67,7 @@
   \end{easylist}
 \end{frame}
 
+\subsection{插入排序}
 \begin{frame}[fragile]
   \frametitle{}
   \begin{sectionbox}{插入排序}
@@ -78,10 +79,185 @@
   \end{sectionbox}
 \end{frame}
 
+\subsubsection{直接插入排序}
 \begin{frame}[fragile]
   \frametitle{直接插入排序}
 
   对于要插入的元素$R[i]$,从$R[i-1]$起向前进行顺序查找,当$R[j-1]$小于$R[i]$时停止,插
   入位置为$R[j]$。注意在顺序表中要移动元素实现元素的插入。
-  
+
+  \begin{center}
+    \begin{tikzpicture}[box/.style={draw, fill=green!20, minimum size=1cm}]
+      \draw[draw] node[box, fill=red!20] (b0) {76}
+      node[box, right=0 of b0] (b1) {38} 
+      node[box, right=0 of b1] (b2) {49}
+      node[box, right=0 of b2] (b3) {65}
+      node[box, right=0 of b3] (b4) {97}
+      node[box, right=0 of b4, fill=blue!10] (b5) {76}
+      node[box, right=0 of b5, fill=blue!10] (b6) {13}
+      node[box, right=0 of b6, minimum width=2cm, fill=blue!10] (b7) {$\cdots$}; 
+
+      \foreach \i in {0,...,6}
+      {
+        \draw node[above=0 of b\i] (idx_\i) {$\i$};
+      };
+
+      \draw node[above=0 of idx_5] {$R[i]$} node[above=0 of idx_0] {$R[0]$};
+
+      \path[] (b0.south) ++(0,-1.5cm) edge[-Latex, dashed] node[below, align=center]{设置“哨兵”存储$R[i]$,\\只要待比较的元素大于$R[0]$,\\就继续往前比较,从而实现\\$R[j] \cdots R[i-1]$的后移。} (b0.south);
+
+      \path[] (b4.south) ++(0,-1.5cm) edge[-Latex, very thick, draw=red] node[below right,align=center]{$j$, 指示插入的位置，\\$R[j-1] \leq R[i]$  \\ (稳定的排序方法)} (b4.south);
+    \end{tikzpicture}
+  \end{center} 
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{直接插入排序举例}
+
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+      \hline
+      47 & 38 & 65 & 97 & 13 & 27 & \circled{47} \\ \hline
+      \cellcolor{blue!20} 47 & \cellcolor{red!20} 38 & 65 & 97 & 13 & 27 & \circled{47} \\ \hline
+      \cellcolor{blue!20} 38 &  \cellcolor{blue!20} 47 & \cellcolor{red!20} 65 & 97 & 13 & 27 & \circled{47} \\ \hline
+      \cellcolor{blue!20} 38 &  \cellcolor{blue!20} 47 &  \cellcolor{blue!20} 65 & \cellcolor{red!20} 97 & 13 & 27 & \circled{47} \\ \hline
+      \cellcolor{blue!20} 38 &  \cellcolor{blue!20} 47 &  \cellcolor{blue!20} 65 & \cellcolor{blue!20} 97 & \cellcolor{red!20} 13 & 27 & \circled{47} \\ \hline
+      \cellcolor{blue!20} 13 &  \cellcolor{blue!20} 38 &  \cellcolor{blue!20} 47 & \cellcolor{blue!20} 65 & \cellcolor{blue!20} 97 & \cellcolor{red!20} 27 & \circled{47} \\ \hline
+      \cellcolor{blue!20} 13 &  \cellcolor{blue!20} 27 &  \cellcolor{blue!20} 38 & \cellcolor{blue!20} 47 & \cellcolor{blue!20} 65 & \cellcolor{blue!20} 97 & \cellcolor{red!20} \circled{47} \\ \hline
+      \cellcolor{blue!20} 13 &  \cellcolor{blue!20} 27 &  \cellcolor{blue!20} 38 & \cellcolor{blue!20} 47 & \cellcolor{blue!20} \circled{47} & \cellcolor{blue!20} 65 & \cellcolor{blue!20} 97 \\ \hline
+    \end{tabular}
+  \end{center}
+
+  注意：两个47的位置。
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{直接插入排序算法分析}
+  \begin{easylist} \easyitem
+    & 空间效率: 用一个辅助单元
+
+    & 时间效率: 时间复杂度为$O(n^2)$
+    
+    && 进行了n-1次向有序表插入记录的操作,每趟是“比较+移动”
+
+    && 最好情况:记录按关键字正序
+
+    &&& $n-1$次比较,$0$次移动
+
+    && 最差情况:记录按关键字逆序
+    
+    &&& 比较次数:
+    $\sum_{i=2}^n i = 2+3+\cdots + n = \dfrac{(n+2) \times (n-1)}{2}$
+    
+    &&& 移动次数:
+    $\sum_{i=2}^n (i+1) = \dfrac{(n+4) \times (n-1)}{2}$
+
+    && 平均情况:不妨取上述各值的平均,可知比较和移动次数约$n^2/4$
+
+    & 是稳定的排序方法
+  \end{easylist}
+\end{frame}
+
+
+\subsubsection{希尔排序}
+\begin{frame}[fragile]
+  \frametitle{希尔(Shell)排序}
+  \begin{infobox}{希尔排序的思想}
+    对于元素数量较少，或者基本有序的待排序序列，直接插入排序的效率不错。
+   \end{infobox}
+
+  \begin{easylist} \easyitem
+    & 根据增量$d$分割出子序列
+    
+    & 对子序列进行直接插入排序
+
+    & 增量$d$的选择
+
+    && Shell最初的方案:
+    $d = n/2, d=d/2, \cdots , d=1$
+
+    && Knuth的方案:
+    $d=d/3 + 1$
+
+    && 其它：d为奇数; d互质 $\cdots$
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile, allowframebreaks]
+  \frametitle{希尔排序举例}
+  \begin{infobox}{第1趟：$d_1=5$}
+    \begin{center}
+      \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        \rowcolor{yellow!50}
+        \circled[red]{49} & 38 & 65  & 97 & 76 & 13 & 27 & \circled{49} & 55 & 04 \\ \hline
+        13 & ~   &    &    &    & \circled[red]{49} &    &    &    &     \\ \hline
+        ~ & 27   &    &    &    &    & 38 &    &    &     \\ \hline
+        ~ &      & \circled{49} &    &    &    &    & 65 &    &     \\ \hline
+        ~ &      &    & 55 &    &    &    &    & 97 &     \\ \hline
+        ~ &      &    &    & \cellcolor{red!5} 04 &    &    &    &    & 76  \\ \hline
+      \end{tabular}
+    \end{center}
+  \end{infobox}
+
+  \begin{easylist} \easyitem
+    & 观察04: 跳跃式的往前移
+    & 观察49: 希尔排序不稳定
+  \end{easylist}
+
+  \newpage
+
+  \begin{infobox}{第2趟：$d_2=2$}
+    \begin{center}
+      \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        \rowcolor{yellow!50}
+        13 & 27  &  \circled{49}  & 55   & 04 & \circled[red]{49}  &  38  &  65  &  97  & 76  \\ \hline
+        04 &     &  13  &    &  38 &      & \circled{49} &    &  97  &      \\ \hline
+        ~ &  27   &    & \circled[red]{49}   &    &  55  &  &  65  &    & 76    \\ \hline
+      \end{tabular}
+    \end{center}
+  \end{infobox}
+
+  
+  \begin{infobox}{第3趟：$d_3=1$}
+    \begin{center}
+      \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        \rowcolor{yellow!50}
+        04 & 27  & 13 &  \circled[red]{49}  & 38 & 55 & \circled{49}  &  65  &  97  & 76  \\ \hline
+        04 & 13  & 27 &  38 & \circled[red]{49}  & \circled{49} & 55 &  65  &  76  & 97  \\ \hline
+      \end{tabular}
+    \end{center}
+  \end{infobox}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{希尔排序分析}
+  \begin{easylist} \easyitem
+    & shell排序的时间性能优于直接插入排序!
+    
+    & shell排序开始时增量$d$较大(这使得分组较多,每组记录少),故各组内直接插入较快,后
+    来增量$d$渐小(各组记录渐多),但组内元素已经比较接近有序状态,所以新的一趟排序过
+    程也比较快。
+
+    & 希尔排序的复杂度分析很复杂
+
+    && 在特定情况下可以准确估算比较、移动次数,但是考虑与增量之间的依赖关系,并给出
+    完整的数学分析,目前还做不到
+
+    && 在增量序列为$\delta[k]=2^{t-k+1}$时, 希尔排序的时间复杂度为$O(n^{3/2})$
+    
+    && Knuth的统计结论是,平均比较次数和对象平均移动次数在$n^{1.25}$与$1.6 \cdot
+    n^{1.25}$之间。    
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[plain]
+  \vspace{2cm}
+  \begin{infobox}{希尔排序增量序列的取法}
+    目前尚未有工作求得一种最好的增量序列。但需注意的是:应使增量序列中的值没有
+    除1之外的公因子,并且最后一个增量必须为1。
+  \end{infobox}
+\end{frame}
+

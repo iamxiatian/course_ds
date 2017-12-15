@@ -1,0 +1,11 @@
+*.pdf
+*.vrb
+*.nav
+*.snm
+*.aux
+*.log
+*.toc
+*.out
+**/auto/*
+/auto/
+**/auto/*

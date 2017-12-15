@@ -1,0 +1,277 @@
+\documentclass[table, 13pt, slidestop,compress,mathserif]{beamer} 
+%\documentclass[table, t, 13pt]{beamer} 
+\usepackage{graphicx}
+\usepackage{xeCJK,fontspec,xunicode,xltxtra, fancybox}
+
+%\usepackage[timeinterval=1]{tdclock}
+%box tools
+\usepackage{framed, xcolor} 
+\usepackage{tabularx, colortbl, booktabs, multirow, makecell, longtable}
+\usepackage{animate}
+
+\usepackage{soul} %for strikeout
+
+\usepackage{amsmath, amsfonts, amssymb} %amssymb for varnothing symbol
+\usepackage[thicklines]{cancel} %公式中通过斜线删除部分内容
+\usepackage[b]{esvect} %vector
+
+\usepackage{tcolorbox}
+\tcbset{colback=white,colframe=orange!60,fonttitle=\bfseries,
+coltitle=black}
+
+\usepackage{caption, algorithm}
+\usepackage[noend]{algpseudocode}
+
+\usepackage{textpos}
+\usepackage{adjustbox} %调整大小，例如缩放tikz绘图结果
+\usepackage{smartdiagram}
+%\usepackage{tikz, flowchart,times} % tikz绘图
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{calc, arrows, arrows.meta, shapes,snakes, shapes.geometric, positioning}
+\usetikzlibrary{topaths}
+\usetikzlibrary{mindmap, backgrounds}
+\usetikzlibrary{shadings}
+\usetikzlibrary{shadows}
+\usetikzlibrary{graphs}
+%\usetikzlibrary{graphdrawing.force} %
+%http://www.tcs.uni-luebeck.de/downloads/mitarbeiter/tantau/2012-gd-presentation.pdf
+
+% The table is built using TikZ matrix library features:
+\usetikzlibrary{matrix}
+% Defining some symbols:
+\newcommand*\up{\textcolor{yellow}{$\blacktriangle$}}
+\newcommand*\down{\textcolor{red}{$\blacktriangledown$}}
+\newcommand*\const{\textcolor{darkgray}{\textbf{--}}}
+\newcommand*\head[1]{\textbf{#1}}
+% The table environment:
+\newenvironment{matrixtable}[4]{%
+  \begin{tikzpicture}[matrix of nodes/.style={
+    execute at begin cell=\node\bgroup\strut,
+    execute at end cell=\egroup;}]
+  \matrix (m) [matrix of nodes,top color=red!5,
+    bottom color=red!20,draw=white,
+    nodes={draw,top color=blue!10,bottom color=blue!35,
+    draw,inner sep=2pt,minimum height=3.1ex},
+    column sep=1ex,row sep=0.6ex,inner sep=2ex,
+    rounded corners,column 1/.style={minimum width=#1},
+    column 2/.style={minimum width=#2},
+    column 3/.style={minimum width=#3},
+    column 4/.style={minimum width=#4}]}%
+{;\end{tikzpicture}}
+
+\pgfmathsetmacro{\myinnersep}{2}% inner sep in mm
+
+\usepackage{forest}
+\forestset{
+  default preamble={
+    for tree={circle,draw}
+  },
+  gappy tree/.style={
+    for tree={
+      circle,
+      draw,
+      s sep'+=10pt,
+      fit=band,
+    },
+  },
+  missed/.style={draw=none, no edge}
+}
+
+\usepackage{environ}
+\NewEnviron{tikzthm}[1]{
+\begin{tikzpicture}
+\node [newthemsty] (box){\BODY};
+\node[newthemstytitle, right=10pt] at (box.north west) {\textbf{#1}};
+\end{tikzpicture}
+}
+
+% 新建幻灯片每一小节开始的样式环境
+\NewEnviron{sectionbox}[1]{
+  \begin{center}
+    \tikzstyle{mybox} = [draw=blue, fill=green!20, very thick,
+    rectangle, rounded corners, inner sep=10pt, inner ysep=20pt]
+    \tikzstyle{fancytitle} =[fill=blue, text=white, ellipse]
+    
+    \vspace{1.0cm}
+    \begin{tikzpicture}[transform shape, rotate=0, baseline=-3.5cm]
+      \node [mybox] (box) {%
+        \begin{minipage}[t!]{0.75\textwidth}
+          \BODY
+        \end{minipage}
+      };
+      \node[fancytitle] at (box.north) {#1};
+    \end{tikzpicture}
+  \end{center}
+}%结束部分定义
+
+\NewEnviron{outlinebox}[1]{
+   \tikzstyle{mybox} = [draw=red, fill=blue!5, very thick,
+  rectangle, rounded corners, inner sep=10pt, inner ysep=20pt]
+  \tikzstyle{fancytitle} =[fill=red, text=white]
+  \begin{center}
+    \begin{tikzpicture}
+      \node [mybox] (box){%
+        \begin{minipage}{0.80\textwidth}
+          \BODY
+        \end{minipage}
+      };
+      \node[fancytitle, right=10pt] at (box.north west) { #1 };
+    \end{tikzpicture}
+  \end{center}
+}
+
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{external}  %缓存tikz的结果
+\tikzset{
+    external/system call={%
+    xelatex \tikzexternalcheckshellescape
+    -halt-on-error -interaction=batchmode --shell-escape
+    -jobname "\image" "\texsource"}}
+%\tikzexternalize
+
+
+\usepackage[tikz]{bclogo}  %see http://mirrors.ctan.org/graphics/bclogo/README
+\DeclareGraphicsRule{.mps}{eps}{*}{} %解决xelatex处理bclogo时的mps问题
+\newcommand{\infobox}[2]{ 
+    \begin{bclogo}[couleur=yellow!10, logo=\bcfleur, ombre=true]{#1}
+    #2
+    \end{bclogo}
+}
+\newcommand{\warnbox}[2]{ 
+    \begin{bclogo}[couleur=yellow!10, logo=\bctakecare, ombre=true]{#1}
+    #2
+    \end{bclogo}
+}
+\newcommand{\kpt}{{\color{red}$\ast$}}
+
+
+%\usetheme[height=8mm]{Madrid} % Favorite theme is Madrid! 
+%\usecolortheme[RGB={130,120,232}]{structure} 
+%\usetheme{Boadilla} 
+%\usecolortheme{default} 
+
+\usetheme{Madrid} 
+\usecolortheme{crane} 
+
+\setbeamertemplate{items}[ball] 
+\setbeamertemplate{blocks}[rounded][shadow=true] 
+
+%\setmainfont[Mapping=tex-text,LetterSpace=-1.25]{Ubuntu Light}
+%\setsansfont[Mapping=tex-text,LetterSpace=-1.25]{Ubuntu Light}
+\setmonofont[Color=00663300]{Ubuntu Light}
+
+\setCJKmainfont{FZLanTingHeiS-EL-GB} %方正字体，也可以改成：微软雅黑
+\setCJKsansfont{FZLanTingHeiS-EL-GB} 
+%\setCJKmainfont{微软雅黑} 
+%\setCJKsansfont{微软雅黑} 
+\setCJKmonofont{Consolas}
+
+\usefonttheme[onlymath]{serif}
+
+
+%\setmainfont[Mapping=tex-text,LetterSpace=-1.25]{Neo Euler}
+%\setsansfont[Mapping=tex-text,LetterSpace=-1]{Ubuntu}
+%\setmonofont[Color=00663300]{Neo Euler}
+
+
+\definecolor{red(ncs)}{rgb}{0.77, 0.01, 0.2}
+\definecolor{champagne}{rgb}{0.97, 0.91, 0.81}
+\definecolor{coolblack}{rgb}{0.0, 0.18, 0.39}
+\definecolor{vanilla}{rgb}{0.95, 0.9, 0.67}
+
+\usepackage[ampersand]{easylist}
+\newcommand\easyitem{\ListProperties(Hide=100, Hang=true, Progressive=3ex,
+  Style*=\color{orange}$\bullet$ ,
+  Style2*=\color{orange}$\ast$ ,
+  Style3*=\color{orange}$\circ$ ,
+  Style4*=\tiny$\blacksquare$, Space=-.5em, Space*=-.5em)}
+
+\setbeamertemplate{itemize item}{\color{orange}$\bullet$}
+\setbeamertemplate{itemize subitem}{\tiny\raise1.5pt\hbox{\donotcoloroutermaths$\blacktriangleright$}}
+\setbeamertemplate{itemize subsubitem}{\tiny\raise1.5pt\hbox{\donotcoloroutermaths$\blacktriangleright$}}
+\setbeamertemplate{enumerate item}{\insertenumlabel.}
+\setbeamertemplate{enumerate subitem}{\insertenumlabel.\insertsubenumlabel}
+\setbeamertemplate{enumerate subsubitem}{\insertenumlabel.\insertsubenumlabel.\insertsubsubenumlabel}
+\setbeamertemplate{enumerate mini template}{\insertenumlabel}
+
+\parskip=3mm
+\parindent=15pt
+\linespread{1.2}
+
+
+%自定义的一些命令，方便使用
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+  \node[shape=circle,draw,inner sep=1.5pt] (char) {#1};}}
+
+
+%\newcommand*{\hei}{\fontfamily{FZLanTingHeiS-H-GB}\selectfont}
+%\DeclareTextFontCommand{\texthei}{\hei}
+
+\setCJKfamilyfont{FZHei}{FZLanTingHeiS-R-GB}  
+\newcommand{\cjkbold}{\color[rgb]{0.29, 0.0, 0.51} \CJKfamily{FZHei}}  %http://latexcolor.com/
+
+\setCJKfamilyfont{FZHeiR}{FZLanTingHeiS-R-GB}  
+\newcommand{\cjkem}{\CJKfamily{FZHeiR}} 
+
+\renewcommand{\em}[1]{\color{red} #1}
+
+\XeTeXlinebreaklocale "zh"  
+\XeTeXlinebreakskip = 0pt plus 1pt 
+
+\hypersetup{
+  pdftitle={Data Structure},
+  pdfsubject={Data Structure},
+  pdfkeywords={Data Structure},
+  pdfproducer={LaTeX},
+  pdfcreator={XeLaTeX}
+}
+
+
+%\setbeamercolor{title}{bg=red(ncs), fg=white}
+%\setbeamercolor{frametitle}{fg=red(ncs),bg=gray!10!white}
+\setbeamercolor{title}{fg=coolblack, bg=orange!30}
+\setbeamercolor{frametitle}{fg=coolblack, bg=vanilla!0}
+
+\setbeamercolor{palette primary}{fg=black, bg=gray!15!white}
+\setbeamercolor{palette secondary}{fg=black, bg=gray!10!white}
+\setbeamercolor{palette tertiary}{fg=black, bg=gray!15!white}
+
+\addtobeamertemplate{frametitle}{}{%
+\begin{textblock*}{1.0\paperwidth}(-.001\textwidth,0cm)
+%\tikz{\draw[orange!70!yellow, line width=1.2] (-1cm,0cm) -- (0.5\textwidth,0cm);\draw[orange!70!yellow,yshift=-0.5] (0.5\textwidth,0cm) -- (0.7\textwidth,0cm);}
+\end{textblock*}
+\begin{textblock*}{100mm}(.85\textwidth,-1cm)
+\includegraphics[height=1.2cm,width=1.2cm]{ruc_logo.png}
+\end{textblock*}
+}
+
+%gets rid of bottom navigation bars
+\setbeamertemplate{footline}[page number]{}
+
+%gets rid of navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+\begin{document}
+
+%\logo{\includegraphics[width=1.0cm,height=1.0cm]{figure/ruc.jpg}}
+\title{Data Structure}
+	\author{Xia Tian \\ Email: xiat(at)ruc.edu.cn }
+	\institute{Renmin University of China }
+	\date{
+    % \today{}
+  }
+%\date[\initclock\tdtime]{\today}  
+\frame{\titlepage}
+
+ \include{search}
+ \input{sorting}
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

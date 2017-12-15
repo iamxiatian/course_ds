@@ -1,0 +1,87 @@
+\section{Sorting}
+
+
+\begin{frame}[plain]
+  \begin{outlinebox}{内部排序大纲}
+    \begin{itemize}
+    \item 排序的基本概念
+    \item 具体排序方法
+      \begin{enumerate}
+      \item \color{red} 插入排序：直接插入排序
+      \item 插入排序：折半插入排序
+      \item 插入排序：希尔排序
+        
+      \item \color{blue} 交换排序：冒泡法
+      \item 交换排序：快速排序
+        
+      \item \color{orange} 选择排序：简单选择排序
+      \item 选择排序：堆排序
+        
+      \item \color{purple} 归并排序：二路归并
+      \item \color{gray} 基数排序
+      \end{enumerate}
+    \end{itemize}    
+  \end{outlinebox}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{排序}
+  \begin{easylist} \easyitem
+
+    & 对一个数据元素集合或序列重新排列成一个按数据元素某个项值有序的序列就是排
+    序。
+
+    && 例如将关键字序列:
+
+    $52, 49, 80, 36, 14, 58, 61, 23, 97, 75$
+
+    调整为
+    
+    $14, 23, 36, 49, 52, 58, 61 ,75, 80, 97$
+
+    && 再如将：
+
+    $<Susie,26>, <Jack,22>, <Michel,25>, <Richard,25>$
+
+    调整为：
+
+    $<Jack,22>,<Michel,25>, <Richard, 25>, <Susie,26>$
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{排序的稳定性}
+  \begin{easylist} \easyitem
+
+    & 请注意刚才第二个序列的排序结果不唯一!
+
+    $<Susie,26>, <Jack,22>, <Michel,25>, <Richard,25>$
+
+    \color{red} $<Jack,22>,<Michel,25>, <Richard, 25>, <Susie,26>$
+
+    \color{blue} $<Jack,22>, <Richard, 25>, <Michel,25>, <Susie,26>$
+    
+    & 稳定:若存在相同的关键字,对应位置的记录在排序后仍然保持原来的顺序,则称所使用
+    的排序方法是稳定的。反之称为不稳定的。
+
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{}
+  \begin{sectionbox}{插入排序}
+    \begin{itemize}
+    \item 直接插入排序
+    \item 折半插入排序
+    \item 希尔排序
+    \end{itemize}
+  \end{sectionbox}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{直接插入排序}
+
+  对于要插入的元素$R[i]$,从$R[i-1]$起向前进行顺序查找,当$R[j-1]$小于$R[i]$时停止,插
+  入位置为$R[j]$。注意在顺序表中要移动元素实现元素的插入。
+  
+\end{frame}

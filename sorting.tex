@@ -115,20 +115,20 @@
   \frametitle{直接插入排序举例}
 
   \begin{center}
-    \begin{tabular}{|c|c|c|c|c|c|c|}
-      \hline
-      47 & 38 & 65 & 97 & 13 & 27 & \circled{47} \\ \hline
-      \cellcolor{blue!20} 47 & \cellcolor{red!20} 38 & 65 & 97 & 13 & 27 & \circled{47} \\ \hline
-      \cellcolor{blue!20} 38 &  \cellcolor{blue!20} 47 & \cellcolor{red!20} 65 & 97 & 13 & 27 & \circled{47} \\ \hline
-      \cellcolor{blue!20} 38 &  \cellcolor{blue!20} 47 &  \cellcolor{blue!20} 65 & \cellcolor{red!20} 97 & 13 & 27 & \circled{47} \\ \hline
-      \cellcolor{blue!20} 38 &  \cellcolor{blue!20} 47 &  \cellcolor{blue!20} 65 & \cellcolor{blue!20} 97 & \cellcolor{red!20} 13 & 27 & \circled{47} \\ \hline
-      \cellcolor{blue!20} 13 &  \cellcolor{blue!20} 38 &  \cellcolor{blue!20} 47 & \cellcolor{blue!20} 65 & \cellcolor{blue!20} 97 & \cellcolor{red!20} 27 & \circled{47} \\ \hline
-      \cellcolor{blue!20} 13 &  \cellcolor{blue!20} 27 &  \cellcolor{blue!20} 38 & \cellcolor{blue!20} 47 & \cellcolor{blue!20} 65 & \cellcolor{blue!20} 97 & \cellcolor{red!20} \circled{47} \\ \hline
-      \cellcolor{blue!20} 13 &  \cellcolor{blue!20} 27 &  \cellcolor{blue!20} 38 & \cellcolor{blue!20} 47 & \cellcolor{blue!20} \circled{47} & \cellcolor{blue!20} 65 & \cellcolor{blue!20} 97 \\ \hline
+    \begin{tabular}{ c c c c c c c }
+      \toprule
+      47 & 38 & 65 & 97 & 13 & 27 & \circled{47} \\ \midrule
+      \cellcolor{blue!20} 47 & \cellcolor{red!20} 38 & 65 & 97 & 13 & 27 & \circled{47} \\ \midrule
+      \cellcolor{blue!20} 38 &  \cellcolor{blue!20} 47 & \cellcolor{red!20} 65 & 97 & 13 & 27 & \circled{47} \\ \midrule
+      \cellcolor{blue!20} 38 &  \cellcolor{blue!20} 47 &  \cellcolor{blue!20} 65 & \cellcolor{red!20} 97 & 13 & 27 & \circled{47} \\ \midrule
+      \cellcolor{blue!20} 38 &  \cellcolor{blue!20} 47 &  \cellcolor{blue!20} 65 & \cellcolor{blue!20} 97 & \cellcolor{red!20} 13 & 27 & \circled{47} \\ \midrule
+      \cellcolor{blue!20} 13 &  \cellcolor{blue!20} 38 &  \cellcolor{blue!20} 47 & \cellcolor{blue!20} 65 & \cellcolor{blue!20} 97 & \cellcolor{red!20} 27 & \circled{47} \\ \midrule
+      \cellcolor{blue!20} 13 &  \cellcolor{blue!20} 27 &  \cellcolor{blue!20} 38 & \cellcolor{blue!20} 47 & \cellcolor{blue!20} 65 & \cellcolor{blue!20} 97 & \cellcolor{red!20} \circled{47} \\ \midrule
+      \cellcolor{blue!20} 13 &  \cellcolor{blue!20} 27 &  \cellcolor{blue!20} 38 & \cellcolor{blue!20} 47 & \cellcolor{blue!20} \circled{47} & \cellcolor{blue!20} 65 & \cellcolor{blue!20} 97 \\ \bottomrule
     \end{tabular}
   \end{center}
 
-  注意：两个47的位置。
+  注意：两个47的位置(带有圆圈和不带有圆圈)。
 \end{frame}
 
 \begin{frame}[fragile]
@@ -300,5 +300,318 @@
   第1列为原始序列；第2列为第1趟排序后的结果，第3列为第2趟排序后结果 $\cdots$
 
   最后一个数字为本趟排序挑选出的最大数字。
-  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{冒泡排序算法分析}
+  \begin{easylist} \easyitem
+    & 最好情况下,初始状态是递增有序的
+
+    && 扫描一趟,关键字的比较次数为$n-1$,记录移动0次
+
+    & 最坏情况下,初始状态是反序的
+
+    && 扫描$n-1$趟,第i趟扫描要进行$n-i$次关键字的比较,每次比较后进行记录移动,故有:
+
+    比较次数： $\sum_{i=1}^{n-1}(n-i)=\dfrac{n \times (n-1)}{2}$
+
+    移动次数： $\sum_{i=1}^{n-1}3(n-i)=\dfrac{3 \times n \times (n-1)}{2}$
+    
+    & 稳定的
+  \end{easylist}
+\end{frame}
+
+\subsubsection{快速排序}
+
+\begin{frame}[fragile]
+  \frametitle{快速排序—冒泡法的改进}
+  \begin{infobox}{算法思想}
+    通过一趟排序将待排序记录分割成独立的两部分,其中一部分的关键字均小于另一部分的
+    关键字,然后分别对这两部分记录继续分别进行排序即可。
+  \end{infobox}
+
+  \begin{center}
+    \begin{tikzpicture}[box/.style={draw, minimum size=1cm},
+      block/.style={draw=red, thick, dashed, minimum height=1.3cm}
+      ]
+      \draw[draw] node[box] (b0) {27}
+      node[box, right=0 of b0] (b1) {38} 
+      node[box, right=0 of b1] (b2) {13}
+      node[box, right=0 of b2, fill=green!20] (b3) {49}
+      node[box, right=0 of b3] (b4) {76}
+      node[box, right=0 of b4] (b5) {97}
+      node[box, right=0 of b5] (b6) {65}
+      node[box, right=0 of b6] (b7) {49}
+      node[block, right=-0.2cm of b0.west, minimum width=3.4cm] (bl) {}
+      node[block, right=-0.2cm of b4.west,minimum width=4.4cm] (bl) {}
+      ; 
+
+      \foreach \i in {0,...,7}
+      {
+        \draw node[above=0 of b\i] (idx_\i) {$\i$};
+      };
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}[plain]
+  \begin{infobox}{快速排序举例(单次划分过程)}
+    \begin{tikzpicture}[box/.style={draw, minimum size=0.6cm, minimum width=1cm},
+      done/.style={fill=blue!5}]
+
+      \draw node[] (b0) {};
+      \foreach[count=\i, evaluate=\i as \leftx using int(\i-1)] \y in {49,38,65,97,76,13,27,49}
+      {
+        \draw node[box, right=0 of b\leftx] (b\i) {$\y$};
+        \draw node[above=0 of b\i] (idx_\i) {$\leftx$};
+      };
+      \draw node[box, right=0 of b0, fill=red!20] (b1) {49};
+
+      \draw[-Latex, draw=blue, thick] (b1.south) ++ (0,-0.7cm) -> (b1.south);
+      \path (b8.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{1}} (b8.south);
+      \path (b7.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{2}} (b7.south);
+      
+      \draw node[below=1.2cm of b0] (b0) {}
+      node[box, right=0 of b0, done] (b1) {27}
+      node[box, right=0 of b1] (b2) {38}
+      node[box, right=0 of b2] (b3) {65}
+      node[box, right=0 of b3] (b4) {97}
+      node[box, right=0 of b4] (b5) {76}
+      node[box, right=0 of b5] (b6) {13}
+      node[box, right=0 of b6, fill=red!20] (b7) {49}
+      node[box, right=0 of b7, done] (b8) {49};
+
+
+      \draw[-Latex, draw=blue, thick] (b1.south) ++ (0,-0.7cm) -> (b1.south);
+      \path (b2.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{1}} (b2.south);
+      \path (b3.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{2}} (b3.south);
+
+
+      \draw node[below=1.2cm of b0] (b0) {}
+      node[box, right=0 of b0, done] (b1) {27}
+      node[box, right=0 of b1, done] (b2) {38}
+      node[box, right=0 of b2, fill=red!20] (b3) {49}
+      node[box, right=0 of b3] (b4) {97}
+      node[box, right=0 of b4] (b5) {76}
+      node[box, right=0 of b5] (b6) {13}
+      node[box, right=0 of b6, done] (b7) {65}
+      node[box, right=0 of b7, done] (b8) {49};
+
+      \draw[-Latex, draw=blue, thick] (b3.south) ++ (0,-0.7cm) -> (b3.south);
+      \path (b6.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{1}} (b6.south);
+
+
+      \draw node[below=1.2cm of b0] (b0) {}
+      node[box, right=0 of b0, done] (b1) {27}
+      node[box, right=0 of b1, done] (b2) {38}
+      node[box, right=0 of b2, done] (b3) {13}
+      node[box, right=0 of b3] (b4) {97}
+      node[box, right=0 of b4] (b5) {76}
+      node[box, right=0 of b5,fill=red!20] (b6) {49}
+      node[box, right=0 of b6, done] (b7) {65}
+      node[box, right=0 of b7, done] (b8) {49};
+
+      \draw[-Latex, draw=blue, thick] (b6.south) ++ (0,-0.7cm) -> (b6.south);
+      \path (b4.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{1}} (b4.south);
+
+
+      \draw node[below=1.2cm of b0] (b0) {}
+      node[box, right=0 of b0, done] (b1) {27}
+      node[box, right=0 of b1, done] (b2) {38}
+      node[box, right=0 of b2, done] (b3) {13}
+      node[box, right=0 of b3,fill=red!20] (b4) {49}
+      node[box, right=0 of b4] (b5) {76}
+      node[box, right=0 of b5, done] (b6) {97}
+      node[box, right=0 of b6, done] (b7) {65}
+      node[box, right=0 of b7, done] (b8) {49};
+
+      \draw[-Latex, draw=blue, thick] (b4.south) ++ (0,-0.7cm) -> (b4.south);
+      \path (b5.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{1}} (b5.south);
+      \path (b4.south) ++ (0.2cm,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{2}} (b4.-60);
+    \end{tikzpicture}
+  \end{infobox}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{快速排序算法分析}
+  \begin{easylist} \easyitem
+    & 空间效率
+
+    && 快速排序是递归的,递归调用层次数与上述二叉树的深度一致。因而存储开销在理想
+    情况下为$O(log_2 n)$,即树的高度;最坏情况下为$O(n)$,即二叉树是一个单链
+
+    & 时间效率
+
+    && 对于$n$个记录的待排序列,一次划分需要$n-1$次比较,时效为$O(n)$,若设$T(n)$为对$n$个记录
+    的待排序列进行快速排序所需时间
+
+    && 理想情况下:每次划分正好将分成两个等长的子序列
+
+    \[T(n) \leq cn+2T(n/2) \cdots = O(n log_2n)\]
+    & 最坏情况下:每次划分只得到一个子序列,时效为$O(n^2)$
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{名副其实的快速排序}
+  \begin{easylist} \easyitem
+
+    & 快速排序的平均时间复杂度为$O(n log_2 n)$。并且在该数量级的排序方法中,快速排
+    序的平均性能最好。快速排序目前被认为是最好的内部排序方法。
+
+    & 若初始序列按关键字基本有序,快速排序蜕化为起泡排序,其时间复杂度为$O(n^2)$
+    
+    & 属于不稳定的排序算法
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{实验观察}
+  \begin{enumerate}
+  \item 对给定的2个待排序列进行快速排序,显示其执行时间,注意 pivotkey选子序列的第
+    一个元素;
+  \item 选子序列的首、尾、中间元素的中值作为pivotkey,重新进行快速排序,观察执行时
+    间的变化。
+  \end{enumerate}
+\end{frame}
+
+\subsection{选择排序}
+\begin{frame}[fragile]
+  \frametitle{}
+  \begin{sectionbox}{选择排序}
+    \begin{itemize}
+    \item 简单选择排序
+    \item 堆排序
+    \end{itemize}
+  \end{sectionbox}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{简单选择排序}
+  \begin{infobox}{算法思想}
+    \begin{enumerate}
+    \item 第 1 轮排序从$1 \sim n$ 个数中找出最小的数,然后将它与第1个数交换。第1个
+      数则是最小的数。
+    \item 第 2 轮排序从$2 \sim n$个数中找出最小的数,然后将它与第2个数交换。第2个
+      数则是次小的数。
+    \item 经过 $n-1$ 轮处理,完成全部$n$个数排序。
+    \end{enumerate}
+  \end{infobox}
+
+  \begin{center}
+    \begin{tikzpicture}[box/.style={draw, minimum size=0.6cm, minimum width=1cm}]
+      \draw node[box, fill=yellow!20] (b0) {21}
+      node[box, right=0 of b0] (b1) {23}
+      node[box, right=0 of b1] (b2) {13}
+      node[box, right=0 of b2] (b3) {47}
+      node[box, right=0 of b3] (b4) {76}
+      node[box, right=0 of b4, fill=red!10] (b5) {8}
+      node[box, right=0 of b5] (b6) {69}
+      node[box, right=0 of b6] (b7) {47};
+
+      \foreach[count=\i] \e in {0,...,7}
+      {
+        \draw node[above=0 of b\e] (idx_\e) {$\e$};
+      };
+
+      \path[draw, Latex-Latex] (b0.south) edge[decorate,decoration={brace,amplitude=20pt, mirror}] node[below,yshift=-0.8cm] {交换} (b5.south);
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{简单选择排序算法分析}
+  \begin{easylist} \easyitem
+    & 空间复杂度:
+    && 一个辅助空间,$O(1)$
+
+    & 时间复杂度
+    && 最好情况下,序列为正序
+    
+    第$i$趟需做$n-i$次比较,故比较次数如下,移动次数为0
+
+    \[\sum_{i=1}^{n-1}(n-i)=\dfrac{n \times (n-1)}{2} = O(n^2)\]
+
+    && 最坏情况下,序列为反序
+
+    比较次数同上,每趟排序均要执行交换操作,移动次数为$3(n-1)$
+    
+    & \color{red} 是不是稳定的排序算法?举例说明
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{简单选择排序不稳定}
+
+  \begin{center}
+    \begin{tikzpicture}[box/.style={draw, minimum size=1cm, minimum width=1cm}]
+      \draw node[box, fill=yellow!20] (b0) {\color{red} \circled[red]{47}}
+      node[box, right=0 of b0] (b1) {23}
+      node[box, right=0 of b1] (b2) {13}
+      node[box, right=0 of b2] (b3) {\color{blue} \circled[blue]{47}}
+      node[box, right=0 of b3] (b4) {76}
+      node[box, right=0 of b4, fill=red!10] (b5) {8}
+      node[box, right=0 of b5] (b6) {69}
+      node[box, right=0 of b6] (b7) {21};
+
+      \foreach[count=\i] \e in {0,...,7}
+      {
+        \draw node[above=0 of b\e] (idx_\e) {$\e$};
+      };
+
+      \path[draw, Latex-Latex] (b0.south) edge[decorate,decoration={brace,amplitude=20pt, mirror}] node[below,yshift=-0.8cm] (tip) {交换} (b5.south) node[below=0 of tip] {$\Downarrow$};
+
+      \draw node[box, fill=red!10, below=2cm of b0] (b0) {8}
+      node[box, right=0 of b0] (b1) {23}
+      node[box, right=0 of b1] (b2) {13}
+      node[box, right=0 of b2] (b3) {\color{blue} \circled[blue]{47}}
+      node[box, right=0 of b3] (b4) {76}
+      node[box, right=0 of b4, fill=yellow!20] (b5) {\color{red} \circled[red]{47}}
+      node[box, right=0 of b5] (b6) {69}
+      node[box, right=0 of b6] (b7) {21};
+    \end{tikzpicture}
+  \end{center}
+
+  两个47的位置发生了交换
+
+  $\therefore$ 不稳定。
+\end{frame}
+
+\subsubsection{堆排序}
+\begin{frame}[fragile]
+  \frametitle{堆排序(heap sort)}
+  \begin{easylist} \easyitem
+
+    & 堆可以看成一棵完全二叉树,且所有非叶结点的值均不大于(不小于)其左、右孩子结点
+    的值。那么堆顶元素是最小值(最大值).
+
+    & 如何从一个无序序列建成一个堆?
+
+    & 在输出堆顶元素之后,如何调整剩余部分成为一个新的堆?
+  \end{easylist}
+
+  \begin{columns}[T]
+    \begin{column}{0.46\linewidth}
+      大根堆：
+      
+      \begin{forest}
+        [ 96
+        [83 [38]  [11]   ]
+        [27 [09] [,missed] ]
+        ]
+      \end{forest}
+    \end{column}
+    \hfill
+    \begin{column}{0.46\linewidth}
+      小根堆：
+      
+      \begin{forest}
+        [ 12
+        [36 [85]  [47]   ]
+        [24 [30] [53] ]
+        ]
+      \end{forest}
+    \end{column}
+  \end{columns}
 \end{frame}

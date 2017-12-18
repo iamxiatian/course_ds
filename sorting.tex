@@ -261,6 +261,22 @@
   \end{infobox}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{练习}
+  分析以下关键字的希尔排序过程：
+
+  \begin{center}
+    \begin{tikzpicture}[box/.style={draw, minimum size=0.6cm, minimum width=1cm}]
+      \draw node (b0) {};
+      \foreach[count=\i, evaluate=\i as \idx using int(\i-1)] \e in {47,38,47,9,78,13,27,66}
+      {
+        \draw node[right=0 of b\idx, box] (b\i) {$\e$};
+        \draw node[above=0 of b\i] {$\idx$};
+      };
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
 
 \subsection{交换排序}
 \begin{frame}[fragile]
@@ -467,12 +483,24 @@
 
 \begin{frame}[fragile]
   \frametitle{实验观察}
-  \begin{enumerate}
+  \begin{itemize}
   \item 对给定的2个待排序列进行快速排序,显示其执行时间,注意 pivotkey选子序列的第
     一个元素;
   \item 选子序列的首、尾、中间元素的中值作为pivotkey,重新进行快速排序,观察执行时
     间的变化。
-  \end{enumerate}
+  \item 例如以下关键字序列，选择不同枢轴值有无差异
+  \end{itemize}
+
+  \begin{center}
+    \begin{tikzpicture}[box/.style={draw, minimum size=0.6cm, minimum width=1cm}]
+      \draw node (b0) {};
+      \foreach[count=\i, evaluate=\i as \idx using int(\i-1)] \e in {47,38,47,9,78,13,27,66}
+      {
+        \draw node[right=0 of b\idx, box] (b\i) {$\e$};
+        \draw node[above=0 of b\i] {$\idx$};
+      };
+    \end{tikzpicture}
+  \end{center}
 \end{frame}
 
 \subsection{选择排序}
@@ -614,4 +642,153 @@
       \end{forest}
     \end{column}
   \end{columns}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{堆的调整举例}
+  \begin{center}
+    \scriptsize
+    \begin{tabular}{p{0.4\textwidth} p{0.4\textwidth}}
+      \scalebox{0.7}{
+      \begin{forest}
+        [ 12
+        [36 [85 [91] [,missed]]  [47]   ]
+        [24 [30] [53] ]
+        ]
+      \end{forest}
+      }
+      &\scalebox{0.7}{
+        \begin{forest}
+          [ 91, fill=red!20
+          [36 [85 [12, dotted, fill=black!5, edge=dotted] [,missed]]  [47]   ]
+          [24 [30] [53] ]
+          ]
+        \end{forest}
+        }
+      \\
+
+      a. 输出堆顶元素12 & b. 以最后的91代替 \\
+      \scalebox{0.7}{
+      \begin{forest}
+        [ 24
+        [36 [85 [12, dotted, fill=black!5, edge=dotted] [,missed]]  [47]   ]
+        [91, fill=red!20 [30] [53] ]
+        ]
+      \end{forest}
+      }
+      &
+        \scalebox{0.7}{
+        \begin{forest}
+          [ 24
+          [36 [85 [12, dotted, fill=black!5, edge=dotted] [,missed]]  [47]   ]
+          [30 [91, fill=red!20] [53] ]
+          ]
+        \end{forest}
+        }
+      \\
+
+      c. 选择36, 24中的最小值与91交换 & d. 选择30, 53中的最小值与91交换 \\
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{堆的建立: [49, 38, 65, 97, 76, 13, 27, 49]}
+  \begin{center}
+    \scriptsize
+    \begin{tabular}{p{0.32\textwidth} p{0.32\textwidth} p{0.32\textwidth}}
+      \scalebox{0.7}{
+      \begin{forest}
+        [ 49,fill=red!20
+        [38,fill=red!20 [97,fill=red!20 [49] [,missed]]  [76]   ]
+        [65,fill=red!20 [13] [27] ]
+        ]
+      \end{forest}
+      }
+      &
+        \scalebox{0.7}{
+        \begin{forest}
+          [ 49,fill=red!20
+          [38,fill=red!20 [49 [97] [,missed]]  [76]   ]
+          [65, fill=red!20 [13] [27] ]
+          ]
+        \end{forest}
+        }
+        &
+        \scalebox{0.7}{
+      \begin{forest}
+        [ 49,fill=red!20
+        [38,fill=red!20 [49 [97] [,missed]]  [76]   ]
+        [13 [65] [27] ]
+        ]
+      \end{forest}
+      }
+      \\
+      a. 初始序列  & b. 97被筛选 & c. 65被筛选 \\
+      
+        \scalebox{0.7}{
+        \begin{forest}
+          [ 49,fill=red!20,name=root
+          [38 [49 [97] [,missed]]  [76]   ]
+          [
+          13,draw,name=m
+          [65]
+          [27] {\draw[<->, dotted, draw=red,thick] () to[out=east, in=east] (m);}
+          ] {\draw[<->, dotted, draw=red,thick] () to[out=north east, in=east] (root);}
+          ]
+        \end{forest}
+        }
+      &
+        \scalebox{0.7}{
+        \begin{forest}
+          [ 13
+          [38 [49 [97] [,missed]]  [76]   ]
+          [27 [65] [49] ]
+          ]
+        \end{forest}
+        }
+        &
+      \\
+       d. 49被筛选 & e. 49再次被筛选 & \\
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{堆排序算法分析}
+  \begin{easylist}\easyitem
+    & 空间复杂度:一个辅助空间
+
+    & 时间复杂度为$O(n\cdot log_2 n)$
+
+    && $n$较小时不提倡使用堆排序,但$n$较大时还是很有效的。因为其运行时间主要耗费
+    在建初始堆和调整上。
+    
+    & 不稳定的.
+  \end{easylist}
+\end{frame}
+
+\subsection{归并排序}
+
+\begin{frame}[fragile]
+  \frametitle{归并排序}
+  \begin{infobox}{算法思想}
+    将若干个已排好序的部分合并成一个新的有序部分称为归并.
+  \end{infobox}
+  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{归并排序算法分析}
+  \begin{easylist} \easyitem
+    & 空间复杂度: $O(n)$
+
+    & 在第$i$趟归并后,有序子文件长度为$2^i$ ,因此,因此,对于具有$n$个记录的序列来
+    说,需要$ \lceil log_2 n \rceil$趟归并。每趟归并的时间复杂度为$O(n)$。因此,归
+    并算法的时间复杂度为$O(n\cdot log_2 n)$
+
+    & 稳定的排序方法
+  \end{easylist}
 \end{frame}

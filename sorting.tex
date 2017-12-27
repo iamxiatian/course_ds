@@ -773,6 +773,15 @@
 \subsection{归并排序}
 
 \begin{frame}[fragile]
+  \frametitle{}
+  \begin{sectionbox}{归并排序}
+    \begin{itemize}
+    \item 二路归并排序
+    \end{itemize}
+  \end{sectionbox}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitle{归并排序}
   \begin{infobox}{算法思想}
     将若干个已排好序的部分合并成一个新的有序部分称为归并.
@@ -790,5 +799,17 @@
     并算法的时间复杂度为$O(n\cdot log_2 n)$
 
     & 稳定的排序方法
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{归并排序算法分析}
+  \begin{easylist} \easyitem
+
+    & 对于内存排序来说,归并排序的性能不如快速排序那么好,而且它的编程一点也不简单。
+    但归并排序是外部排序的中心思想。
+
+    & 在有些情况下,数据集太大而不能完全存储在内存中被处理,此时硬盘读取时间远大于
+    内存处理时间。硬盘读取成为制约效率的关键!
   \end{easylist}
 \end{frame}

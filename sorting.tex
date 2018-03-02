@@ -784,8 +784,17 @@
 \begin{frame}[fragile]
   \frametitle{归并排序}
   \begin{infobox}{算法思想}
-    将若干个已排好序的部分合并成一个新的有序部分称为归并.
+    将若干个已排好序的部分合并成一个新的有序部分称为归并. 归并排序包括两个步骤：
+    \begin{itemize}
+    \item 划分子表
+    \item 合并子表 
+    \end{itemize}
   \end{infobox}
+\end{frame}
+
+\begin{frame}[plain]
+  \centering
+  \includegraphics[width=0.75\textwidth]{imgs/merge-sort.jpg}
   
 \end{frame}
 
@@ -812,4 +821,14 @@
     & 在有些情况下,数据集太大而不能完全存储在内存中被处理,此时硬盘读取时间远大于
     内存处理时间。硬盘读取成为制约效率的关键!
   \end{easylist}
+\end{frame}
+
+\subsection{基数排序}
+\begin{frame}[fragile]
+  \frametitle{基数排序}
+  \begin{infobox}{算法思想}
+    不需要直接对元素进行相互比较，也不需要将元素相互交换，而是对元素进行“分类”。
+
+    如果对效率有所要求，而不太关心空间的使用时，可以选择用计数排序。
+  \end{infobox}
 \end{frame}

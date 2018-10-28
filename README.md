@@ -5,5 +5,19 @@
 
 ## 如何编译
 ```
-xelatex ds.tex
+xelatex -shell-escape ds.tex
 ```
+
+对于dot文件，利用dot编译：
+
+```
+dot -Tpdf filename.dot -o filename.pdf
+```
+
+## 第三方工具
+
+1. forest – Drawing (linguistic) trees  https://www.ctan.org/pkg/forest
+
+1. graphviz: http://mirrors.huaweicloud.com/repository/toolkit/CTAN/macros/latex/contrib/graphviz/graphviz.pdf
+
+1. dot: https://graphviz.gitlab.io/_pages/pdf/dotguide.pdf

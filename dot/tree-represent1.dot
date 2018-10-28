@@ -1,0 +1,16 @@
+graph demo1 {
+  fontname = "Microsoft Yahei"
+  label = "树形表示";
+  margin=0;
+  node[shape=circle];
+
+  A--B;
+  A -- C ;
+  B -- D;
+  B -- E;
+  B -- F;
+  C -- G;
+  C -- H;
+  D -- I;
+  D -- J;
+}

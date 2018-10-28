@@ -1,0 +1,10 @@
+graph demo1 {
+  label = "(1)";
+  margin=0;
+  node[shape=circle];
+  {rank=same;  B;    C;    D}
+  A--B--E;
+  A--C--F;
+  A--D--G;
+  B--C;
+}

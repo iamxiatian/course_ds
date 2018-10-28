@@ -1,0 +1,9 @@
+graph demo1 {
+  label = "(3)";
+  margin=0;
+  node[shape=circle];
+  A -- B -- D;
+  B -- E;
+  A -- C -- E;
+  C -- F;
+}

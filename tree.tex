@@ -18,19 +18,140 @@
  [below=1ex,draw,cloud,aspect=6,cloud puffs=30]
  {\emph{Simple Company Hierarchy}};
 \end{forest}
+\end{frame}
 
+\begin{frame}[fragile, plain]
+  \scalebox{0.7}{
+    \begin{forest}
+      [学院, for tree={draw=none, rectangle, minimum width=1cm}, fill=red!10, circle
+       [社会学部, grow=west [信息资源管理学院, fill=red!10] [新闻学院] [农业与农村发展学院] [社会与人口学院]
+       [公共管理学院] [教育学院]]
+       [$\cdots$]
+       [ 人文学部,grow=east [哲学院] [文学院] [历史学院] [国学院] [艺术学院] [外国语学院] [清史研究所]]
+       ]
+       \node at (current bounding box.south)
+       [below=1ex,draw,cloud,aspect=6,cloud puffs=30]
+       {\emph{人民大学学院设置}};
+    \end{forest}
+  }
+\end{frame}
+
+\begin{frame}[fragile]{内容}
+  \begin{easylist} \easyitem
+    & 树的基本术语
+    & 二叉树
+    & 遍历二叉树与线索二叉树
+    & 树和森林
+    & 哈夫曼树
+  \end{easylist}
+\end{frame}
+
+\subsection{基本术语}
+
+\begin{frame}[fragile]
+  \frametitle{树(TREE)}树(Tree)是$n(n \geq 0)$个结点的有限集$T$。 $T$为空时称为空
+  树。当$n>0$时,树有且仅有一个特定的称为根(Root)的结点，其余结点可分为$m(m \geq
+  0)$个互不相交的子集$T_1, T_2, \cdots, T_m$，其中每个子集又是一棵树,称为子
+  树(Subtree)。
+  \begin{enumerate}
+  \item 各子树是互不相交的集合。
+  \item 除根结点,其它结点有唯一前驱。
+  \item   一个结点可以有零个或多个后继。
+  \end{enumerate}
+
+  \begin{forest}
+    [R, for tree={color=white,fill=black}, fill=red!85
+    [A [C] [D] [E]]
+    [B [F]]
+    ]
+  \end{forest}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{判断哪些是树结构}
+  \includegraphics[width=0.3\textwidth]{dot/tree-judge1.pdf} ~~~~~
+  \pause
+  \includegraphics[width=0.4\textwidth]{dot/tree-judge2.pdf}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{判断哪些是树结构}
+  \includegraphics[width=0.35\textwidth]{dot/tree-judge3.pdf} ~~~~~
+  \pause
+  \includegraphics[width=0.4\textwidth]{dot/tree-judge4.pdf}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{树的表示形式}
+  \includegraphics[width=0.36\textwidth]{dot/tree-represent1.pdf}  \pause
+  \scalebox{0.75}{
+    \begin{tikzpicture}[b/.style={fill=black!50},n/.style={minimum width=1cm}]
+      \draw node[n] (a) {A} node[b, right=0 of a, minimum width=5cm, fill=red!50]{};	
+
+      \draw node[minimum width=0.5cm, below=0.1 of a](bh){} 
+      node[n, right=0 of bh] (b) {B} node[b,fill=blue!50, minimum width=4.3cm,right=0 of b]{};	
+
+      \draw node[minimum width=2cm, below=0.2 of bh](dh){} 
+      node[n, right=0 of dh] (d) {D} node[b, minimum width=3.5cm,right=0 of d]{};	
+
+      \draw node[minimum width=3.5cm, below=0.2 of dh](ih){} 
+      node[n, right=0 of ih] (i) {I} node[b, fill=green!50, minimum width=2.8cm,right=0 of i]{};	
+
+      \draw node[minimum width=3.5cm, below=0.2 of ih](jh){} 
+      node[n, right=0 of jh] (j) {J} node[b, fill=green!50, minimum width=2.8cm,right=0 of j]{};	
+
+      \draw node[minimum width=2cm, below=1.2 of dh](eh){} 
+      node[n, right=0 of eh] (e) {E} node[b, minimum width=3.5cm,right=0 of e]{};	
+
+      \draw node[minimum width=2cm, below=1.8 of dh](fh){} 
+      node[n, right=0 of fh] (f) {F} node[b, minimum width=3.5cm,right=0 of f]{};		
+
+
+      \draw node[minimum width=0.5cm, below=3.2 of a](ch){} 
+      node[n, right=0 of ch] (c) {C} node[b, fill=blue!50, minimum width=4.3cm,right=0 of c]{};	
+
+      \draw node[minimum width=2cm, below=2.8 of dh](gh){} 
+      node[n, right=0 of gh] (g) {G} node[b, minimum width=3.5cm,right=0 of g]{};	
+      \draw node[minimum width=2cm, below=3.2 of dh](hh){} 
+      node[n, right=0 of hh] (h) {H} node[b, minimum width=3.5cm,right=0 of h]{};	
+
+      \draw node[below=0.1 of h] {凹入表表示法};
+    \end{tikzpicture}
+      } \pause
+  \begin{columns}[t]
+    \begin{column}{0.4\textwidth}
+      \centering
+      \vspace{0pt}
+      (A(B(D(I,J),E, F),C(G,H)))
+      
+      广义表表示 \\
+      
+      \pause
+    \end{column}
+    \begin{column}{0.5\textwidth}
+\scalebox{0.65}{
+    \begin{tikzpicture}[n/.style={ellipse,draw}]
+      \draw node[n, minimum width=7.8cm, minimum height=3.5cm, fill=red!5]{}
+      node[n, minimum width=4.5cm, minimum height=2.5cm, xshift=-1.2cm, fill=blue!5]{}
+      node[n, minimum width=2.5cm, minimum height=1.8cm, xshift=2.5cm, fill=blue!5]{}
+      node[n, minimum width=2cm, minimum height=1.8cm, xshift=-2cm, fill=yellow!5]{}
+      node[n, circle,xshift=-2.5cm, fill=green!5]{I}
+      node[n, circle,xshift=-1.7cm, fill=green!5]{J}
+      node[n, circle,xshift=-0.5cm, fill=yellow!5]{E}
+      node[n, circle,xshift=0.4cm, fill=yellow!5]{F}
+      node[n, circle,xshift=2cm, fill=yellow!5]{G}
+      node[n, circle,xshift=3cm, fill=yellow!5]{H}
+      node[yshift=1.35cm]{A}
+      node[xshift=-0.8cm,yshift=0.8cm]{B}
+      node[xshift=2.5cm, yshift=0.6cm]{C}
+      node[xshift=-2cm,yshift=0.6cm]{D};
+      \draw node[yshift=-2.2cm] {嵌套集合表示};
+    \end{tikzpicture}
+  }
   
+    \end{column}
+  \end{columns}
 \end{frame}
-
-\begin{frame}[fragile]{Content}
-\begin{easylist} \easyitem
-& 图的定义
-& 图的存储表示
-& 图的遍历
-\end{easylist}
-\end{frame}
-
-
 
 \begin{frame}[fragile]{}
 \begin{easylist} \easyitem

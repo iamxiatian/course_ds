@@ -153,8 +153,220 @@
   \end{columns}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{基本术语}
+  \begin{columns}[t]
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+      \item 树(tree)
+      \item 子树(sub-tree)
+      \item 结点(node)
+      \item 结点的度(degree)
+      \item 叶子(leaf)
+      \item 孩子(child)
+      \item 父亲(parents)
+      \item 兄弟(sibling)
+      \item 祖先
+      \item 子孙
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+      \item 树的度(degree)
+      \item 结点的层次(level)
+      \item 树的深度(depth)
+      \item 有序树
+      \item 无序树
+      \item 森林
+      \end{itemize}
+
+      \begin{forest}
+        [R
+        [A, 
+        [C] [D]]
+        [B [E]]
+        ]
+      \end{forest}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile, plain]
+~
+\end{frame}
+
+\subsection{二叉树}
+\begin{frame}[fragile]
+  \frametitle{二叉树(Binary Tree)}二叉树的一个重要应用是在查找中的应用。当然,它
+  还  有许多与搜索无关的重要应用,比如在编译器的设计领域。
+
+  \begin{itemize}
+  \item 二叉树是一种树型结构,它的每个结点至多只有两个子树,分别称为左子树和右子树。
+    二叉树是有序树。
+  \item 二叉树是$n(n \geq 0)$个结点构成的有限集合。二叉树为空,或是由一个根结点及
+    两棵互不相交的左右子树组成,并且左右子树都是二叉树。
+  \item 在二叉树中要区分左子树和右子树,即使只有一棵子树。这是二叉树与树的最主要的
+    差别。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{二叉树的五种形态}
+  \begin{enumerate}
+  \item 空二叉树;
+  \item 只有根结点(左右子树都为空);
+  \item 只有左子树(右子树为空);
+  \item 只有右子树(左子树为空);
+  \item 左右子树均不空。
+  \end{enumerate}
+
+  \scalebox{0.8}{
+    \begin{tikzpicture}[n/.style={draw=black!80, thick,fill=black!80, circle, minimum size=1cm},
+      t/.style={draw=black!80, ellipse, minimum height=2cm,minimum width=1cm, fill=black!20}]
+      \draw node[n,dotted, fill=yellow!1] (t1) at (0,0) {};
+      \draw[draw] (0.7,0.7) -- (-0.7,-0.7);
+
+      \draw node[n] (t2) at (2,0) {};
+
+      \draw node[n] (t3) at (4.5,0) {} node[t, below left=of t3,xshift=0.8cm, rotate=-30] (t31) {};
+      \draw[draw] (t3) -- (t31);
+
+      \draw node[n] (t4) at (6.5,0) {} node[t, below right=of t4,xshift=-0.8cm, rotate=30] (t41) {};
+      \draw[draw] (t4) -- (t41);
+
+      \draw node[n] (t5) at (11,0) {} node[t, below left=of t5,xshift=0.8cm, rotate=-30] (t51) {} node[t, below right=of t5,xshift=-0.8cm, rotate=30] (t52) {};
+      \draw[draw] (t5) -- (t51);
+      \draw[draw] (t5) -- (t52);
+    \end{tikzpicture}
+  }
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{请观察二叉树, 并回答下列问题}
+
+  \scalebox{0.7} {
+    \begin{forest}
+      [A, name=A
+      [B, name=B [D [H] [I]] [E [J] [K]]]
+      [C, name=C [F [L] [M]] [G [N] [O]]]
+      ]
+     \draw[draw, dotted, thick] (B.north) ++(-2cm, 0.2cm)-- ++(9cm, 0cm)
+     node[above, right, yshift=0.5cm]{1};
+     \draw[draw, dotted, thick] (B.south) ++(-2cm, -0.2cm)-- ++(9cm, 0cm)
+     node[above, right, yshift=0.5cm]{2};
+     \draw[draw, dotted, thick] (B.south) ++(-2cm, -1.6cm)-- ++(9cm, 0cm)
+     node[above, right, yshift=0.5cm]{3} node[below, right, yshift=-0.5cm] {4};
+    \end{forest}
+  }
+
+  \begin{enumerate}
+  \item 二叉树的第$i$层最多有多少个结点?
+  \item 二叉树深度为k,则它最多有多少个结点?
+  \item 二叉树有n个节点,请问它最小深度是几?
+  \item 二叉树叶子的数目和度为2的节点的数目是否相等?如果不等,又是什么关系?
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{二叉树的性质}
+  \begin{itemize}
+  \item 性质1: 二叉树的第$i$层至多有$2^{i-1}$个结点。
+  \item 性质2: 深度为$k$的二叉树至多有$k2^{k-1}$个结点($k \geq 1$)。
+  \item \color{red} 性质3: 二叉树中终端结点数为$n_0$,度为2的结点数为$n_2$,则有$n_0 = n_2 + 1$
+    (试证明)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{二叉树的性质}
+  二叉树中终端结点数为$n_0$,度为2的结点数为$n_2$,则有$n_0 = n_2 + 1$
+
+  \begin{columns}[T,c]
+    \begin{column}{0.6\linewidth}
+      \begin{itemize}
+      \item 设二叉树中度为1的结点数为$n_1$, 二叉树中总结点数为$N$,则有：
+        
+        $N = n_0 + n_1 + n_2$
+      \item 再考虑二叉树中的分支数(每个节点有唯一一个入的分支,根节点除外;再考虑出
+        的分支数量), 则有：
+
+        $N - 1 =n_1 + 2 \times n_2$
+      \item 整理可得：
+
+        $n_0 = n_2 + 1$
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.35\linewidth}      
+      \begin{forest}
+        [{}, name=root,for tree={color=white,fill=black}
+        [{}, name=n21, grow=-55 [{}, name=n31 [{~}] [{~}]]]
+        [{}, name=n22, grow=235 [{}, name=n32,[{~}, draw=none,fill=none, no edge] [{~}]]]
+        ]
+      \end{forest}
+    \end{column}
+  \end{columns}
+\end{frame}
+
 \begin{frame}[fragile]{}
-\begin{easylist} \easyitem
+\begin{forest}
+  for tree={draw, circle, l sep+=0.5em, where level={3}{s sep+=1em}{}, inner sep=0.05em}
+  [,fill
+      [{$-$}, edge label={node[midway,left]{$0.70$}}, name=e
+          [$-$, edge label={node[midway,left]{$0.78$}}, name=a
+              [$-$, edge label={node[midway,left]{$0.80$}}, name=c
+                  [$-$, edge label={node[midway,left]{$0.82$}}, name=d]
+                  [$+$, edge label={node[midway,right]{$0.18$}}]
+              ]
+              [$+$, edge label={node[midway,right]{$0.20$}}
+                  [$-$, edge label={node[midway,left]{$0.49$}}]
+                  [$+$, edge label={node[midway,right]{$0.51$}}]
+              ]
+          ]
+          [$+$, edge label={node[midway,right]{$0.22$}}
+              [$-$, edge label={node[midway,left]{$0.50$}}
+                  [$-$, edge label={node[midway,left]{$0.70$}}]
+                  [$+$, edge label={node[midway,right]{$0.30$}}]
+              ]
+              [$+$, edge label={node[midway,right]{$0.50$}}
+                  [$-$, edge label={node[midway,left]{$0.57$}}]
+                  [$+$, edge label={node[midway,right]{$0.43$}}]
+              ]
+          ]
+      ]
+      [{$+$}, edge label={node[midway,right]{$0.30$}}
+          [$-$, edge label={node[midway,left]{$0.50$}}
+              [$-$, edge label={node[midway,left]{$0.71$}}
+                  [$-$, edge label={node[midway,left]{$0.75$}}]
+                  [$+$, edge label={node[midway,right]{$0.25$}}]
+              ]
+              [$+$, edge label={node[midway,right]{$0.29$}}
+                  [$-$, edge label={node[midway,left]{$0.53$}}]
+                  [$+$, edge label={node[midway,right]{$0.47$}}]
+              ]
+          ]
+          [$+$, edge label={node[midway,right]{$0.50$}}
+              [$-$, edge label={node[midway,left]{$0.50$}}
+                  [$-$, edge label={node[midway,left]{$0.72$}}]
+                  [$+$, edge label={node[midway,right]{$0.28$}}]
+              ]
+              [$+$, edge label={node[midway,right]{$0.50$}}, name=b
+                  [$-$, edge label={node[midway,left]{$0.44$}}]
+                  [$+$, edge label={node[midway,right]{$0.56$}}]
+              ]
+          ]
+      ]
+  ]
+  \begin{scope}[on background layer]
+    \node [fill=black!25, fit={(a.south) (c) (b)}, inner ysep=.05em, inner xsep=.75em, outer sep=0pt] {};
+  \end{scope}
+  \node (p) [left=5pt of d] {memory 4};
+  \node at (p |- c) {memory 3};
+  \node at (p |- a) {memory 2};
+  \node at (p |- e) {memory 1};
+\end{forest}
+
+
+  \begin{easylist} \easyitem
 
 \end{easylist}
 \end{frame}

@@ -2,8 +2,15 @@
 
 
 \begin{frame}[fragile]{树和二叉树}
-  树型结构是结点之间有分支,并且具有层次关系的结构,类似于自然界中的树。树有很多应
-  用,比如Unix等操作系统中的目录结构。
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+
+    树型结构是结点之间有分支,并且具有层次关系的结构,类似于自然界中的树。树有很多
+    应用,比如Unix等操作系统中的目录结构。
+
+    \column{0.4\textwidth}
+    \includegraphics[width=0.9\textwidth]{imgs/linux-tree.png}
+  \end{columns}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -53,18 +60,22 @@
   树。当$n>0$时,树有且仅有一个特定的称为根(Root)的结点，其余结点可分为$m(m \geq
   0)$个互不相交的子集$T_1, T_2, \cdots, T_m$，其中每个子集又是一棵树,称为子
   树(Subtree)。
-  \begin{enumerate}
-  \item 各子树是互不相交的集合。
-  \item 除根结点,其它结点有唯一前驱。
-  \item   一个结点可以有零个或多个后继。
-  \end{enumerate}
+  \begin{columns}[T]
+    \column{0.55\textwidth}
+    \begin{enumerate}
+    \item 各子树是互不相交的集合。
+    \item 除根结点,其它结点有唯一前驱。
+    \item   一个结点可以有零个或多个后继。
+    \end{enumerate}
 
-  \begin{forest}
-    [R, for tree={color=white,fill=black}, fill=red!85
-    [A [C] [D] [E]]
-    [B [F]]
-    ]
-  \end{forest}
+    \column{0.4\textwidth}
+    \begin{forest}
+      [R, for tree={color=white,fill=black}, fill=red!85
+      [A [C] [D] [E]]
+      [B [F]]
+      ]
+    \end{forest}
+  \end{columns}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -117,11 +128,12 @@
 
       \draw node[below=0.1 of h] {凹入表表示法};
     \end{tikzpicture}
-      } \pause
-  \begin{columns}[t]
+  } \pause
+  
+  \begin{columns}[T]
     \begin{column}{0.4\textwidth}
       \centering
-      \vspace{0pt}
+      \vspace{2cm}
       (A(B(D(I,J),E, F),C(G,H)))
       
       广义表表示 \\
@@ -197,17 +209,18 @@
 
 \subsection{二叉树}
 \begin{frame}[fragile]
-  \frametitle{二叉树(Binary Tree)}二叉树的一个重要应用是在查找中的应用。当然,它
-  还  有许多与搜索无关的重要应用,比如在编译器的设计领域。
-
+  \frametitle{二叉树(Binary Tree)}
   \begin{itemize}
   \item 二叉树是一种树型结构,它的每个结点至多只有两个子树,分别称为左子树和右子树。
     二叉树是有序树。
-  \item 二叉树是$n(n \geq 0)$个结点构成的有限集合。二叉树为空,或是由一个根结点及
+  \item 二叉树是$n(n \geq 0)$个结点构成的有限集合。二叉树或为空,或是由一个根结点及
     两棵互不相交的左右子树组成,并且左右子树都是二叉树。
   \item 在二叉树中要区分左子树和右子树,即使只有一棵子树。这是二叉树与树的最主要的
     差别。
   \end{itemize}
+
+  二叉树的一个重要应用是在查找中的应用。当然,它还 有许多与搜索无关的重要应用,比如
+  在编译器的设计领域。
 \end{frame}
 
 \begin{frame}[fragile]
@@ -221,10 +234,10 @@
   \end{enumerate}
 
   \scalebox{0.8}{
-    \begin{tikzpicture}[n/.style={draw=black!80, thick,fill=black!80, circle, minimum size=1cm},
+    \begin{tikzpicture}[n/.style={draw=black!80, thick,fill=black!80, circle, minimum size=0.6cm},
       t/.style={draw=black!80, ellipse, minimum height=2cm,minimum width=1cm, fill=black!20}]
       \draw node[n,dotted, fill=yellow!1] (t1) at (0,0) {};
-      \draw[draw] (0.7,0.7) -- (-0.7,-0.7);
+      \draw[draw=red] (0.5,0.5) -- (-0.5,-0.5);
 
       \draw node[n] (t2) at (2,0) {};
 
@@ -271,7 +284,7 @@
   \frametitle{二叉树的性质}
   \begin{itemize}
   \item 性质1: 二叉树的第$i$层至多有$2^{i-1}$个结点。
-  \item 性质2: 深度为$k$的二叉树至多有$k2^{k-1}$个结点($k \geq 1$)。
+  \item 性质2: 深度为$k$的二叉树至多有$2^k-1$个结点($k \geq 1$)。
   \item \color{red} 性质3: 二叉树中终端结点数为$n_0$,度为2的结点数为$n_2$,则有$n_0 = n_2 + 1$
     (试证明)
   \end{itemize}
@@ -307,68 +320,85 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}[fragile]{}
-\begin{forest}
-  for tree={draw, circle, l sep+=0.5em, where level={3}{s sep+=1em}{}, inner sep=0.05em}
-  [,fill
-      [{$-$}, edge label={node[midway,left]{$0.70$}}, name=e
-          [$-$, edge label={node[midway,left]{$0.78$}}, name=a
-              [$-$, edge label={node[midway,left]{$0.80$}}, name=c
-                  [$-$, edge label={node[midway,left]{$0.82$}}, name=d]
-                  [$+$, edge label={node[midway,right]{$0.18$}}]
-              ]
-              [$+$, edge label={node[midway,right]{$0.20$}}
-                  [$-$, edge label={node[midway,left]{$0.49$}}]
-                  [$+$, edge label={node[midway,right]{$0.51$}}]
-              ]
-          ]
-          [$+$, edge label={node[midway,right]{$0.22$}}
-              [$-$, edge label={node[midway,left]{$0.50$}}
-                  [$-$, edge label={node[midway,left]{$0.70$}}]
-                  [$+$, edge label={node[midway,right]{$0.30$}}]
-              ]
-              [$+$, edge label={node[midway,right]{$0.50$}}
-                  [$-$, edge label={node[midway,left]{$0.57$}}]
-                  [$+$, edge label={node[midway,right]{$0.43$}}]
-              ]
-          ]
+\begin{frame}[fragile]
+  \frametitle{完全二叉树}
+  \begin{columns}[T]
+    \column{0.55\textwidth}
+    \begin{forest}
+      [1
+      [2 [4 [8] [9]] [5 [10] [11]]]
+      [3 [6 [12]] [7]]
+      ]\
+    \end{forest}
+    \pause
+    
+    \column{0.4\textwidth}
+    是否完全二叉树？
+
+    \begin{forest}
+      [1
+      [2 [4] [5]]
+      [3 [{}, no edge, draw=none] [7]]
       ]
-      [{$+$}, edge label={node[midway,right]{$0.30$}}
-          [$-$, edge label={node[midway,left]{$0.50$}}
-              [$-$, edge label={node[midway,left]{$0.71$}}
-                  [$-$, edge label={node[midway,left]{$0.75$}}]
-                  [$+$, edge label={node[midway,right]{$0.25$}}]
-              ]
-              [$+$, edge label={node[midway,right]{$0.29$}}
-                  [$-$, edge label={node[midway,left]{$0.53$}}]
-                  [$+$, edge label={node[midway,right]{$0.47$}}]
-              ]
-          ]
-          [$+$, edge label={node[midway,right]{$0.50$}}
-              [$-$, edge label={node[midway,left]{$0.50$}}
-                  [$-$, edge label={node[midway,left]{$0.72$}}]
-                  [$+$, edge label={node[midway,right]{$0.28$}}]
-              ]
-              [$+$, edge label={node[midway,right]{$0.50$}}, name=b
-                  [$-$, edge label={node[midway,left]{$0.44$}}]
-                  [$+$, edge label={node[midway,right]{$0.56$}}]
-              ]
-          ]
+    \end{forest}
+
+    \pause
+    
+    \begin{forest}
+      [1
+      [2]
+      [3 [6] [7]]
       ]
-  ]
-  \begin{scope}[on background layer]
-    \node [fill=black!25, fit={(a.south) (c) (b)}, inner ysep=.05em, inner xsep=.75em, outer sep=0pt] {};
-  \end{scope}
-  \node (p) [left=5pt of d] {memory 4};
-  \node at (p |- c) {memory 3};
-  \node at (p |- a) {memory 2};
-  \node at (p |- e) {memory 1};
-\end{forest}
-
-
-  \begin{easylist} \easyitem
-
-\end{easylist}
+    \end{forest}
+  \end{columns}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{试找出非完全二叉树}
+
+  \begin{forest}
+    [{}, for tree={fill=black}]
+  \end{forest} \hspace{3cm}
+  \begin{forest}
+    [{}, for tree={fill=black} [{}] [{}]]
+  \end{forest}
+  
+  \begin{forest}
+    [{}, for tree={fill=black}
+    [{} [{}] [{}]]
+    [{}]]
+  \end{forest}
+  \begin{forest}
+    [{}, for tree={fill=black}
+    [{} [{} [{}] [{}]] [{}]]
+    [{}]]
+  \end{forest}
+  \begin{forest}
+    [{}, for tree={fill=black}
+    [{} [{}] [{}]]
+    [{} [{}] [{}]]]
+  \end{forest}
+  \begin{forest}
+    [{}, for tree={fill=black}
+    [{} [{} [{} [{}] [{}]] [{}]] [{}]]
+    [{}]]
+  \end{forest}
+  \begin{forest}
+    [{}, for tree={fill=black}
+    [{} [{} [{}] [{}, no edge, draw=none, fill=none]] [{}]]
+    [{} [{}] [{}]]]
+  \end{forest}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{二叉树的性质}
+  \begin{enumerate}
+  \item 性质4:具有$n$个结点的完全二叉树的深度为:
+    
+  \end{enumerate}
+
+  对于完全二叉树，设深度为$k$, 由$2^{k-1}-1 < n \leq 2^k - 1$可知,
+  $2^k-1 \leq n <2^k$, 则k-1 ≤ log 2 n <k
+  ( 2 k-1 -1<n: 比大于深度为k-1的满二叉树的数
+\end{frame}
 

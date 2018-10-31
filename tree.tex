@@ -325,9 +325,9 @@
   \begin{columns}[T]
     \column{0.55\textwidth}
     \begin{forest}
-      [1
+      [1, for tree={font=\scriptsize}
       [2 [4 [8] [9]] [5 [10] [11]]]
-      [3 [6 [12]] [7]]
+      [3 [6 [12] [{}, no edge,draw=none]] [7]]
       ]\
     \end{forest}
     \pause
@@ -392,13 +392,356 @@
 
 \begin{frame}[fragile]
   \frametitle{二叉树的性质}
-  \begin{enumerate}
+  \begin{itemize}
   \item 性质4:具有$n$个结点的完全二叉树的深度为:
-    
-  \end{enumerate}
-
+    \[ \biggl\lfloor {log_2 n} \biggr\rfloor + 1 \] 
+  \end{itemize}
+  \small
   对于完全二叉树，设深度为$k$, 由$2^{k-1}-1 < n \leq 2^k - 1$可知,
-  $2^k-1 \leq n <2^k$, 则k-1 ≤ log 2 n <k
-  ( 2 k-1 -1<n: 比大于深度为k-1的满二叉树的数
+  $2^k-1 \leq n <2^k$, 则 $k-1 \leq log_2n < k$
+  (参考性质2: $2^{k-1}-1 < n$: 比大于深度为$k-1$的满二叉树的数)
+  
+  \begin{columns}[T]
+    \column{0.45\textwidth}
+    \scalebox{0.6}{
+      \begin{forest}
+        [1, for tree={font=\scriptsize}
+        [2 [4 [8] [9]] [5 [10] [11]]]
+        [3 [6 [12] [13]] [7 [14] [15]]]
+        ]
+      \end{forest}
+    }
+    
+    满二叉树
+    \column{0.45\textwidth}
+    \scalebox{0.6}{
+      \begin{forest}
+        [1, for tree={font=\scriptsize}
+        [2 [4 [8] [9]] [5 [10] [11]]]
+        [3 [6 [12] [{}, no edge, draw=none]] [7]]
+        ]
+      \end{forest}
+    }
+    
+    完全二叉树
+  \end{columns}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{测试}
+
+\begin{columns}[T]
+  \column{0.6\textwidth}
+    对于完全二叉树：
+  \begin{enumerate}
+  \item 若完全二叉树有叶子结点出现在第$k$层,它可能还有(~~~~~~)层的叶子结点;
+  \item 若某结点的右子树的最大层次为$L$,则其左子树的最大层次为(~~~~~~~~);
+  \item 若按如图所示的编号方式,试求出编号为$i$的节点的父节点和子节点的编号.
+  \end{enumerate}
+
+  \column{0.36\textwidth}
+  \scalebox{0.6}{
+    \begin{forest}
+      [1
+      [2 [4 [8] [9]] [5 [10] [11]]]
+      [3 [6 [12] [{}, no edge,draw=none]] [7]]
+      ]\
+    \end{forest}
+  }
+\end{columns}
+
+\pause
+\begin{enumerate}
+\item $k-1$, $k+1$
+\item $L$ or $L+1$
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{二叉树的性质}
+  \begin{center}
+    \scalebox{0.6} {
+      \begin{forest}
+        [1, name=A,for tree={}
+        [2, name=B [4 [8] [9]] [5 [10] [11]]]
+        [3, name=C [6 [12] [{}, no edge,draw=none] ] [7] ]
+        ]
+        \draw[draw, dotted, thick] (B.north) ++(-2cm, 0.2cm)-- ++(9cm, 0cm)
+        node[above, right, yshift=0.5cm]{1};
+        \draw[draw, dotted, thick] (B.south) ++(-2cm, -0.2cm)-- ++(9cm, 0cm)
+        node[above, right, yshift=0.5cm]{2};
+        \draw[draw, dotted, thick] (B.south) ++(-2cm, -1.6cm)-- ++(9cm, 0cm)
+        node[above, right, yshift=0.5cm]{3} node[below, right, yshift=-0.5cm] {4};
+      \end{forest}
+    }
+  \end{center}
+
+  \begin{itemize}
+  \item 性质5: 对具有$n$个结点的完全二叉树的结点按层次顺序编号,对任意结点$i$有:
+    \begin{itemize}
+    \item (有关结点$i$的双亲)若$i=1$,则为二叉树的根结点, 没有双亲;否则双亲结点的
+      编号为: $\biggl\lfloor{\dfrac{i}{2}}\biggr\rfloor$
+    \item (有关结点$i$的孩子) 若$n<2 \cdot i$, 则结点$i$无左孩子;否则左孩子编号
+      是$2 \cdot i$。
+    \item 若$n<2 \cdot i+1$,则结点i无右孩子;否则右孩子编号为$2 \cdot i+1$
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{二叉树的存储结构：顺序存储}
+  \begin{columns}
+    \column{0.45\textwidth}
+
+    \scalebox{0.6} {
+      \begin{forest}
+        [1, name=A,for tree={color=white,fill=black}
+        [2, for tree={dotted,color=black,fill=white}, [4 [8] [9]] [5 [10] [11]]]
+        [3, name=C [6 [12] [{}, no edge,draw=none, fill=none] ] [7] ]
+        ]
+      \end{forest}
+    }
+
+    \vspace{2cm}
+    \scalebox{0.6}{
+      \begin{tikzpicture}[b/.style={draw, fill=black, white, minimum size=0.8cm}, n/.style={draw, minimum size=0.8cm}]
+        \draw node[b] (n1) {1} node[n, right=0 of n1](n2) {2}  node[b, right=0 of n2](n3) {3}
+        node[n, right=0 of n3] (n4) {4} node[n, right=0 of n4](n5) {5}  node[b, right=0 of n5](n6) {6}
+        node[b, right=0 of n6] (n7) {7} node[n, right=0 of n7](n8) {8}  node[n, right=0 of n8](n9) {9}
+        node[n, right=0 of n9] (n10) {10} node[n, right=0 of n10](n11) {11}  node[b, right=0 of n11](n12) {12} ;
+      \end{tikzpicture}
+    }
+
+    \column{0.55\textwidth}
+    \begin{minted}[bgcolor=yellow!20, fontsize=\scriptsize]{c}
+      #define MAX_SIZE 100
+      typedef int SqBiTree[MAX_SIZE];
+      SqBiTree bt;
+    \end{minted}
+
+    \begin{minted}[bgcolor=red!5, fontsize=\scriptsize]{java}
+      class SqBiTree {
+        //static int MAX_SIZE = 100;
+        //int[] data = new int[MAX_SIZE];
+        List<Integer> data = new ArrayList<Integer>();
+      }
+    \end{minted}
+  \end{columns}
+  
+  \begin{itemize}
+  \item 把结点安排成一个恰当的序列(编号),存储在数组中
+  \item 便于“随机存取”
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{二叉树的存储结构：顺序存储}
+  \begin{itemize}
+  \item 适用于完全二叉树
+  \end{itemize}
+
+  \begin{columns}
+    \column{0.6\textwidth}
+    \scalebox{0.8} {
+      \begin{forest}
+        [$a$, for tree={color=white,fill=black}
+        [{}, draw=none, no edge, fill=none]
+        [$b$
+        [{}, draw=none, no edge, fill=none]
+        [$c$ [{}, draw=none, no edge, fill=none] [$d$] ]
+        ]
+        ]
+      \end{forest}
+    }
+
+    \column{0.4\textwidth}
+    \scalebox{0.8} {
+      \begin{forest}
+        [1, for tree={color=white,fill=black}
+        [2 [4] [5 [6] [7]]]
+        [3]
+        ]
+      \end{forest}
+    }
+  \end{columns}
+
+  \pause
+  
+  \hspace{-1cm}
+  \scalebox{0.7}{
+    \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
+      \draw node[n] (n0) {0};
+      \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 14}
+      \draw node[n, right=0 of n\xp](n\x) {$\x$};
+
+      \foreach \x in {1,3,4,5,7,8, ..., 13}
+      \draw node[n, above=0 of n\x, draw](d\x) {$0$};
+
+      \foreach \x/\y in {0/a,2/b,6/c,14/d}
+      \draw node[n, above=0 of n\x, draw, fill=red!10](d\x) {$\y$};
+    \end{tikzpicture}
+  }
+
+  \pause
+  \hspace{4cm}
+  \scalebox{0.7}{
+    \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
+      \draw node[n] (n0) {0};
+      \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 10}
+      \draw node[n, right=0 of n\xp](n\x) {$\x$};
+
+      \foreach \x in {5, ..., 8}
+      \draw node[n, above=0 of n\x, draw](d\x) {$0$};
+
+      \foreach \x/\y in {0/1,1/2,2/3,3/4,4/5,9/6,10/7}
+      \draw node[n, above=0 of n\x, draw, fill=red!10](d\x) {$\y$};
+    \end{tikzpicture}
+  }
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{二叉树的链式存储:二叉链表}
+  \begin{columns}[T]
+    \column{0.4\textwidth}
+    \scalebox{0.7}{
+      \begin{forest}
+        [1
+        [2 [{}, no edge, draw=none] [4 [5] [6]]]
+        [3]]
+      \end{forest}
+    }
+    \column{0.4\textwidth}
+    \includegraphics[width=0.6\textwidth]{dot/tree-store-bilink.pdf}
+  \end{columns}
+
+  \small
+  \begin{columns}
+    \column{0.48\textwidth}
+    \begin{minted}[fontsize=\scriptsize,bgcolor=red!5]{c}
+      typedef struct BiTNode  { // C Code
+        ElemType data;
+        struct BiTNode *lchild, *rchild;
+      } BiTNode, *BiTree;
+    \end{minted}
+
+    \column{0.48\textwidth}
+    \begin{minted}[fontsize=\scriptsize,bgcolor=yellow!10]{c}
+      class BiTNode<T> { //Java Code
+        T data;
+        BiTNode lchild, rchild;
+      }
+    \end{minted}
+  \end{columns}
+
+  思考:含$n$个结点的二叉链表中有多少个空指针？
+
+  \pause
+  指针域一共有$2*n$个，分支共有$N-1$,  每个分支占用一个指针域，所以空指针数量为:  $2*n - (n-1) = n+1$
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{二叉树的链式存储:三叉链表}
+  \begin{itemize}
+  \item 二叉链表不便查找父节点, 可加一个指向双亲的指针
+  \end{itemize}
+
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \scalebox{0.5}{
+      \begin{forest}
+        [1
+        [2 [{}, no edge, draw=none] [4 [5] [6]]]
+        [3]]
+      \end{forest}
+    }
+    \includegraphics[width=0.8\textwidth]{dot/tree-store-trilink.pdf}
+    
+    \column{0.5\textwidth}
+    \begin{minted}[fontsize=\scriptsize,bgcolor=red!5]{c}
+      typedef struct BiTNode  { // C Code
+        ElemType data;
+        struct BiTNode *lchild, *rchild, *parent;
+      } BiTNode, *BiTree;
+    \end{minted}
+
+    \begin{minted}[fontsize=\scriptsize,bgcolor=yellow!10]{c}
+      class BiTNode<T> { //Java Code
+        T data;
+        BiTNode lchild, rchild, parent;
+      }
+    \end{minted}
+  \end{columns}
+
+  思考: 有n个结点的三叉链表有多少个空指针？
+
+  \pause
+  \scriptsize
+  对于二叉链表，指针域一共有$2*n$个，分支共有$N-1$,  每个分支占用一个指针域，所以空指针数量为$2*n - (n - 1) = n+1 $;  对于parent，根节点无父节点，所以共有$n+1+1=n+2$个空指针
+\end{frame}
+
+\begin{frame}[fragile, plain]
+  ~  
+\end{frame}
+
+
+\subsection{遍历二叉树和线索二叉树}
+\begin{frame}[fragile]
+  \frametitle{遍历二叉树和线索二叉树}
+
+  在二叉树的一些应用中,常常要求在树中查找具有某种特征的结点,或者对树中全部结点逐
+  一进行某种处理。这就引入了遍历二叉树的问题,即如何按某条搜索路径巡访树中的每一个
+  结点,使得每一个结点均被访问一次且仅访问一次。
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{二叉树的遍历}
+ \begin{itemize}
+ \item 遍历是指按某种方式访问所有结点,使每个结点被访问一次且只被访问一次。
+ \item 二叉树的遍历是按一定规则将二叉树的结点排成一个线性序列,即非线性序列线性
+   化。
+ \item 遍历的方式: 深度优先和广度优先，深度优先又分为三种：
+   \begin{itemize}
+   \item 先序次序
+   \item 中序次序(对称序次序)
+   \item 后序次序 
+   \end{itemize}
+ \end{itemize} 
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{二叉树的遍历}
+  \begin{easylist}
+    & 1、先序遍历二叉树的操作定义为: 若二叉树为空,则空操作;否则
+    && (1)访问根结点;
+    && (2)先序遍历左子树;
+    && (3)先序遍历右子树。
+    & 2、中序遍历二叉树的操作定义为:若二叉树为空,则空操作;否则
+    && (1)中序遍历左子树;
+    && (2)访问根结点;
+    && (3)中序遍历右子树。
+    & 3、后序遍历二叉树的操作定义为:若二叉树为空,则空操作;否则
+    && (1)后序遍历左子树;
+    && (2)后序遍历右子树;
+    && (3)访问根结点。
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{示例}
+  \scalebox{0.8}{
+    \begin{forest}
+      [A
+      [B [D] [{}, no edge, draw=none]]
+      [C [E [{}, no edge, draw=none] [G]] [F [H] [I]]]
+      ]
+    \end{forest}
+  }
+
+  \begin{itemize}
+  \item 先序:ABDCEGFHI
+  \item 中序:DBAEGCHFI
+  \item 后序:DBGEHIFCA
+  \item 广度优先：ABCDEFGHI
+  \end{itemize}
+\end{frame}

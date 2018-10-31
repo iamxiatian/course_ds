@@ -398,8 +398,8 @@
   \end{itemize}
   \small
   对于完全二叉树，设深度为$k$, 由$2^{k-1}-1 < n \leq 2^k - 1$可知,
-  $2^k-1 \leq n <2^k$, 则 $k-1 \leq log_2n < k$
-  (参考性质2: $2^{k-1}-1 < n$: 比大于深度为$k-1$的满二叉树的数)
+  $2^{k-1} \leq n <2^k$, 则 $k-1 \leq log_2n < k$
+  (参考性质2)
   
   \begin{columns}[T]
     \column{0.45\textwidth}
@@ -738,10 +738,178 @@
     \end{forest}
   }
 
+  \pause
   \begin{itemize}
   \item 先序:ABDCEGFHI
   \item 中序:DBAEGCHFI
   \item 后序:DBGEHIFCA
   \item 广度优先：ABCDEFGHI
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{二叉树的遍历}
+  \begin{columns}[T]
+    \column{0.6\textwidth}
+    //先序遍历二叉树递归算法C伪代码
+    \begin{minted}[bgcolor=red!5, fontsize=\small]{c}
+      status preOrderTraverse(BiTree T){
+        if(T){
+          printf(T->data);
+          preOrderTraverse(T->lchild);
+          preOrderTraverse(T->rchild);
+        }
+      }
+    \end{minted}
+    \begin{itemize}
+    \item status代表什么？
+    \item printf代表什么？
+    \end{itemize}
+
+    \column{0.4\textwidth}
+    \scalebox{0.8}{
+      \begin{forest}
+        [A
+        [B [D] [{}, no edge, draw=none]]
+        [C [E [{}, no edge, draw=none] [G]] [F [H] [I]]]
+        ]
+      \end{forest}
+    }    
+  \end{columns}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{二叉树的遍历}
+  \begin{columns}[T]
+    \column{0.6\textwidth}
+    先序遍历递归算法的Java实现
+  
+    \begin{minted}[bgcolor=yellow!10,fontsize=\small]{java}
+      class Node {
+        String data;
+        Node left, right;
+      }
+      class Tree {
+        void preOrderTraverse(Node node) {
+          if(node != null) {
+            System.out.println(node.data);
+            preOrderTraverse(node.left);
+            preOrderTraverse(node.right);
+          }
+        }
+      }
+    \end{minted}
+
+    \column{0.4\textwidth}
+    \scalebox{0.8}{
+      \begin{forest}
+        [A
+        [B [D] [{}, no edge, draw=none]]
+        [C [E [{}, no edge, draw=none] [G]] [F [H] [I]]]
+        ]
+      \end{forest}
+    }
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{如下将得到树的什么序列?}
+  \begin{columns}[T]
+    \column{0.6\textwidth}
+    \begin{minted}[bgcolor=yellow!10,fontsize=\small]{c}
+      status traverse(BiTree T) {
+        InitStack(S);
+        p = T;
+        while(p || !StackEmpty(S)) {
+          if(p) {
+            push(S, p); p = p->lchild;
+          } else {
+            pop(S, p);
+            printf(p->data);
+            p = p->rchild;
+          }
+        }
+        return OK;
+      }
+    \end{minted}
+
+    \column{0.4\textwidth}
+    \scalebox{0.8}{
+      \begin{forest}
+        [A
+        [B [D] [{}, no edge, draw=none]]
+        [C [E [{}, no edge, draw=none] [G]] [F [H] [I]]]
+        ]
+      \end{forest}
+    }
+  \end{columns}  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{二叉树的遍历:广度优先}
+  \begin{columns}[T]
+    \column{0.6\textwidth}
+    算法步骤：
+    \begin{itemize}
+    \item 访问节点
+    \item 从左到右依次访问儿子节点
+    \item 重复前一步骤
+    \end{itemize}
+    
+    \begin{tikzpicture}[ n/.style={minimum width=1cm,minimum height=0.6cm, draw}]
+      \draw node[] (n0) {};
+      \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 7}
+      \draw node[n, right=0 of n\xp](n\x) {};
+      
+      \draw node[n, right=0 of n0] {A};
+    \end{tikzpicture}
+
+    \begin{tikzpicture}[ n/.style={minimum width=1cm,minimum height=0.6cm, draw}]
+      \draw node[] (n0) {};
+      \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 7}
+      \draw node[n, right=0 of n\xp](n\x) {};
+      
+      \draw node[n, right=0 of n1] {B} node[n, right=0 of n2]{C};
+    \end{tikzpicture}
+
+    \begin{tikzpicture}[ n/.style={minimum width=1cm,minimum height=0.6cm, draw}]
+      \draw node[] (n0) {};
+      \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 7}
+      \draw node[n, right=0 of n\xp](n\x) {};
+      
+      \draw node[n, right=0 of n2] {C} node[n, right=0 of n3]{D};
+    \end{tikzpicture}
+
+    .......
+
+    课堂练习：编程实现广度优先遍历。
+    
+    \column{0.4\textwidth}
+    \scalebox{0.8}{
+      \begin{forest}
+        [A
+        [B [D] [{}, no edge, draw=none]]
+        [C [E [{}, no edge, draw=none] [G]] [F [H] [I]]]
+        ]
+      \end{forest}
+    }
+  \end{columns}
+  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{补充}
+  \begin{itemize}
+  \item 由一棵给定的二叉树可以获得三种遍历序列,同样,也可以由这些遍历序列来重新构
+    造二叉树。
+  \item 举例
+    
+    先序:ABCDEFGHIJ
+    
+    中序:CBDEAFHIGJ
+  \item 由于不能从遍历序列中区分二叉树的左、右子树,因此单用一个遍历序列是无法构造
+    二叉树的。利用中序遍历序列,并结合先序遍历序列或后序遍历序列就能重新构造二叉
+    树。
   \end{itemize}
 \end{frame}

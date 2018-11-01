@@ -505,11 +505,15 @@
 
     \vspace{2cm}
     \scalebox{0.6}{
-      \begin{tikzpicture}[b/.style={draw, fill=black, white, minimum size=0.8cm}, n/.style={draw, minimum size=0.8cm}]
-        \draw node[b] (n1) {1} node[n, right=0 of n1](n2) {2}  node[b, right=0 of n2](n3) {3}
-        node[n, right=0 of n3] (n4) {4} node[n, right=0 of n4](n5) {5}  node[b, right=0 of n5](n6) {6}
-        node[b, right=0 of n6] (n7) {7} node[n, right=0 of n7](n8) {8}  node[n, right=0 of n8](n9) {9}
-        node[n, right=0 of n9] (n10) {10} node[n, right=0 of n10](n11) {11}  node[b, right=0 of n11](n12) {12} ;
+      \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
+        \draw node[] (n0) {};
+        \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 12}
+        \draw node[n, right=0 of n\xp](n\x) {$\xp$};
+
+        \foreach \x in {2,4,5,8,9, ..., 11}
+        \draw node[n, above=0 of n\x, draw](d\x) {$\^$};
+        \foreach \x/\y in {1/1,3/3,6/6,7/7,12/12}
+        \draw node[n, above=0 of n\x, draw,white, fill=black](d\x) {$\y$};
       \end{tikzpicture}
     }
 
@@ -913,3 +917,74 @@
     树。
   \end{itemize}
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{二叉树的线索化}
+  \begin{itemize}
+  \item 基于二叉链表可以很方便地查找节点的左、右孩子。
+  \item 问题:如何快速查找给定结点在遍历所得线性序列中的前驱和后继。
+  \item 该信息在遍历的动态过程中才能得到。如果经常需要查找前驱和后继,需要在二叉链
+    表的结点上添加指向前驱和后继的指针,叫做{\color{red}线索}。这样得到的二叉树称
+    为{\color{red}线索二叉树}。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{举例:中序线索二叉树}
+  \includegraphics[width=0.6\textwidth]{dot/tree-thread.pdf}
+  \begin{itemize}
+  \item 以右图二叉树为例,中序序列为(~~~~~~~~~~~).
+  \item 线索的表示:若结点有左子树,则指向其左孩子,否则指向其前驱;若节点有右子树,则指向
+    其右孩子,否则指向其后继。
+  \item 请问结点A和F的前驱和后继分别是?
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{举例:中序线索二叉树}
+  \includegraphics[width=0.9\textwidth]{dot/tree-thread2.pdf}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{带头节点的中序线索链表}
+  参照双向链表，在二叉树线索链表上添加头节点，令头节点的左孩子指向二叉树的根节点。
+  优点：既可从第一个结点起顺后继遍历，也可从最后一个结点起顺前驱遍历。
+  
+  \includegraphics[width=0.7\textwidth]{dot/tree-thread3.pdf}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{练习}
+  画出下图的先序、中序和后序线索二叉树。
+
+  \begin{forest}
+    [A
+    [B [D [{}, no edge, draw=none] [G]] [{}, no edge, draw=none]]
+    [C [E] [F]]
+    ]
+  \end{forest}
+\end{frame}
+
+\begin{frame}[fragile, plain]
+  ~  
+\end{frame}
+
+\subsection{树和森林}
+\begin{frame}[fragile]
+  \frametitle{树和森林}
+  \begin{itemize}
+  \item 树的存储结构
+  \item 树和二叉树的转换
+  \item 森林和二叉树的转换
+  \item 树和森林的遍历
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{树的存储结构：双亲表示法}
+
+  \begin{forest}
+    [R, for tree={edge={draw, ->}} [A [C] [D] [E]] [B [F]]]
+  \end{forest}
+\end{frame}
+

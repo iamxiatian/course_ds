@@ -3,6 +3,8 @@
 
 为方便课件编写，本课件采用LaTex Beamer编写，并采用tikz对一些重要图形进行绘制，保证效果。普通读者请直接下载编译后的pdf文件。
 
+欢迎反馈问题和建议。
+
 ## 如何编译
 ```
 xelatex -shell-escape ds.tex
@@ -13,6 +15,7 @@ xelatex -shell-escape ds.tex
 ```
 dot -Tpdf filename.dot -o filename.pdf
 ```
+仓库中已经提交了dot编译后得到的pdf文件。
 
 ## 第三方工具
 

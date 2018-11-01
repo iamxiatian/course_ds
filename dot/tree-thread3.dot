@@ -1,0 +1,58 @@
+digraph g {
+  fontname = "Microsoft Yahei"
+  graph [ordering="out"];
+  
+  margin=0;
+
+  //NULL[ label = "", style = invis ];
+  //2 -> NULL[style=invis];
+  node [shape=circle]
+
+  A -> {B, C};
+  B -> {D, E};
+  E -> {H, I};
+  I -> {J, K};
+  C->{F, G};
+
+  node [shape =record, height=.1];
+  nhead[label="<f0> | <f1> |<f2> ⊙", color=blue]
+  na[label ="<f0> | <f1> A | <f2> "];
+  nb[label ="<f0> |<f1> B |<f2> "];
+  nc[label = "<f0> |<f1> C |<f2> "];
+  nd[label = "<f0> ⊙ |<f1> D |<f2> ⊙ "];
+  ne[label ="<f0> |<f1> E |<f2>  "];
+  nf[label ="<f0> ⊙ |<f1> F |<f2> ⊙"];
+  ng[label ="<f0> ⊙ |<f1> G |<f2> ⊙"];
+  nh[label ="<f0> ⊙ |<f1> H |<f2> ⊙"];
+  ni[label ="<f0>  |<f1> I |<f2> "];
+  nj[label ="<f0> ⊙ |<f1> J|<f2> ⊙"];
+  nk[label ="<f0> ⊙ |<f1> K|<f2> ⊙"];
+
+  "nhead":f0 -> "na":f1;
+ 
+  "na":f0 ->"nb":f1;
+  "na":f2 ->"nc":f1;
+  "nb":f0 ->"nd":f1;
+  "nb":f2 ->"ne":f1;
+  "nc":f0 ->"nf":f1;
+  "nc":f2 ->"ng":f1;
+  "ne":f0 ->"nh":f1;
+  "ne":f2 ->"ni":f1;
+  "ni":f0 ->"nj":f1;
+  "ni":f2 ->"nk":f1;
+
+  edge[color=red, style=dashed];
+  "nd":f0 -> "nhead":f1;
+  "nd":f2 -> "nb":f1;
+  "nh":f0 -> "nb":f1;
+  "nh":f2 -> "ne":f1;
+  "nj":f0 -> "ne":f1;
+  "nj":f2 -> "ni":f1;
+  "nk":f0 -> "ni":f1;
+  "nk":f2 -> "na":f1;
+  "nf":f0 -> "na":f1;
+  "nf":f2 -> "nc":f1;
+  "ng":f0 -> "nc":f1;
+  "ng":f2 -> "nhead":f1;
+  "nhead":f2 -> "ng":f1;
+}

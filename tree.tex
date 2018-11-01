@@ -1037,21 +1037,329 @@
 
 \begin{frame}[fragile]
   \frametitle{树的存储结构：双亲表示法}
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \begin{forest}
+      [R, for tree={edge={draw, <-}} [A [C] [D] [E]] [B [F]]]
+    \end{forest}
 
-  \begin{forest}
-    [R, for tree={edge={draw, <-}} [A [C] [D] [E]] [B [F]]]
-  \end{forest}
+    \vspace{1cm}
+    \scalebox{0.6}{
+      \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
+        \draw node[n] (n0) {结点索引} node[n,above=0 of n0](label) {标记} node[n,above=0 of label,xshift=-0.5cm] {父结点索引};
+        \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 7}
+        \draw node[n, right=0 of n\xp](n\x) {$\xp$};
 
-  \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
-    \draw node[] (n0) {结点索引};
-    \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 7}
-    \draw node[n, right=0 of n\xp](n\x) {$\xp$};
+        \foreach \x/\y in {1/R,2/A,3/B,4/C, 5/D, 6/E, 7/F}
+        \draw node[n, above=0 of n\x, draw](n\x) {$\y$};
 
-    \foreach \x/\y in {1/R,2/A,3/B,4/C, 5/D, 6/E, 7/F}
-    \draw node[n, above=0 of n\x, draw](n\x) {$\y$};
+        \foreach \x/\y in {1/{-},2/0,3/0,4/1, 5/1, 6/1, 7/2}
+        \draw node[n, above=0 of n\x, draw](n\x) {$\y$};
+      \end{tikzpicture}
+    }
 
-    \foreach \x/\y in {1/{-},2/0,3/0,4/1, 5/1, 6/1, 7/2}
-    \draw node[n, above=0 of n\x, draw](n\x) {$\y$};
-  \end{tikzpicture}
+    \column{0.5\textwidth}
+
+    \begin{minted}[bgcolor=red!5, fontsize=\scriptsize]{java}
+      class PtNode<T> {
+        T data;
+        int parent;
+      }
+    \end{minted}
+
+    \begin{minted}[bgcolor=yellow!10, fontsize=\scriptsize]{c}
+      typedef struct{
+        telemtype data;
+        int parent;
+      } PtNode;
+    \end{minted}
+    
+    因节点的度各异,从父亲指向孩子极不方便!若经常需要查找孩子结点,双亲表示法就不方
+    便了。
+  \end{columns}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{树的存储结构：孩子表示法}
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \scalebox{0.7}{
+      \begin{forest}
+        [R, for tree={edge={draw, <-}} [A [C] [D] [E]] [B [F]]]
+      \end{forest}
+    }
+
+    \small 把每个结点的孩子结点排列成一个线性表,以单链表做存储结构.
+
+    \scalebox{0.6}{
+      \begin{tikzpicture}[ n/.style={minimum height=0.8cm, minimum width=1cm},
+        n2/.style={minimum height=0.6cm, minimum width=1cm, fill=red!5},
+        e/.style={->, very thick}]
+        \draw node[n] (n0) {索引} node[n,right=0 of n0](label) {标记/父结点};
+        \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 7}
+        \draw node[n, below=0 of n\xp](n\x) {$\xp$};
+
+        \foreach \x/\y/\z in {1/R/,2/A/,3/B/,4/C/$\wedge$, 5/D/$\wedge$, 6/E/$\wedge$, 7/F/$\wedge$}
+        \draw node[n, right=0 of n\x, draw, fill=yellow!10](\y) {$\y$} node[n, right=0 of \y, draw] (P\y) {\z};
+
+        \draw node[n2, draw, right=of PR] (c11) {1} node[n2, draw, right=0 of c11] (c12) {};
+        \draw node[n2, draw, right=of c12] (c21) {2} node[n2, draw, right=0 of c21] (c22) {$\wedge$};
+        \draw[e] (PR.center) -- (c11) (c12.center)--(c21);				
+
+        \draw node[n2, draw, right=of PA] (c11) {3} node[n2, draw, right=0 of c11] (c12) {};
+        \draw node[n2, draw, right=of c12] (c21) {4} node[n2, draw, right=0 of c21] (c22) {};
+        \draw node[n2, draw, right=of c22] (c31) {5} node[n2, draw, right=0 of c31] (c32) {$\wedge$};
+
+        \draw[e] (PA.center) -- (c11) (c12.center)--(c21) (c22.center)--(c31);				
+
+        \draw node[n2, draw, right=of PB] (c11) {6} node[n2, draw, right=0 of c11] (c12) {$\wedge$};
+        \draw[e] (PB.center) -- (c11);
+      \end{tikzpicture}
+    }
+
+    \column{0.5\textwidth}
+
+    试写出ChildNode, CTree \pause
+    
+    \begin{minted}[bgcolor=red!5, fontsize=\scriptsize]{java}
+      class TNode<T> {
+        T data;
+        ChildNode firstChild;
+      }
+      
+      class ChildNode<T> {
+        int index;
+        ChildNode nextSibling;
+      }
+
+      class Tree {
+        TNode<String>[] nodes = new TNode<String>[]{new TNode("R"), new TNode("A")};
+        TNode root = nodes[0];
+      }
+    \end{minted}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{树的存储结构：双亲＋孩子表示法}
+
+  \scalebox{0.7}{
+    \begin{forest}
+      [R, for tree={edge={draw, <-}} [A [C] [D] [E]] [B [F]]]
+    \end{forest}
+  }
+
+  \scalebox{0.6}{
+    \begin{tikzpicture}[ n/.style={minimum height=0.8cm, minimum width=1cm},
+      n2/.style={minimum height=0.6cm, minimum width=1cm, fill=red!5},
+      e/.style={->, very thick}]
+      \draw node[n] (n0) {索引} node[n,right=0 of n0](label) {标记/父结点};
+      \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 7}
+      \draw node[n, below=0 of n\xp](n\x) {$\xp$};
+
+      \foreach \x/\y/\t/\z in {1/R/-1/,2/A/0/,3/B/0/,4/C/1/$\wedge$, 5/D/1/$\wedge$, 6/E/1/$\wedge$, 7/F/2/$\wedge$}
+      \draw node[n, right=0 of n\x, draw, fill=yellow!10](\y) {$\y$} 
+      node[n, right=0 of \y, draw, fill=red!20] (T\y) {\t}
+      node[n, right=0 of T\y, draw] (P\y) {\z};
+
+      \draw node[n2, draw, right=of PR] (c11) {1} node[n2, draw, right=0 of c11] (c12) {};
+      \draw node[n2, draw, right=of c12] (c21) {2} node[n2, draw, right=0 of c21] (c22) {$\wedge$};
+      \draw[e] (PR.center) -- (c11) (c12.center)--(c21);				
+
+      \draw node[n2, draw, right=of PA] (c11) {3} node[n2, draw, right=0 of c11] (c12) {};
+      \draw node[n2, draw, right=of c12] (c21) {4} node[n2, draw, right=0 of c21] (c22) {};
+      \draw node[n2, draw, right=of c22] (c31) {5} node[n2, draw, right=0 of c31] (c32) {$\wedge$};
+
+      \draw[e] (PA.center) -- (c11) (c12.center)--(c21) (c22.center)--(c31);				
+
+      \draw node[n2, draw, right=of PB] (c11) {6} node[n2, draw, right=0 of c11] (c12) {$\wedge$};
+      \draw[e] (PB.center) -- (c11);
+    \end{tikzpicture}
+  }
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{树的存储结构：孩子兄弟表示法}
+
+  试想如何借鉴二叉树的存储方法?
+
+  树和森林的存储结构与算法都很复杂,如果能够将它们转换为二叉树,不但可以采用二叉树
+  的存储结构,而且可以利用二叉树的有关算法来实现有关操作。幸运的是,树或森林与二叉
+  树之间存在一一对应关系。
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{树的存储结构：孩子兄弟表示法}
+  使用二叉链表, 两个指针分别指向第一个孩子和下一个兄弟.
+  
+  \begin{minted}[bgcolor=red!5, fontsize=\scriptsize]{java}
+    class CSNode<T> {
+      T data;
+      CSNode<T> firstChild, nextSibling;
+    }  
+  \end{minted}
+
+  \begin{columns}[T]
+    \column{0.2\textwidth}
+    ~
+    
+    \column{0.3\textwidth}
+    \scalebox{0.7}{
+      \begin{forest}
+        [R [A [C] [D] [E]] [B [F]]]
+      \end{forest}
+    }
+
+    \column{0.2\textwidth}
+    \vspace{1cm} {\Huge{$\Rightarrow$}}
+
+    \column{0.3\textwidth}
+    \scalebox{0.7}{
+      \begin{forest}
+        [R
+        [A
+        [C [{}, no edge, draw=none] [D [{},no edge, draw=none] [E]]]
+        [B [F] [{}, no edge, draw=none]]]
+        [{}, no edge, draw=none]]
+      \end{forest}
+    }
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{树与二叉树的转换}
+  \begin{itemize}
+  \item 孩子作左子树的根,兄弟作右子树的根
+  \item 任何一棵树对应的二叉树,其右子树必空,也就是说,所有的树都可以转化为二叉
+    树,但不是所有的二叉树都可以转化为树。
+  \end{itemize}
+
+  \begin{columns}[T]
+    \column{0.2\textwidth}
+    ~
+    \column{0.3\textwidth}
+    \scalebox{0.7}{
+      \begin{forest}
+        [A [B] [C] [D]]
+      \end{forest}
+    }
+
+    \column{0.2\textwidth}
+    \vspace{1cm} {\Huge{$\Leftrightarrow$}}
+
+    \column{0.3\textwidth}
+    \scalebox{0.7}{
+      \begin{forest}
+        [A
+        [B [{}, no edge, draw=none] [C [{},no edge, draw=none] [D]]]
+        [{}, no edge, draw=none]]
+      \end{forest}
+    }
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{森林与二叉树的转换}
+  \begin{itemize}
+  \item 零棵或有限棵不相交的树的集合称为森林。自然界中树和森林是不同的概念,但在数
+    据结构中,树和森林只有很小的差别——任何一棵树,删去根结点就变成了森林。
+  \item 根据树的二叉链表表示,任何一棵和树对应的二叉树的右子树必空。若将森林中第二
+    棵树的根结点看成第一棵树的根结点的兄弟,则可以导出森林和二叉树的对应关系。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{森林与二叉树的转换示例}
+  \begin{columns}[T]
+    \column{0.6\textwidth}
+  \scalebox{0.8}{
+  \begin{tabular}{c c c}
+    \begin{forest}
+      [A [C] [D] [E]]
+    \end{forest} &
+    \begin{forest}
+      [B [F]]
+    \end{forest} &
+    \begin{forest}
+      [G [H] [I [J]]]
+    \end{forest} \\
+    \huge{$\downarrow$} & \huge{$\downarrow$} & \huge{$\downarrow$}  \\
+    \begin{forest} 
+      [A [C [{}, no edge, draw=none] [D [{}, no edge, draw=none] [E]]] [{}, no edge, draw=none]]
+    \end{forest} &
+    \begin{forest}
+      [B [F] [{}, no edge, draw=none]]
+    \end{forest} &
+    \begin{forest}
+      [G [H [{}, no edge, draw=none] [I [J] [{}, no edge, draw=none]]] [{}, no edge, draw=none]]
+    \end{forest}
+  \end{tabular}
+  }
+
+  \column{0.4\textwidth}
+  \pause
+  \scalebox{0.7}{
+    \begin{forest}
+      [A
+      [C [{}, no edge, draw=none] [D [{}, no edge, draw=none] [E]]]
+      [B [F]  [G [H [{}, no edge, draw=none] [I [J] [{}, no edge, draw=none]]] [{}, no edge, draw=none]]]]
+    \end{forest}
+  }
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{树和森林的遍历}
+  请按下述原则写出该树的遍历序列
+  \begin{itemize}
+  \item 先根遍历: =相应二叉树的先序遍历
+    
+    首先访问根结点;再从左到右遍历根结点的每一棵子树。
+
+  \item 后根遍历: =相应二叉树的中序遍历
+
+    首先 按照从左到右的顺序后根遍历根结点的每一棵子树,再访问根结点。
+    
+  \end{itemize}
+
+  请画出该树对应的二叉树,并写出该二叉树的先、中、后序遍历
+
+  \begin{columns}[T]
+    \column{0.4\textwidth}
+    \begin{forest}
+      [A [B [E] [F]] [C] [D [G]]]
+    \end{forest}
+    \column{0.6\textwidth}
+    上图的先根遍历序列为:A B E F C D G \\
+    上图的后根遍历序列为:E F B C G D A
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{森林的遍历}
+  \begin{easylist}
+    & 前序遍历(相应二叉树的先序遍历)
+    && 访问森林中第一棵树的根结点;
+    && 先根遍历第一棵树的根结点的子树;
+    && 先根遍历去掉第一棵树后的子森林。
+    & 中序遍历(相应二叉树的中序遍历)
+    && 后根遍历第一棵树的根结点的子树;
+    && 访问森林中第一棵树的根结点;
+    && 后根遍历去掉第一棵树后的子森林。
+  \end{easylist}
+
+  \begin{tabular}{c c c}
+    \begin{forest}
+      [A [B]]
+    \end{forest} &
+    \begin{forest}
+      [C [D] [E] [F]]
+    \end{forest} &
+    \begin{forest}
+      [G [H [J]] [I [K]]]
+    \end{forest}
+  \end{tabular}
+  上图的前序遍历序列为: A B C D E F G H J I K \\
+  上图的中序遍历序列为:B A D E F C J H K I G
+\end{frame}

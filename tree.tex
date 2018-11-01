@@ -817,6 +817,61 @@
   \end{columns}
 \end{frame}
 
+\begin{frame}[fragile, allowframebreaks]
+  \frametitle{中序遍历的Java实现}
+  \begin{minted}[fontsize=\scriptsize]{java}
+    public class Tree {
+      Node root;
+
+      public Tree(Node root) {
+        this.root = root;
+      }
+
+      void inOrderTraverse() {
+        inOrderTraverse(root);
+      }
+
+      void inOrderTraverse(Node node) {
+        if(node != null) {
+          inOrderTraverse(node.lc);
+          //visit(node);
+          System.out.println(node);
+          inOrderTraverse(node.rc);
+        }
+      }
+
+      public static void main(String[] args) {
+        Node a  =new Node("A",
+        new Node("B", new Node("D"), null),
+        new Node("C", new Node("E"), new Node("F"))
+        );
+        Tree tree = new Tree(a);
+        tree.inOrderTraverse();
+      }
+
+      static class Node {
+        String data;
+        Node lc, rc;
+
+        public Node(String data, Node lc, Node rc) {
+          this.data = data;
+          this.lc = lc;
+          this.rc = rc;
+        }
+
+        public Node(String data) {
+          this.data = data;
+          this.lc = null;
+          this.rc = null;
+        }
+
+        public String toString(){
+          return data;
+        }
+      }
+    }
+  \end{minted}
+\end{frame}
 \begin{frame}[fragile]
   \frametitle{如下将得到树的什么序列?}
   \begin{columns}[T]
@@ -984,7 +1039,19 @@
   \frametitle{树的存储结构：双亲表示法}
 
   \begin{forest}
-    [R, for tree={edge={draw, ->}} [A [C] [D] [E]] [B [F]]]
+    [R, for tree={edge={draw, <-}} [A [C] [D] [E]] [B [F]]]
   \end{forest}
+
+  \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
+    \draw node[] (n0) {结点索引};
+    \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 7}
+    \draw node[n, right=0 of n\xp](n\x) {$\xp$};
+
+    \foreach \x/\y in {1/R,2/A,3/B,4/C, 5/D, 6/E, 7/F}
+    \draw node[n, above=0 of n\x, draw](n\x) {$\y$};
+
+    \foreach \x/\y in {1/{-},2/0,3/0,4/1, 5/1, 6/1, 7/2}
+    \draw node[n, above=0 of n\x, draw](n\x) {$\y$};
+  \end{tikzpicture}
 \end{frame}
 

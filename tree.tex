@@ -1328,12 +1328,14 @@
 
   \begin{columns}[T]
     \column{0.4\textwidth}
-    \scalebox{0.6} {
+    \hspace{1cm}
+    \scalebox{0.8} {
       \begin{forest}
         [A [B [E] [F]] [C] [D [G]]]
       \end{forest}
     }
     \column{0.6\textwidth}
+    \pause
     上图的先根遍历序列为:A B E F C D G \\
     上图的后根遍历序列为:E F B C G D A
   \end{columns}
@@ -1353,20 +1355,90 @@
     && 后根遍历去掉第一棵树后的子森林。
   \end{easylist}
 
-  \scalebox{0.6}{
-  \begin{tabular}{c c c}
-    \begin{forest}
-      [A [B]]
-    \end{forest} &
-    \begin{forest}
-      [C [D] [E] [F]]
-    \end{forest} &
-    \begin{forest}
-      [G [H [J]] [I [K]]]
-    \end{forest}
-  \end{tabular}
-  }
+  \begin{columns}
+    \column{0.5\textwidth}
+    \scalebox{0.6}{
+      \begin{tabular}{c c c}
+        \begin{forest}
+          [A [B]]
+        \end{forest} &
+                       \begin{forest}
+                         [C [D] [E] [F]]
+                       \end{forest} &
+                                      \begin{forest}
+                                        [G [H [J]] [I [K]]]
+                                      \end{forest}
+      \end{tabular}
+    }
 
-  上图的前序遍历序列为: A B C D E F G H J I K \\
-  上图的中序遍历序列为:B A D E F C J H K I G
+    \column{0.5\textwidth}
+    前序遍历结果: A B C D E F G H J I K
+    
+    中序遍历结果:B A D E F C J H K I G
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile, plain]
+  ~  
+\end{frame}
+
+\subsection{哈夫曼树}
+\begin{frame}[fragile]
+  \frametitle{哈夫曼树}
+  \small
+  \begin{itemize}
+  \item Huffman coding (哈夫曼编码) 是David A. Huffman于1952年在麻省理工攻读博士
+    时发明的一种编码方法,可用于无损数据压缩的熵编码。 Huffman编码广泛应用在涉及数
+    字压缩和传输的领域,如fax、modem、计算机网络和HDTV。
+  \item 原理：使用一张特殊的编码表将源字符进行编码,它的特殊之处在于它是根据每一个
+    源字符出现的估算概率建立起来的——出现概率高的字符使用较短的编码,反之出现概率低
+    的则使用较长的编码,使编码后的字符串的平均期望长度降低,从而达到无损压缩数据的
+    目的。若能比较准确的估计英文中各个字母出现概率,就能大幅提高无损压缩的效率。
+  \item 例如,在英文中,用普通的表示方法时,每个英文字母均占用一个字节(byte),即8位。
+    实际上,e的出现概率很高,而z的出现概率则最低。当利用哈夫曼编码进行压缩时,e可能
+    用1位来表示,z可能用25位。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{David Huffman (1925/08/09 -- 1999/10/07)}
+  \begin{itemize}
+  \item 1950年,Huffman在MIT的信息理论与编码研究生班学习。Robert Fano教授让学生们
+    自己决定是参加期未考试还是做一个大作业,因为大作业比期末考试可能更容易通
+    过,Huffman选择了后者。正是一个大作业促使了Huffman算法的诞生!
+  \item 离开MIT后,Huffman来到University of California, Santa Cruz的计算机系任
+    教,并为此系的学术做出了许多杰出的工作。而他的算法也广泛应用于传真机,图象压缩
+    和计算机安全领域。但是Huffman却从未为此算法申请专利或其它能够为他带来经济利益
+    的东西,他将他全部的精力放在教学上,用他自己的话来说,“My products are my
+    students.”
+  \item David Huffman对于有限状态自动机,开关电路,异步过程和信号设计也做出了杰出贡
+    献。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{举例:假设学生成绩分布如下,试构造一棵树}
+  \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    Grade & Bad & Pass & General & Good & Excellent \\ \hline
+    Score & 0 -- 59 & 60 -- 69 & 70 -- 79 & 80 -- 89 & 90 -- 100 \\ \hline
+    Ratio & 0.05 & 0.15 & 0.40 & 0.30 & 0.10 \\ \hline
+  \end{tabular}
+
+  \scalebox{0.6}{
+    \begin{forest}
+      [$s<60$, for tree={draw=none}
+      [Bad,,edge label={node[midway,right,font=\scriptsize]{Y}}]
+      [$s<70$,edge label={node[midway,right,font=\scriptsize]{N}} [Pass] [$s<80$ [General] [$s<90$ [Good] [Excellent]]]]
+      ]
+    \end{forest}
+  }
+  \scalebox{0.7}{
+    \begin{forest}
+      [$s<80$, for tree={draw=none}
+      [$s<70$,edge label={node[midway,right,font=\scriptsize]{Y}} [$s<60$ [Bad]
+      [Pass]] [General]]
+      [$s<90$,edge label={node[midway,right,font=\scriptsize]{N}} [Good] [Excellent] ]]
+    \end{forest}
+  }
 \end{frame}

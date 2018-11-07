@@ -1441,4 +1441,201 @@
       [$s<90$,edge label={node[midway,right,font=\scriptsize]{N}} [Good] [Excellent] ]]
     \end{forest}
   }
+  Which one is better?
+\end{frame}
+
+\begin{frame}[fragile, plain]
+
+  \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    Grade & Bad & Pass & General & Good & Excellent \\ \hline
+    Score & 0 -- 59 & 60 -- 69 & 70 -- 79 & 80 -- 89 & 90 -- 100 \\ \hline
+    Ratio & 0.05 & 0.15 & 0.40 & 0.30 & 0.10 \\ \hline
+  \end{tabular}
+
+  \begin{columns}[T]
+    \column{0.25\textwidth}
+    \scalebox{0.6}{
+      \begin{forest}
+        [$s<60$, for tree={draw=none}
+        [Bad,,edge label={node[midway,right,font=\scriptsize]{Y}}]
+        [$s<70$,edge label={node[midway,right,font=\scriptsize]{N}} [Pass] [$s<80$ [General] [$s<90$ [Good] [Excellent]]]]
+        ]
+      \end{forest}
+    }
+
+    \column{0.75\textwidth}
+    \begin{itemize}
+    \item 结点的带权路径程度(Weighted Path Length)：
+
+      \[WPL(good) = 4*0.3=1.2 \]
+      
+    \item 树的带权路径长度:
+      \begin{equation*}
+        \begin{array}{r c l}
+          WPL(TREE) & = & 1 \times 0.05  \\
+          & & + 2 \times 0.15 \\
+          & & + 3 \times 0.40 \\
+          & & + 4 \times \times 0.30 \\
+          & & + 5 \times 0.10 \\
+          & = & 3.15 \\
+        \end{array}
+      \end{equation*}
+    \end{itemize}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{练习：求树的带权路径长度}
+
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|}
+      \hline
+      Grade & Bad & Pass & General & Good & Excellent \\ \hline
+      Score & 0 -- 59 & 60 -- 69 & 70 -- 79 & 80 -- 89 & 90 -- 100 \\ \hline
+      Ratio & 0.05 & 0.15 & 0.40 & 0.30 & 0.10 \\ \hline
+    \end{tabular}
+    
+    \scalebox{0.6}{
+      \begin{forest}
+        [$s<60$, for tree={draw=none}
+        [Bad,,edge label={node[midway,right,font=\scriptsize]{Y}}]
+        [$s<70$,edge label={node[midway,right,font=\scriptsize]{N}} [Pass] [$s<80$ [General] [$s<90$ [Good] [Excellent]]]]
+        ]
+      \end{forest}
+    }
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{哈夫曼树}具有最小带权路径长度的二叉树称为哈夫曼树(最优二叉树)。
+
+  \begin{columns}[T]
+    \column{0.55\textwidth}
+    \scalebox{0.6}{
+      \begin{forest}        
+        [{} [{} [2] [3]] [{} [4] [7]]]       
+      \end{forest}
+    }
+
+    $WPL=2\times 2 + 2\times 3 + 2 \times 4 + 2 \times 7 = 32$
+
+    \scalebox{0.6}{
+      \begin{forest}
+        [{} [2] [{} [3] [{} [4] [7]]]]       
+      \end{forest}
+    }
+
+    $WPL=1 \times 2 + 2\times 3 + 3 \times 4 + 3 \times 7 = 41$
+    
+    \column{0.55\textwidth}
+    \pause
+    \scalebox{0.8}{
+      \begin{forest}
+        [{} [7] [{} [4] [{} [3] [2]]]]
+      \end{forest}
+    }
+    
+    $WPL=1\times 7 + 2 \times 4 + 3 \times 3 + 3 \times 2 = 30$
+  \end{columns}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{哈夫曼树的构造}
+
+  由给定的$n$个权值$\{w_1, w_2, \cdots, w_n\}$,构造$n$棵只有一个叶子结点的二叉
+  树 , 从而得到一个二叉树的集合$F=\{T_1, T_2, \cdots, T_n\}$.
+
+  \begin{enumerate}
+  \item 在$F$中选取根结点的权值最小和次小的两棵二叉树作为左、右子树构造一棵新的二叉
+    树,这棵新的二叉树根结点的权值为其左、右子树根结点权值之和;
+  \item 在集合$F$中删除作为左、右子树的两棵二叉树,并将新建立的二叉树加入到集合
+    $F$中;
+  \item 重复(2)、(3)两步,当$F$中只剩下一棵二叉树时,这棵二叉树便是所要建立的哈夫曼
+    树。
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{例子}
+  1, 3, 5, 7
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{课堂作业}
+  \begin{columns}
+    \column{0.3\textwidth}
+    \scalebox{0.6}{
+      \begin{forest}
+        [A
+        [B [D] [{}, no edge, draw=none]]
+        [C [E [{}, no edge, draw=none] [G]] [F [H] [I]]]
+        ]
+      \end{forest}
+    }
+
+    \begin{minted}{java}
+      class TNode {
+        String data;
+        int lc, rc;
+      }
+    \end{minted}
+
+    \column{0.3\textwidth}
+    \begin{tabular}{c | c | c | c|}
+      \hline
+      0 & A & 1 & 2 \\ \hline
+      1 & B & 3 & -1 \\ \hline
+      2 & C & 4 & 5 \\ \hline
+      3 & D & -1 & -1 \\ \hline
+      4 & E & -1 & 6 \\ \hline
+      5 & F & 7 & 8 \\ \hline
+      6 & G & -1 & -1 \\ \hline
+      7 & H & -1 & -1 \\ \hline
+      8 & I & -1 & -1 \\ \hline
+    \end{tabular}
+
+    \column{0.4\textwidth}
+    \begin{itemize}
+    \item 给定树$T$如图所示, 请写递归程序实现如下功能：
+    \item (1)遍历树T,显示其先序/中序/后序 序列;
+    \item (2)求结点数、叶子数;
+    \item (3)求树T的深度.
+    \end{itemize}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{本章作业}
+  哈夫曼编码
+
+  \begin{easylist}
+    &   根据26个英文字母的频度,为每一个字母赋予一个唯一的最优编码
+
+    & 输出要求, 每行一个字母,及其对应编码,如:
+
+    && A: 00100
+    && B: 0001
+    && ...
+  \end{easylist}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{英文字母的频率表}
+
+  \begin{tabular}{|c | c || c | c || c | c| }
+    \hline
+    字母	& 出现频率 &	字母	& 出现频率	& 字母	& 出现频率 \\ \hline
+    a	& 8.167\% &	j	& 0.153\% &	s	& 6.327\% \\ \hline
+    b	& 1.492\% &	k	& 0.772\% &	t	& 9.056\% \\ \hline
+    c	& 2.782\% &	l	& 4.025\% &	u	& 2.758\% \\ \hline
+    d	& 4.253\% &	m	& 2.406\% &	v	& 0.978\% \\ \hline
+    e	& 12.702\% &	n	& 6.749\% &	w	& 2.360\% \\ \hline
+    f	& 2.228\% &	o	& 7.507\% &	x	& 0.150\% \\ \hline
+    g	& 2.015\% &	p	& 1.929\% &	y	& 1.974\% \\ \hline
+    h	& 6.094\% &	q	& 0.095\% &	z	& 0.074\% \\ \hline
+    i	& 6.966\% &	r	& 5.987\% &    ~ & 		\\ \hline
+  \end{tabular}
 \end{frame}

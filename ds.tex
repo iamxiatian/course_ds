@@ -1,12 +1,14 @@
 \documentclass[table, 13pt, slidestop,compress,mathserif]{beamer} 
 % \documentclass[table, t, 13pt]{beamer}
 
+% if use xelatex, use the following lines before lualatex
 \usepackage{xeCJK,fontspec,xunicode,xltxtra, fancybox}
 \setCJKmainfont{FZLanTingHei-L-GBK} %方正字体，也可以改成：微软雅黑
 \setCJKfamilyfont{FZHeiR}{FZLanTingHeiS-R-GB}  
 \setCJKsansfont{FZLanTingHeiS-EL-GB} 
 \setCJKmonofont{Consolas}
 
+% if use lualatex, use the following two lines.
 %\usepackage{luatexja-fontspec}
 %\setmainjfont{FZLanTingHei-L-GBK}
 
@@ -21,6 +23,7 @@
 \usepackage{soul} %for strikeout
 
 \usepackage{amsmath, amsfonts, amssymb} %amssymb for varnothing symbol
+\usepackage{blkarray} % support complicated matrix
 %\usepackage[thicklines]{cancel} %公式中通过斜线删除部分内容
 \usepackage[b]{esvect} %vector
 
@@ -47,6 +50,7 @@ coltitle=black}
 \usetikzlibrary{graphs}
 \usetikzlibrary{matrix}
 
+\usepackage{tkz-graph}
 \usepackage{forest}
 \forestset{
   default preamble={
@@ -126,11 +130,12 @@ coltitle=black}
   \end{center}
 }
 
-%\usepackage[outputdir={tempdot/}]{dot2texi}
 
 \usepackage{minted} %compile： lualatex/xelatex -shell-escape spark.tex
 \setminted{encoding=utf-8} %注意字体，如果设置了CJKmonofont，会出现乱码
 \usemintedstyle{tango}
+
+%\usepackage[outputdir={tempdot/}]{dot2texi}
 
 \usetheme{Madrid} 
 \usecolortheme{crane} 
@@ -140,8 +145,8 @@ coltitle=black}
 
 \usefonttheme[onlymath]{serif}
 
-\definecolor{red(ncs)}{rgb}{0.77, 0.01, 0.2}
-\definecolor{champagne}{rgb}{0.97, 0.91, 0.81}
+%\definecolor{red(ncs)}{rgb}{0.77, 0.01, 0.2}
+%\definecolor{champagne}{rgb}{0.97, 0.91, 0.81}
 \definecolor{coolblack}{rgb}{0.0, 0.18, 0.39}
 \definecolor{vanilla}{rgb}{0.95, 0.9, 0.67}
 
@@ -173,8 +178,8 @@ coltitle=black}
 \newcommand{\cjkem}{\CJKfamily{FZHeiR}} 
 \renewcommand{\em}[1]{\color{red} #1}
 
-\XeTeXlinebreaklocale "zh"  
-\XeTeXlinebreakskip = 0pt plus 1pt 
+%\XeTeXlinebreaklocale "zh"  
+%\XeTeXlinebreakskip = 0pt plus 1pt 
 
 \hypersetup{
   pdftitle={Data Structure},
@@ -218,8 +223,8 @@ coltitle=black}
 % \date[\initclock\tdtime]{\today}  
 \frame{\titlepage}
 
-\input{tree}
-%\input{graph}
+%\input{tree}
+\input{graph}
 % \include{search}
 % \input{sorting}
 

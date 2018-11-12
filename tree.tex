@@ -872,11 +872,12 @@
     }
   \end{minted}
 \end{frame}
+
 \begin{frame}[fragile]
   \frametitle{如下将得到树的什么序列?}
   \begin{columns}[T]
     \column{0.6\textwidth}
-    \begin{minted}[bgcolor=yellow!10,fontsize=\small]{c}
+    \begin{minted}[bgcolor=yellow,fontsize=\small]{c}
       status traverse(BiTree T) {
         InitStack(S);
         p = T;
@@ -890,6 +891,40 @@
           }
         }
         return OK;
+      }
+    \end{minted}
+
+    \column{0.4\textwidth}
+    \scalebox{0.8}{
+      \begin{forest}
+        [A
+        [B [D] [{}, no edge, draw=none]]
+        [C [E [{}, no edge, draw=none] [G]] [F [H] [I]]]
+        ]
+      \end{forest}
+    }
+  \end{columns}  
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{如下将得到树的什么序列?}
+  \begin{columns}[T]
+    \column{0.6\textwidth}
+    \begin{minted}[bgcolor=yellow!10,fontsize=\small]{c}
+      void traverse(TreeNode root) {
+        Stack stack = new Stack();
+        TreeNode p = root;
+        while(p!=null || stack.notEmpty()) {
+          if(p!=null) {
+            stack.push(p);
+            p = p.lchild;
+          } else {
+            p = stack.pop();
+            printf(p.data);
+            p = p.rchild;
+          }
+        }
       }
     \end{minted}
 
@@ -956,6 +991,23 @@
   \end{columns}
   
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{广度优先遍历}
+  \begin{minted}{java}
+    void bfs(TreeNode root) {
+      Queue Q = new Queue();
+      Q.enqueue(root);
+      while(Q.notEmpty()) {
+        TreeNode node = Q.dequeue();
+        printf(node);
+        if(node.left!=null) Q.enqueue(node.left);
+        if(node.right !=null) Q.enqueue(node.right);
+      }
+    }
+  \end{minted}
+\end{frame}
+
 
 \begin{frame}[fragile]
   \frametitle{补充}

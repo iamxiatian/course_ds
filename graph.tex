@@ -80,21 +80,6 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{OK}
-  \color{red}
-  \begin{minted}[mathescape,
-    linenos,
-    numbersep=5pt,
-    gobble=2,
-    frame=lines,
-    framesep=2mm]{java}
-    class Test {
-      
-    }
-  \end{minted}
-\end{frame}
-
-\begin{frame}[fragile]
   \frametitle{图的相关概念}
   \includegraphics[width=0.9\textwidth]{figs/graph_concept.png}
 \end{frame}
@@ -484,6 +469,110 @@
     有向图求顶点$v_i$的度  & 第$i$行上非零元素的个数是$v_i$出度,第$i$列上非零元素的个数是$v_i$的入度 & 第$i$个边表上的结点个数,求入度还需遍历各顶点的边表。逆邻接表则相反\\ \hline
     判定$(v_i, v_j)$是否是图的一条边 &  看矩阵中的$i$行$j$列是否为0 & 扫描第i个边表 \\ \hline
     求边的数目 & 检测整个矩阵中的非零元所耗费的时间是$O(N^2)$ & 对每个边表的结点个数计数所耗费的时间是$O(e+n)$ \\ \hline
-  \end{tabular}
+  \end{tabular}  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{思考}
+
+  怎么把邻接表和逆邻接表相结合,同时表示出来?
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{有向图的十字链表}
+  \begin{columns}[T]
+    \column{0.4\textwidth}
+    \begin{tikzpicture}[scale=1.2]
+      \GraphInit[vstyle=Normal]
+      \SetVertexMath
+      \begin{scope}[rotate=135]
+        \Vertices{circle}{A, C, D, B}
+      \end{scope}
+      \Edges[style={-Latex}](C,D,A,B)
+      \Edges[style={-Latex}](D,B)
+      \Edges[style={-Latex, bend left}](C,A,C)
+    \end{tikzpicture}
+
+    \column{0.6\textwidth}
+    将邻接表、逆邻接表结合起来.
+  \end{columns}
+  \scalebox{0.7}{
+    \begin{tikzpicture}[ n/.style={minimum height=0.8cm, minimum width=1cm},
+      n2/.style={minimum height=0.6cm, minimum width=1cm, fill=red!5},
+      n3/.style={minimum height=0.6cm, minimum width=1cm},
+      e/.style={->, thick, red},
+      e2/.style={->, thick, blue}]
+      \draw node[n] (n0) {索引} node[n,right=0 of n0](label) {头节点};
+
+      \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 4}
+      \draw node[n, below=0 of n\xp](n\x) {$\xp$};
+
+      \foreach \x/\y/\z/\v in {1/A//,2/B//,3/C//,4/D//}
+      \draw node[n, right=0 of n\x, draw, fill=yellow!10](\y) {$\y$} node[n, right=0 of \y, draw] (firstIn\y) {\z} node[n, right=0 of firstIn\y, draw] (firstOut\y) {\v};
+
+      \draw node[n2, draw, right=of firstOutA] (headAB) {0} node[n2, draw, right=0 of headAB] (tailAB) {1} node[n3, draw, right=0 of tailAB] (headLinkAB) {} node[n3, draw, right=0 of headLinkAB] (tailLinkAB) {};
+
+      \draw node[n2, draw, right=of tailLinkAB] (headAC) {0} node[n2, draw, right=0 of headAC] (tailAC) {2} node[n3, draw, right=0 of tailAC] (headLinkAC) {} node[n3, draw, right=0 of headLinkAC] (tailLinkAC) {$\wedge$};
+
+      \draw node[n2, draw, right=of firstOutC] (headCA) {2} node[n2, draw, right=0 of headCA] (tailCA) {0} node[n3, draw, right=0 of tailCA] (headLinkCA) {} node[n3, draw, right=0 of headLinkCA] (tailLinkCA) {};
+
+      \draw node[n2, draw, right=of tailLinkCA] (headCD) {2} node[n2, draw, right=0 of headCD] (tailCD) {3} node[n3, draw, right=0 of tailCD] (headLinkCD) {} node[n3, draw, right=0 of headLinkCD] (tailLinkCD) {};
+
+      \draw node[n2, draw, right=of firstOutD] (headDA) {3} node[n2, draw, right=0 of headDA] (tailDA) {0} node[n3, draw, right=0 of tailDA] (headLinkDA) {$\wedge$} node[n3, draw, right=0 of headLinkDA] (tailLinkDA) {};
+
+      \draw node[n2, draw, right=of tailLinkDA] (headDB) {3} node[n2, draw, right=0 of headDB] (tailDB) {1} node[n3, draw, right=0 of tailDB] (headLinkDB) {} node[n3, draw, right=0 of headLinkDB] (tailLinkDB) {};
+
+      \draw[] node[above=1.5cm of firstInA](tipFirstIn) {$firstIn$} node[right=0 of tipFirstIn] (tipFirstOut) {$firstOut$} 
+      node[above=1cm of headAB] (tipHeadAB) {$headVertex$} node[above=1.5cm of tailAB] (tipTailAB) {$tailVertex$}
+      node[above=1cm of headLinkAB] (tipHeadLinkAB) {$hlink$} node[right=0 of tipHeadLinkAB] (tipTailLinkAB) {$tlink$};
+
+      % draw tip of node
+      \path[draw, <-, dashed] (tipFirstIn) edge (firstInA) 
+      (tipFirstOut) edge[bend right] (firstOutA)
+      (tipHeadAB) edge[] (headAB)
+      (tipTailAB) edge[bend left] (tailAB)
+      (tipHeadLinkAB) edge[bend left] (headLinkAB)
+      (tipTailLinkAB) edge[bend left] (tailLinkAB); 
+
+      % draw links
+      \path[e] (firstInA.center) edge[bend left=45, out=120] (headLinkCA.north);
+      \draw[e] (headLinkCA.center) -- (headLinkDA.north);
+      \draw[e2] (firstOutA.center) -- (headAB);
+      \draw[e2] (tailLinkAB.center) -- (headAC);
+    \end{tikzpicture}
+  }
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{有向图的十字链表}
+  \begin{minted}{java}
+    class Vertex {
+      String data;
+      ArcBox firstIn;
+      ArcBox firstOut;
+    }
+
+    class ArcBox {
+      int headVertex, tailVertex;
+      ArcBox hlink;
+      ArcBox tlink;
+      String data;
+    }
+  \end{minted}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{无向图的多重邻接表}
+  \begin{tikzpicture}[scale=1.2]
+    \GraphInit[vstyle=Normal]
+    \SetVertexMath
+    \begin{scope}[rotate=135]
+      \Vertices{circle}{A, C, D, B}
+    \end{scope}
+    \Edges[](A, B, D, C,A,D)
+  \end{tikzpicture}
+
+
   
 \end{frame}

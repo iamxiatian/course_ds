@@ -6,6 +6,17 @@
 欢迎反馈问题和建议。
 
 ## 如何编译
+
+首先安装完整的text-live，然后安装dot2tex
+
+dot2tex的安装：
+
+```
+pip install dot2tex
+```
+
+课件编译：
+
 ```
 xelatex -shell-escape ds.tex
 ```
@@ -21,6 +32,14 @@ dot -Tpdf filename.dot -o filename.pdf
 
 1. forest – Drawing (linguistic) trees  https://www.ctan.org/pkg/forest
 
+1. tikz-graph http://mirrors.ctan.org/macros/latex/contrib/tkz/tkz-graph/doc/tkz-graph-screen.pdf
+
 1. graphviz: http://mirrors.huaweicloud.com/repository/toolkit/CTAN/macros/latex/contrib/graphviz/graphviz.pdf
 
 1. dot: https://graphviz.gitlab.io/_pages/pdf/dotguide.pdf
+
+1. dot2texi https://ctan.org/pkg/dot2texi
+
+  dot2texi与xelatex冲突，minted与lualatex冲突，暂时不用dot2texi，改用tkz-graph绘制图。
+
+1. tkz-graph

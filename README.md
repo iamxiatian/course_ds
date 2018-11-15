@@ -28,6 +28,11 @@ dot -Tpdf filename.dot -o filename.pdf
 ```
 仓库中已经提交了dot编译后得到的pdf文件。
 
+## 直接查看编译好的课件
+
+tree: pdf/tree.pdf
+
+
 ## 第三方工具
 
 1. forest – Drawing (linguistic) trees  https://www.ctan.org/pkg/forest

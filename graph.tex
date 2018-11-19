@@ -479,7 +479,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{有向图的十字链表}
+  \frametitle{有向图的十字链表(Orthogonal List)}
   \begin{columns}[T]
     \column{0.4\textwidth}
     \begin{tikzpicture}[scale=1.2]
@@ -545,20 +545,30 @@
 
 \begin{frame}[fragile]
   \frametitle{有向图的十字链表}
-  \begin{minted}{java}
-    class Vertex {
-      String data;
-      ArcBox firstIn;
-      ArcBox firstOut;
-    }
+  \begin{columns}
+    \column{0.5\textwidth}
+    \begin{minted}[fontsize=\small]{java}
+      class VertexNode {
+        String data;
+        ArcBox firstIn;
+        ArcBox firstOut;
+      }
 
-    class ArcBox {
-      int headVertex, tailVertex;
-      ArcBox hlink;
-      ArcBox tlink;
-      String data;
-    }
-  \end{minted}
+      class ArcBox {
+        int headVertex, tailVertex;
+        ArcBox hlink;
+        ArcBox tlink;
+        String data;
+      }
+    \end{minted}
+    \column{0.5\textwidth}
+    \begin{minted}[fontsize=\small]{java}
+      class OLGraph {
+        List<VertexNode> xlist;
+        int vertexNum, arcNum;
+      }
+    \end{minted}
+  \end{columns}
 \end{frame}
 
 
@@ -568,11 +578,51 @@
     \GraphInit[vstyle=Normal]
     \SetVertexMath
     \begin{scope}[rotate=135]
-      \Vertices{circle}{A, C, D, B}
+      \Vertices{circle}{v_0, v_2, v_3, v_1}
     \end{scope}
-    \Edges[](A, B, D, C,A,D)
+    \Edges[](v_0, v_1, v_3, v_2, v_0, v_3)
   \end{tikzpicture}
 
+  \scalebox{0.8}{
+    \begin{tikzpicture}[ n/.style={minimum height=0.8cm, minimum width=1cm},
+      n2/.style={minimum height=0.6cm, minimum width=1cm, fill=red!5},
+      n3/.style={minimum height=0.6cm, minimum width=1cm},
+      e/.style={draw, ->, thick, red},
+      e2/.style={draw, ->, thick, blue}]
+      \draw node[n] (n0) {索引} node[n,right=0 of n0](label) {头节点};
 
-  
+      \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 4}
+      \draw node[n, below=0 of n\xp](n\x) {$\xp$};
+
+      \foreach \x/\y/\z in {1/A/v_0,2/B/v_1,3/C/v_2,4/D/v_3}
+      \draw node[n, right=0 of n\x, draw, fill=yellow!10](\y) {$\z$} node[n, right=0 of \y, draw] (firstEdge\y) {};
+
+      \draw node[n2, draw, right=of firstEdgeA] (ivexAB) {0} node[n3, draw, right=0 of ivexAB] (ilinkAB) {} node[n2, draw, right=0 of ilinkAB] (jvexAB) {1} node[n3, draw, right=0 of jvexAB] (jlinkAB) {};
+      \draw node[n2, draw, right=of jlinkAB] (ivexAC) {0} node[n3, draw, right=0 of ivexAC] (ilinkAC) {} node[n2, draw, right=0 of ilinkAC] (jvexAC) {2} node[n3, draw, right=0 of jvexAC] (jlinkAC) {};
+      \draw node[n2, draw, below=0.5 of jvexAC] (ivexAD) {0} node[n3, draw, right=0 of ivexAD] (ilinkAD) {} node[n2, draw, right=0 of ilinkAD] (jvexAD) {3} node[n3, draw, right=0 of jvexAD] (jlinkAD) {$\wedge$};
+      
+
+      \draw node[n2, draw, right=of firstEdgeD] (ivexDB) {3} node[n3, draw, right=0 of ivexDB] (ilinkDB) {} node[n2, draw, right=0 of ilinkDB] (jvexDB) {1} node[n3, draw, right=0 of jvexDB] (jlinkDB) {};
+
+      \draw node[n2, draw, right=of jlinkDB] (ivexDC) {3} node[n3, draw, right=0 of ivexDC] (ilinkDC) {} node[n2, draw, right=0 of ilinkDC] (jvexDC) {2} node[n3, draw, right=0 of jvexDC] (jlinkDC) {};
+
+
+      \draw[] node[above=1.5cm of firstEdgeA](tipFirstEdge) {$firstEdge$}  
+      node[above=1cm of ivexAB] (tipivex) {$ivex$} node[above=1.5cm of jvexAB] (tipjvex) {$jvex$}
+      node[above=1cm of ilinkAB] (tipilink) {$ilink$} node[right=0 of tipjvex] (tipjlink) {$jlink$};
+
+      \path[draw, ->, dashed] (firstEdgeA) edge (tipFirstEdge)
+      (ivexAB) edge (tipivex)
+      (ilinkAB) edge (tipilink)
+      (jvexAB) edge (tipjvex)
+      (jlinkAB) edge (tipjlink);
+
+      \path[e] (firstEdgeA.center) -- (ivexAB);
+      \path[e] (jlinkAB.center) -- (ivexAC);
+      \draw[e] (jlinkAC.center) to[out=270, in=0, ->] ++(-2, -0.6) to[out=180, in=180, ->] (ivexAD.west);
+
+      \path[e] (firstEdgeD.center) -- (ivexDB);
+    \end{tikzpicture}
+  }
+
 \end{frame}

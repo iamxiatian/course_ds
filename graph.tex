@@ -571,19 +571,61 @@
   \end{columns}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{无向图的多重邻接表}
+  \begin{columns}[T]
+    \column{0.3\textwidth}
+    \begin{tikzpicture}[scale=1.2]
+      \GraphInit[vstyle=Normal]
+      \SetVertexMath
+      \begin{scope}[rotate=135]
+        \Vertices{circle}{v_0, v_2, v_3, v_1}
+      \end{scope}
+      \Edges[](v_0, v_1, v_3, v_2, v_0, v_3)
+    \end{tikzpicture}
+
+    \column{0.7\textwidth}
+    \small
+    \begin{itemize}
+    \item 无向图的应用中，关注的重点是顶点，那么邻接表是不错的选择
+    \item 如更关注边的操作，比如对已访问过的边做标记，删除某一条边等操作，就意味着需要找到这条边的两个边表结点进行操作。
+    \end{itemize}
+  \end{columns}
+
+  \begin{tabular}{|c|c|c|c}
+    \hline
+    $ivex$ & $ilink$ & $jvex$ & $jlink$ \\ \hline
+  \end{tabular}
+  
+  \begin{itemize}
+  \item $ivex$, $jvex$: 某条边依附的两个顶点
+  \item $ilink$: 指向依附顶点$ivex$的下一条边
+  \item $jlink$: 指向依附顶点$jvex$的下一条边
+  \end{itemize}
+\end{frame}
 
 \begin{frame}[fragile]
   \frametitle{无向图的多重邻接表}
-  \begin{tikzpicture}[scale=1.2]
-    \GraphInit[vstyle=Normal]
-    \SetVertexMath
-    \begin{scope}[rotate=135]
-      \Vertices{circle}{v_0, v_2, v_3, v_1}
-    \end{scope}
-    \Edges[](v_0, v_1, v_3, v_2, v_0, v_3)
-  \end{tikzpicture}
+  \begin{columns}[T]
+    \column{0.3\textwidth}
+    \begin{tikzpicture}[scale=1.2]
+      \GraphInit[vstyle=Normal]
+      \SetVertexMath
+      \begin{scope}[rotate=135]
+        \Vertices{circle}{v_0, v_2, v_3, v_1}
+      \end{scope}
+      \Edges[](v_0, v_1, v_3, v_2, v_0, v_3)
+    \end{tikzpicture}
 
-  \scalebox{0.8}{
+    \column{0.7\textwidth}
+    \small
+    \begin{itemize}
+    \item 无向图的应用中，关注的重点是顶点，那么邻接表是不错的选择
+    \item 如更关注边的操作，比如对已访问过的边做标记，删除某一条边等操作，就意味着需要找到这条边的两个边表结点进行操作。
+    \end{itemize}
+  \end{columns}
+
+  \scalebox{0.7}{
     \begin{tikzpicture}[ n/.style={minimum height=0.8cm, minimum width=1cm},
       n2/.style={minimum height=0.6cm, minimum width=1cm, fill=red!5},
       n3/.style={minimum height=0.6cm, minimum width=1cm},
@@ -599,7 +641,7 @@
 
       \draw node[n2, draw, right=of firstEdgeA] (ivexAB) {0} node[n3, draw, right=0 of ivexAB] (ilinkAB) {} node[n2, draw, right=0 of ilinkAB] (jvexAB) {1} node[n3, draw, right=0 of jvexAB] (jlinkAB) {};
       \draw node[n2, draw, right=of jlinkAB] (ivexAC) {0} node[n3, draw, right=0 of ivexAC] (ilinkAC) {} node[n2, draw, right=0 of ilinkAC] (jvexAC) {2} node[n3, draw, right=0 of jvexAC] (jlinkAC) {};
-      \draw node[n2, draw, below=0.5 of jvexAC] (ivexAD) {0} node[n3, draw, right=0 of ivexAD] (ilinkAD) {} node[n2, draw, right=0 of ilinkAD] (jvexAD) {3} node[n3, draw, right=0 of jvexAD] (jlinkAD) {$\wedge$};
+      \draw node[n2, draw, below=0.5 of jvexAC] (ivexAD) {0} node[n3, draw, right=0 of ivexAD] (ilinkAD) {$\wedge$} node[n2, draw, right=0 of ilinkAD] (jvexAD) {3} node[n3, draw, right=0 of jvexAD] (jlinkAD) {$\wedge$};
       
 
       \draw node[n2, draw, right=of firstEdgeD] (ivexDB) {3} node[n3, draw, right=0 of ivexDB] (ilinkDB) {} node[n2, draw, right=0 of ilinkDB] (jvexDB) {1} node[n3, draw, right=0 of jvexDB] (jlinkDB) {};
@@ -618,10 +660,13 @@
       (jlinkAB) edge (tipjlink);
 
       \path[e] (firstEdgeA.center) -- (ivexAB);
-      \path[e] (jlinkAB.center) -- (ivexAC);
-      \draw[e] (jlinkAC.center) to[out=270, in=0, ->] ++(-2, -0.6) to[out=180, in=180, ->] (ivexAD.west);
+      \draw[e] (ilinkAB.center) to[out=90,in=180] (ivexAC);
+      \draw[e] (ilinkAC.center) to[out=270, in=180] (ivexAD.west);
 
       \path[e] (firstEdgeD.center) -- (ivexDB);
+      \draw[e] (ilinkDB.center) to[out=270,in=180] (ivexDC);
+      \draw[e] (ilinkDC.center) to[out=90,in=220] (ivexAD);
+
     \end{tikzpicture}
   }
 

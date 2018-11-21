@@ -457,6 +457,59 @@
 \end{frame}
 % TODO
 
+\begin{frame}[fragile, allowframebreaks]
+  \frametitle{邻接表表示}
+  \begin{minted}{java}
+    class VertexNode {
+      String data;
+      EdgeNode firstAdj = null;
+
+      public VertexNode(String data) {
+        this.data = data;
+      }
+    }
+
+    class EdgeNode {
+      int adjVertexNode;
+      EdgeNode nextAdj = null;
+
+      public EdgeNode(int vertexIdx) {
+        this.adjVertexNode = vertexIdx;
+      }
+
+      public EdgeNode(int vertexIdx, EdgeNode nextAdj) {
+        this.adjVertexNode = vertexIdx;
+        this.nextAdj = nextAdj;
+      }
+    }
+    
+    public class Graph {
+      VertexNode[] vertices;
+
+      public void init() {
+        this.vertices = new VertexNode[]{
+          new VertexNode("v1"),
+          new VertexNode("v2"),
+          new VertexNode("v3"),
+          new VertexNode("v4"),
+          new VertexNode("v5"),
+          new VertexNode("v6"),
+          new VertexNode("v7"),
+          new VertexNode("v8")
+        };
+        vertices[0].firstAdj = new EdgeNode(1, new EdgeNode(2));
+        vertices[1].firstAdj = new EdgeNode(0, new EdgeNode(3, new EdgeNode(4)));
+        vertices[2].firstAdj = new EdgeNode(0, new EdgeNode(5, new EdgeNode(6)));
+        vertices[3].firstAdj = new EdgeNode(1, new EdgeNode(7));
+        vertices[4].firstAdj = new EdgeNode(1, new EdgeNode(7));
+        vertices[5].firstAdj = new EdgeNode(2, new EdgeNode(6));
+        vertices[6].firstAdj = new EdgeNode(2, new EdgeNode(5));
+        vertices[7].firstAdj = new EdgeNode(3, new EdgeNode(4));
+      }
+    }
+  \end{minted}
+\end{frame}
+
 \begin{frame}[fragile]
   \frametitle{比较}
   \small
@@ -669,5 +722,545 @@
 
     \end{tikzpicture}
   }
+\end{frame}
 
+\subsection{图的遍历}
+\begin{frame}[fragile]
+  \frametitle{图的遍历}
+  ~
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{图的遍历}
+
+  图的遍历:从图的某顶点出发,访问所有顶点,且每个顶点仅被访问一次。
+  
+  无论是无向图还是有向图，都有两种遍历方式：
+  \begin{columns}[T]
+    \column{0.6\textwidth}
+    \begin{itemize}
+    \item 深度优先(类似于树的先根遍历)
+    \item 广度优先(类似于树的层次遍历)
+    \end{itemize}
+    
+    \column{0.6\textwidth}
+    \scalebox{0.7}{
+      \begin{tikzpicture}[scale=1]
+        \GraphInit[vstyle=Normal]
+        \SetVertexMath
+        \Vertex{v_1}
+        \Vertex[x=-2, y=-1]{v_2}
+        \Vertex[x=1.5, y=-1]{v_3}
+
+        \SOWE(v_2){v_4}
+        \SOEA(v_2){v_5}
+
+
+        \SOWE(v_3){v_6}
+        \SOEA(v_3){v_7}
+        \SOWE(v_5){v_8}
+
+        \Edges(v_1,v_2,v_4,v_8,v_5,v_2)
+        \Edges(v_1,v_3,v_6,v_7,v_3)
+      \end{tikzpicture}
+    }
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{深度优先搜索 - Depth First Search}
+
+  \begin{columns}[T]
+    \column{0.65\textwidth}
+    \scalebox{0.8}{
+      \begin{tikzpicture}[scale=1]
+        \GraphInit[vstyle=Normal]
+        \SetVertexMath
+        \Vertex{v_1}
+        \Vertex[x=-2, y=-1]{v_2}
+        \Vertex[x=1.5, y=-1]{v_3}
+
+        \SOWE(v_2){v_4}
+        \SOEA(v_2){v_5}
+
+
+        \SOWE(v_3){v_6}
+        \SOEA(v_3){v_7}
+        \SOWE(v_5){v_8}
+
+        \Edges(v_1,v_2,v_4,v_8,v_5,v_2)
+        \Edges(v_1,v_3,v_6,v_7,v_3)
+      \end{tikzpicture}
+    }
+
+    以$v_1$开始为例：$v_1 \rightarrow v_2 \rightarrow v_4 \rightarrow v_8
+    \rightarrow v_5 \rightarrow \cdots$
+    
+    \scalebox{0.8}{
+      \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
+        \draw node[] (n0) {};
+        \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 8}
+        \draw node[n, right=0 of n\xp](n\x) {$v_\x$};
+
+        \foreach \x/\y in {1/1,2/1,3/0,4/1,5/1, 6/0, 7/0, 8/1}
+        \draw node[n, below=0 of n\x, draw, fill=red!5](d\x) {$\y$};
+
+        \draw node[left=0 of d1]{$visited$};
+
+        \foreach \x/\y in {1/v_1,2/v_2,3/v_4,4/v_8,5/v_5, 6/, 7/, 8/}
+        \draw node[n, below=0.3 of d\x, draw, fill=yellow!20](d\x) {$\y$};
+
+        \draw node[left=0 of d1]{$stack$};
+      \end{tikzpicture}
+    }
+    
+    \column{0.35\textwidth}
+    \begin{tabular}{| l | l |}
+      \hline
+      $v_1$ & $\rightarrow v_2 \rightarrow v_3$ \\ \hline
+      $v_2$ & $\rightarrow v_1 \rightarrow v_4 \rightarrow v_5$ \\ \hline
+      $v_3$ & $\rightarrow v_1 \rightarrow v_6 \rightarrow v_7$ \\ \hline
+      $v_4$ & $\rightarrow v_2 \rightarrow v_8$ \\ \hline
+      $v_5$ & $\rightarrow v_2 \rightarrow v_8$ \\ \hline
+      $v_6$ & $\rightarrow v_3 \rightarrow v_7$ \\ \hline
+      $v_7$ & $\rightarrow v_3 \rightarrow v_6$ \\ \hline
+      $v_8$ & $\rightarrow v_4 \rightarrow v_5$ \\ \hline      
+    \end{tabular}
+  \end{columns}
+
+  \pause
+  
+  $v_1 \rightarrow v_2 \rightarrow v_4 \rightarrow v_8
+  \rightarrow v_5$ \color{red} $\rightarrow v_3 \rightarrow v_6 \rightarrow v_7$  
+\end{frame}
+
+\begin{frame}[fragile, plain, allowframebreaks]
+  %\frametitle{DFS}
+  \begin{minted}[fontsize=\small]{java}
+    class VertexNode {
+      String data;
+      EdgeNode firstAdj = null;
+
+      public VertexNode(String data) {
+        this.data = data;
+      }
+    }
+
+    class EdgeNode {
+      int adjVertexNode;
+      EdgeNode nextAdj = null;
+
+      public EdgeNode(int vertexIdx) {
+        this.adjVertexNode = vertexIdx;
+      }
+
+      public EdgeNode(int vertexIdx, EdgeNode nextAdj) {
+        this.adjVertexNode = vertexIdx;
+        this.nextAdj = nextAdj;
+      }
+    }
+    
+    public class Graph {
+      VertexNode[] vertices;
+
+      public void init() {
+        this.vertices = new VertexNode[]{
+          new VertexNode("v1"),
+          new VertexNode("v2"),
+          new VertexNode("v3"),
+          new VertexNode("v4"),
+          new VertexNode("v5"),
+          new VertexNode("v6"),
+          new VertexNode("v7"),
+          new VertexNode("v8")
+        };
+        vertices[0].firstAdj = new EdgeNode(1, new EdgeNode(2));
+        vertices[1].firstAdj = new EdgeNode(0, new EdgeNode(3, new EdgeNode(4)));
+        vertices[2].firstAdj = new EdgeNode(0, new EdgeNode(5, new EdgeNode(6)));
+        vertices[3].firstAdj = new EdgeNode(1, new EdgeNode(7));
+        vertices[4].firstAdj = new EdgeNode(1, new EdgeNode(7));
+        vertices[5].firstAdj = new EdgeNode(2, new EdgeNode(6));
+        vertices[6].firstAdj = new EdgeNode(2, new EdgeNode(5));
+        vertices[7].firstAdj = new EdgeNode(3, new EdgeNode(4));
+      }
+      
+      void dfsTraverse() {
+        boolean[] visited = new boolean[vertices.length];
+        //for (int i = 0; i < visited.length; i++) visited[i] = false;
+        for (int v = 0; v < vertices.length; v++) { //why for?
+          if (!visited[v]) dfs(v, visited);
+        }
+      }
+
+      void dfs(int v, boolean[] visited) {
+        visited[v] = true;
+        VertexNode vertex = vertices[v];
+        System.out.print(vertex.data + " ");
+
+        for (EdgeNode w = vertex.firstAdj; w != null; w = w.nextAdj) {
+          if (!visited[w.adjVertexNode])
+          dfs(w.adjVertexNode, visited);
+        }
+      }
+
+      public static void main(String[] args) {
+        Graph g = new Graph();
+        g.init();
+        g.dfsTraverse();
+      }
+    }
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{图不一定连通,需要遍历每一个节点}
+  \includegraphics[width=0.9\textwidth]{figs/graph_dfs.png}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{DFS算法分析}
+  \begin{itemize}
+  \item 比较两种存储结构下的算法 (设 n 个顶点, e 条边)
+    \begin{itemize}
+    \item 数组表示:查找每个顶点的邻接点要遍历每一行,遍历的时间复杂度为$O(n^2)$
+    \item 邻接表表示:虽然有 $2e$个表结点,但只需扫描$e$个结点即可完成遍历,加上访
+      问$n$个头结点的时间,遍历的时间复杂度为$O(n+e)$
+    \end{itemize}
+  \item 结论：
+    \begin{itemize}
+    \item 稠密图适于在邻接矩阵上进行深度遍历;
+    \item 稀疏图适于在邻接表上进行深度遍历。
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{广度优先搜索 - Breadth First Search}
+\begin{columns}[T]
+    \column{0.65\textwidth}
+    \scalebox{0.8}{
+      \begin{tikzpicture}[scale=1]
+        \GraphInit[vstyle=Normal]
+        \SetVertexMath
+        \Vertex{v_1}
+        \Vertex[x=-2, y=-1]{v_2}
+        \Vertex[x=1.5, y=-1]{v_3}
+
+        \SOWE(v_2){v_4}
+        \SOEA(v_2){v_5}
+
+
+        \SOWE(v_3){v_6}
+        \SOEA(v_3){v_7}
+        \SOWE(v_5){v_8}
+
+        \Edges(v_1,v_2,v_4,v_8,v_5,v_2)
+        \Edges(v_1,v_3,v_6,v_7,v_3)
+      \end{tikzpicture}
+    }
+
+    \scalebox{0.8}{
+      \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
+        \draw node[] (n0) {};
+        \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 8}
+        \draw node[n, right=0 of n\xp](n\x) {$v_\x$};
+
+        \foreach \x/\y in {1/1,2/0,3/0,4/0,5/0, 6/0, 7/0, 8/0}
+        \draw node[n, below=0 of n\x, draw, fill=red!5](d\x) {$\y$};
+
+        \draw node[left=0 of d1]{$visited$};
+
+        \foreach \x/\y in {1/v_2,2/v_3,3/,4/,5/, 6/, 7/, 8/}
+        \draw node[n, below=0.3 of d\x, draw, fill=yellow!20](d\x) {$\y$};
+
+        \draw node[left=0 of d1]{$queue$};
+      \end{tikzpicture}
+    }
+    
+    \column{0.35\textwidth}
+    \begin{tabular}{| l | l |}
+      \hline
+      $v_1$ & $\rightarrow v_2 \rightarrow v_3$ \\ \hline
+      $v_2$ & $\rightarrow v_1 \rightarrow v_4 \rightarrow v_5$ \\ \hline
+      $v_3$ & $\rightarrow v_1 \rightarrow v_6 \rightarrow v_7$ \\ \hline
+      $v_4$ & $\rightarrow v_2 \rightarrow v_8$ \\ \hline
+      $v_5$ & $\rightarrow v_2 \rightarrow v_8$ \\ \hline
+      $v_6$ & $\rightarrow v_3 \rightarrow v_7$ \\ \hline
+      $v_7$ & $\rightarrow v_3 \rightarrow v_6$ \\ \hline
+      $v_8$ & $\rightarrow v_4 \rightarrow v_5$ \\ \hline      
+    \end{tabular}
+  \end{columns}
+
+  \pause
+  
+  $v_1 \rightarrow v_2 \rightarrow v_3 \rightarrow v_4
+  \rightarrow v_5 \rightarrow v_6 \rightarrow v_7 \rightarrow v_8$  
+\end{frame}
+
+\begin{frame}[allowframebreaks, fragile]
+  \frametitle{BFS}
+
+  \begin{minted}[fontsize=\small]{java}
+    void bfs() {
+      boolean[] visited = new boolean[vertices.length];
+      //for (int i = 0; i < visited.length; i++) visited[i] = false;
+
+      Queue<Integer> Q = new LinkedList<>();
+      for (int v = 0; v < vertices.length; v++) {
+        if (!visited[v]) {
+          visited[v] = true;
+          System.out.print(vertices[v].data + " ");
+          Q.add(v);
+
+          while (!Q.isEmpty()) {
+            int u = Q.poll();
+
+            for (EdgeNode w = vertices[u].firstAdj; w != null; w = w.nextAdj) {
+              if (!visited[w.adjVertexNode]) {
+                visited[w.adjVertexNode] = true;
+                System.out.print(vertices[w.adjVertexNode].data + " ");
+                Q.add(w.adjVertexNode);
+              }
+            }
+          }
+        }
+      }
+    }
+  \end{minted}  
+\end{frame}
+
+\begin{frame}[fragile, allowframebreaks]
+  \frametitle{分析以下代码的输出结果}
+  
+ \begin{minted}[fontsize=\small]{java}
+    void bfs() {
+        boolean[] visited = new boolean[vertices.length];
+        //for (int i = 0; i < visited.length; i++) visited[i] = false;
+
+        Queue<Integer> Q = new LinkedList<>();
+        for (int v = 0; v < vertices.length; v++) {
+            if (!visited[v]) {
+                Q.add(v);
+            }
+
+            while (!Q.isEmpty()) {
+                int u = Q.poll();
+
+                visited[u] = true;
+                System.out.print(vertices[u].data + " ");
+
+                for (EdgeNode w = vertices[u].firstAdj; w != null; w = w.nextAdj) {
+                    if (!visited[w.adjVertexNode]) {
+                        Q.add(w.adjVertexNode);
+                    }
+                }
+            }
+        }
+    }
+ \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{BFS算法分析}
+  \begin{itemize}
+  \item 数组表示:BFS对于每一个被访问到的顶点,都要循环检测矩阵中的整整一行(n个元
+    素),总的时间代价为$O(n^2)$
+  \item 邻接表表示:时间复杂度$O(n+e)$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{作业练习}
+  \begin{enumerate}
+  \item 请写出如下有向图的邻接矩阵,基于该矩阵进行图的深度优先遍历;
+  \item 建立如下有向图的邻接表,进行图的广度优先遍历.
+  \end{enumerate}
+
+  \scalebox{0.8}{
+    \begin{tikzpicture}[scale=1.5]
+      \GraphInit[vstyle=Normal]
+      \SetVertexMath
+
+      \Vertex{3} \NOWE(3){0} \NOEA(3){1} \SOWE(3){5} \SOEA(3){6} 
+
+      \Vertex[x=-2, y=0] {2} 	\Vertex[x=2, y=0] {4}
+
+      \Edges[style={-Latex}](0,1,4,6,5)
+      \Edges[style={-Latex}](0,2,5)
+      \Edges[style={-Latex}](0,3,5)
+      \Edges[style={-Latex}](1,3,6)
+      \Edges[style={-Latex}](4,3,2)
+    \end{tikzpicture}
+  }
+\end{frame}
+
+
+\subsection{图的连通性}
+\begin{frame}[fragile]
+  \frametitle{图的连通性}
+
+  图的连通性在计算机网、通信网和电力网等方面有着重要的应用。
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{生成树(Spanning tree)}
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    深度优先生成树：
+
+    \scalebox{0.8}{      
+      \begin{tikzpicture}[scale=1]
+        \GraphInit[vstyle=Normal]
+        \SetVertexMath
+        \Vertex{v_1}
+        \Vertex[x=-2, y=-1]{v_2}
+        \Vertex[x=1.5, y=-1]{v_3}
+
+        \SOWE(v_2){v_4}
+        \SOEA(v_2){v_5}
+
+
+        \SOWE(v_3){v_6}
+        \SOEA(v_3){v_7}
+        \SOWE(v_5){v_8}
+
+        \Edges[color=red](v_1,v_2,v_4,v_8,v_5,v_2)
+        \Edges[color=red](v_1,v_3,v_6,v_7,v_3)
+        \Edges(v_3,v_7)
+        \Edges(v_2,v_5)
+      \end{tikzpicture}   
+    }
+    \column{0.5\textwidth}
+    广度优先生成树：
+
+    \scalebox{0.8}{      
+      \begin{tikzpicture}[scale=1]
+        \GraphInit[vstyle=Normal]
+        \SetVertexMath
+        \Vertex{v_1}
+        \Vertex[x=-2, y=-1]{v_2}
+        \Vertex[x=1.5, y=-1]{v_3}
+
+        \SOWE(v_2){v_4}
+        \SOEA(v_2){v_5}
+
+
+        \SOWE(v_3){v_6}
+        \SOEA(v_3){v_7}
+        \SOWE(v_5){v_8}
+
+        \Edges[color=red](v_1,v_2,v_4,v_8,v_5,v_2)
+        \Edges[color=red](v_1,v_3,v_6,v_7,v_3)
+        \Edges(v_5,v_8)
+        \Edges(v_6,v_7)
+      \end{tikzpicture}   
+    }
+  \end{columns}
+  连通图的生成树是它的极小连通子图,有$n$个顶点和$n-1$条边。
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{非连通图的连通分量}
+
+  对于非连通图则遍历生成森林, 下图是深度优先遍历生成森林
+
+  \scalebox{0.8}{    
+    \begin{tikzpicture}[scale=1]
+      \GraphInit[vstyle=Normal]
+      \SetVertexMath
+      \Vertex{v_1}
+      \Vertex[x=-2, y=-1]{v_2}
+      \Vertex[x=1.5, y=-1]{v_3}
+
+      \SOWE(v_2){v_4}
+      \SOEA(v_2){v_5}
+
+
+      \SOWE(v_3){v_6}
+      \SOEA(v_3){v_7}
+      \SOWE(v_5){v_8}
+
+      \Edges[color=red](v_2,v_4,v_8,v_5,v_2)
+      \Edges[color=red](v_1,v_3,v_6,v_7,v_3)
+      \Edges(v_3,v_7)
+      \Edges(v_2,v_5)
+    \end{tikzpicture}   
+  }
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{最小生成树}
+  \begin{itemize}
+  \item 很多现实问题可以抽象成网。比如,在$n$个城市之间建立通信网,要求总成本最低。
+  \item 上述问题是求连通网的最小生成树问题,即挑选$n-1$条不产生回路的最短边,则总成
+    本(生成树的各边的权重之和)达到最低。
+  \end{itemize}
+
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \scalebox{0.8} {
+      \begin{tikzpicture}[n/.style={draw, circle, minimum size=0.5cm}]
+        \draw node[n](v3){$v_3$} node[n, above=of v3] (v1) {$v_1$}
+        node[n, left=of v3, xshift=-0.5cm,yshift=0.5cm] (v2) {$v_2$} node[n, right=of v3, xshift=0.5cm, yshift=0.5cm] (v4) {$v_4$}
+        node[n, below left=of v3] (v5) {$v_5$} node[n, below right=of v3] (v6) {$v_6$};
+        \path[draw] (v1) edge node[above]{6} (v2) 
+        (v1) edge node[right]{1} (v3) 
+        (v1) edge node[above]{5} (v4) 
+        (v2) edge node[above]{5} (v3) 
+        (v2) edge node[left]{3} (v5) 
+        (v4) edge node[above]{5} (v3) 
+        (v4) edge node[left]{2} (v6) 
+        (v5) edge node[above]{6} (v3) 
+        (v5) edge node[above]{6} (v6) 
+        (v6) edge node[right] {4} (v3);
+
+        \draw[draw=red!50,thick] (v1) -- (v3) --(v5) --(v2) (v3) --(v6) --(v4);
+
+        \draw node[below=2 of v3]{总成本为16};
+      \end{tikzpicture}
+    }
+
+    \column{0.5\textwidth}
+    \scalebox{0.8}{
+      \begin{tikzpicture}[n/.style={draw, circle, minimum size=0.5cm}]
+        \draw node[n](v3){$v_3$} node[n, above=of v3] (v1) {$v_1$}
+        node[n, left=of v3, xshift=-0.5cm,yshift=0.5cm] (v2) {$v_2$} node[n, right=of v3, xshift=0.5cm, yshift=0.5cm] (v4) {$v_4$}
+        node[n, below left=of v3] (v5) {$v_5$} node[n, below right=of v3] (v6) {$v_6$};
+
+        \path[draw] (v1) edge node[above]{6} (v2) 
+        (v1) edge node[right]{1} (v3) 
+        (v1) edge node[above]{5} (v4) 
+        (v2) edge node[above]{5} (v3) 
+        (v2) edge node[left]{3} (v5) 
+        (v4) edge node[above]{5} (v3) 
+        (v4) edge node[left]{2} (v6) 
+        (v5) edge node[above]{6} (v3) 
+        (v5) edge node[above]{6} (v6) 
+        (v6) edge node[right] {4} (v3);
+
+        \draw[draw=red!50,thick] (v3) -- (v1) --(v2) --(v5) -- (v6) --(v4) --(v1);
+
+        \draw node[below=2 of v3]{总成本为23};
+      \end{tikzpicture}      
+    }
+  \end{columns}
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]
+  \frametitle{本章作业}
+  \begin{enumerate}
+  \item 最小生成树的Prim, Kruscal算法
+  \item 最短路径的Dijstra, Floyd算法
+  \end{enumerate}
+
+  \begin{itemize}
+  \item 编程实现上述算法(务必认真写注释),
+  \item 要求显示某图的最小生成树/某两点之间的最短路径;
+  \item 基本要求：Prim, Kruscal可以二选一, Dijstra, Floyd可以二选一
+  \item 优秀要求：四种算法都实现
+  \end{itemize}
 \end{frame}

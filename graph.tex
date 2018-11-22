@@ -548,6 +548,10 @@
 
     \column{0.6\textwidth}
     将邻接表、逆邻接表结合起来.
+    \begin{itemize}
+    \item hlink: 指向弧头相同的下一条弧
+    \item tlink: 指向弧尾相同的下一条弧
+    \end{itemize}
   \end{columns}
   \scalebox{0.7}{
     \begin{tikzpicture}[ n/.style={minimum height=0.8cm, minimum width=1cm},
@@ -576,7 +580,7 @@
       \draw node[n2, draw, right=of tailLinkDA] (headDB) {3} node[n2, draw, right=0 of headDB] (tailDB) {1} node[n3, draw, right=0 of tailDB] (headLinkDB) {} node[n3, draw, right=0 of headLinkDB] (tailLinkDB) {};
 
       \draw[] node[above=1.5cm of firstInA](tipFirstIn) {$firstIn$} node[right=0 of tipFirstIn] (tipFirstOut) {$firstOut$} 
-      node[above=1cm of headAB] (tipHeadAB) {$headVertex$} node[above=1.5cm of tailAB] (tipTailAB) {$tailVertex$}
+      node[above=1cm of headAB] (tipHeadAB) {$tailVertex$} node[above=1.5cm of tailAB] (tipTailAB) {$headVertex$}
       node[above=1cm of headLinkAB] (tipHeadLinkAB) {$hlink$} node[right=0 of tipHeadLinkAB] (tipTailLinkAB) {$tlink$};
 
       % draw tip of node

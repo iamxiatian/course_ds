@@ -1250,8 +1250,86 @@
   \end{columns}
 \end{frame}
 
+\begin{frame}[fragile, allowframebreaks]
+  \frametitle{Prim MST}
+  \begin{minted}[fontsize=\scriptsize]{java}
+    public class PrimMST {
+      static int minimum(CloseEdge[] closeEdges) {
+        int minValue = closeEdges[0].lowcost;
+        int minVex = 0;
+        for (int i = 1; i < closeEdges.length; i++) {
+          int lowcost = closeEdges[i].lowcost;
+          if (lowcost > 0 && (lowcost < minValue || minValue == 0)) {
+            minValue = lowcost;
+            minVex = i;
+          }
+        }
+        return minVex;
+      }
+
+      static void mst() {
+        CloseEdge[] closeEdges = new CloseEdge[Graph.vexnum];
+        closeEdges[0] = new CloseEdge(0, 0);
+
+        //初始化
+        for (int i = 1; i < Graph.vexnum; i++) {
+          closeEdges[i] = new CloseEdge(0, Graph.arcs[0][i]);
+        }
+
+        //默认选中了第0个节点，处理剩余的n-1个
+        for (int i = 1; i < Graph.vexnum; i++) {
+          int k = minimum(closeEdges);
+          String fromVex = Graph.labels[closeEdges[k].adjvex];
+          String toVex = Graph.labels[k];
+
+          System.out.println(fromVex + " -> " + toVex);
+          closeEdges[k].lowcost = 0;
+
+          //处理每一个Vertex, 看能否通过k让代价更低
+          for (int j = 0; j < Graph.vexnum; j++) {
+            if (Graph.arcs[k][j] < closeEdges[j].lowcost) {
+              closeEdges[j].lowcost = Graph.arcs[k][j];
+              closeEdges[j].adjvex = k;
+            }
+          }
+        }
+      }
+
+      public static void main(String[] args) {
+        mst();
+      }
+
+      public static class CloseEdge {
+        public int adjvex;
+        public int lowcost;
+
+        public CloseEdge(int adjvex, int lowcost) {
+          this.adjvex = adjvex;
+          this.lowcost = lowcost;
+        }
+      }
 
 
+      public static class Graph {
+        public static int INFINITE = 10000;
+
+        public static int vexnum = 6;
+
+        public static String[] labels = new String[]{"v1", "v2", "v3",
+          "v4", "v5", "v6"};
+
+        public static int[][] arcs = new int[][]{
+          {0, 6, 1, 5, INFINITE, INFINITE},
+          {6, 0, 5, INFINITE, 3, INFINITE},
+          {1, 5, 0, 5, 6, 4},
+          {5, INFINITE, 5, 0, INFINITE, 2},
+          {0, 3, 6, INFINITE, 0, 6},
+          {INFINITE, INFINITE, 4, 2, 6, 0}
+        };
+      }
+    }
+  \end{minted}
+\end{frame}
 
 
 \begin{frame}[fragile]

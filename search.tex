@@ -34,6 +34,7 @@
     && 查找结果：给出整个记录的信息，或指示该记录在查找表中的位置；
     & 否则称“查找不成功”，查找结果：
     && 给出“空记录”或“空指针”。
+    && 或者利用新的可选数据类型，例如Java中的Optional<Int>, Scala中的Option[Int]等
   \end{easylist}
 \end{frame}
 
@@ -829,6 +830,12 @@
 
 \begin{frame}[fragile]
   \frametitle{结果}
-  \includegraphics[width=0.5\textwidth]{figs/AVL-9.png}
+
+  \scalebox{0.6}{
+    \begin{forest}
+      for tree={fill=red!10, minimum size=1cm}
+      [11 [7 [3] [9]] [18 [15 [14] [16]] [26]]]
+    \end{forest}
+  }
 \end{frame}
 

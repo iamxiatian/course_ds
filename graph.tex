@@ -1250,6 +1250,20 @@
   \end{columns}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{最小生成树}
+  利用最小生成树的如下性质：
+
+  假设$G=(V, E)$是一个连通图,$U$是顶点集$V$的一个非空子集。若 $(u, v)$是一条具有
+  最小权值(代价)的边,其中$u \in U$, $v \in V-U$, 则必存在一棵包含边(u, v)的最小生
+  成树。
+
+  \begin{tikzpicture}[]
+    \draw node[](ls) {}
+    node[] (rs) {};
+  \end{tikzpicture}
+\end{frame}
+
 \begin{frame}[fragile, allowframebreaks]
   \frametitle{Prim MST}
   \begin{minted}[fontsize=\scriptsize]{java}

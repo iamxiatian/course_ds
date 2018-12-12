@@ -2,18 +2,6 @@
 
 
 \begin{frame}[fragile]{查找表}
-
-  \begin{center}
-    \begin{matrixtable}{1.2cm}{4cm}{1.6cm}{0.6cm}{
-        \head{Rank}   & \head{Distribution} & \head{Hits} & \\
-        1 & Ubuntu    & 2114 & \down  \\
-        2 & Fedora    & 1451 & \up    \\
-        3 & Mint      & 1297 & \const \\
-        4 & OpenSUSE  & 1228 & \up    \\
-        5 & Debian    & 910  & \down  \\ }
-    \end{matrixtable} 
-  \end{center}
-
   查找是许多应用系统中最消耗时间的一部分，一个好的查找算法会大大提高运行速度。计
   算机需要存储包含该特定信息的表，才可以高效查找。
 \end{frame}
@@ -34,6 +22,7 @@
     & 是数据元素（或记录）中某个数据项的值，用以标识（识别）一个数据元素（或记录）。
     & 若此关键字可以识别唯一的一个记录，则称之谓“主关键字”。
     & 若此关键字能识别若干记录，则称之谓“次关键字”。
+    & 若数据元素只有一个数据项时，其关键字就是数据元素的值。
   \end{easylist}
 \end{frame}
 
@@ -52,8 +41,7 @@
 \begin{frame}[fragile]{如何进行查找？}
   \begin{easylist} \easyitem
     & 查找的方法取决于查找表的结构。
-    & 由于查找表中的数据元素之间不存在明显的组织规律，因此不便于查找。
-    & 为了提高查找的效率， 需要在查找表中的元素之间人为地 附加某种确定的关系，换句话说， 用另外一种结构来表示查找表。
+    & 如果查找表中的数据元素之间不存在明显的组织规律，就不利于快速查找
   \end{easylist}
 \end{frame}
 
@@ -176,7 +164,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{(有序表)折半查找}
+  \frametitle{有序表的折半查找}
   \begin{easylist} \easyitem
     & 有序表是表中数据元素按关键码升序或降序排列。
 
@@ -363,7 +351,7 @@
 
 
 \begin{frame}[fragile]
-  \frametitle{分块查找}
+  \frametitle{分块查找/索引顺序查找}
   \begin{easylist} \easyitem
 
     & 分块查找又称索引顺序查找,是对顺序查找的一种改进。适用于表有序或者分块有
@@ -399,14 +387,17 @@
   \begin{easylist}
     & 分块查找含索引表查找和子表查找。
     
-    & 设$n$个数据元素的查找表分为$m$个相同大小的子表。则分块查找的平均查找长度为:
+    & 设$n$个数据元素的查找表分为$b$个相同大小的块，每块含有$s$个记录，即：$b =
+    \biggl \lceil \dfrac{n}{s}  \biggr \rceil $
+
+    & 则分块查找的平均查找长度为:
 
     \[
-      ASL=\dfrac{m+1}{2} + \dfrac{1}{2} \cdot \dfrac{n}{m+1}
-      = \dfrac{m+\dfrac{n}{m}}{2}+1
+      ASL=\dfrac{b+1}{2} + \dfrac{s+1}{2}
+      = \dfrac{1}{2} \left (\dfrac{n}{s} + s \right )+1
     \]
 
-    & 可见,平均查找长度和表的总长度$n$、子表个数$m$有关。
+    & 可见,平均查找长度和表的总长度$n$、每块的记录个数$s$有关。
   \end{easylist}
   \input{figs/search-block}
 \end{frame}
@@ -532,15 +523,16 @@
     \end{easylist}
   \end{minipage}%
   \begin{minipage}{0.36\textwidth}
+    \scalebox{0.6}{
+      \begin{forest}
+        [45 [24 [12] [37]] [53,grow=-60 [93]]]
+      \end{forest}
+    }
+    
     \scalebox{0.6} {
       \begin{forest}
         [12, grow=-45 [24, grow=-45 [37, grow=-45 [45, grow=-45 [53,grow=-60
         [93]]]]]]         
-      \end{forest}
-    }
-    \scalebox{0.6}{
-      \begin{forest}
-        [45 [24 [12] [37]] [53,grow=-60 [93]]]
       \end{forest}
     }
   \end{minipage}
@@ -619,13 +611,224 @@
 
   依次删除结点45、90,仍要使树保持二叉排序树的特性
 
+  \begin{columns}[T]
+    \column{0.4\textwidth}
+    \begin{forest} 
+      [63 [55 [42 [,missed] [45, fill=red!20]] [58]] [90, fill=blue!20 [70 [67] [83]] [, missed]]]
+    \end{forest}
+
+    \column{0.6\textwidth}
+    \begin{itemize}
+    \item 待删结点p为叶结点
+
+      ~~ 直接删除即可（如节点45)
+    \item 待删结点p只有右子树或只有左子树
+
+      ~~ 用子树的根代替之（如节点90)
+    \item 待删结点p有右子树也有左子树?
+
+      ~~ 原则:保持中序遍历序列不变!
+    \end{itemize}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{二叉排序树的删除操作}
+
+  删除节点55:
   
+  \begin{columns}[T]
+    \column{0.4\textwidth}
+    \begin{forest} 
+      [63 [55, fill=red!20 [42 [,missed] [45]] [58]] [90 [70 [67] [83]] [, missed]]]
+    \end{forest}
+
+    \column{0.6\textwidth}
+    方法1: 用前驱代替
+
+    \begin{forest} 
+      [63 [45, fill=blue!20 [42] [58]] [90 [70 [67] [83]] [, missed]]]
+    \end{forest}
+  \end{columns}
 \end{frame}
 
-\begin{frame}[fragile]{}
-  \begin{easylist} \easyitem
+\begin{frame}[fragile]
+  \frametitle{二叉排序树的删除操作}
 
-  \end{easylist}
+  删除节点55:
+  
+  \begin{columns}[T]
+    \column{0.4\textwidth}
+    \begin{forest} 
+      [63 [55, fill=red!20 [42 [,missed] [45]] [58]] [90 [70 [67] [83]] [, missed]]]
+    \end{forest}
+
+    \column{0.6\textwidth}
+    方法2: 用后继代替
+
+    \begin{forest} 
+      [63 [58, fill=green!20 [42, [, missed] [45]] [,missed]] [90 [70 [67] [83]] [, missed]]]
+    \end{forest}
+  \end{columns}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{二叉排序树的删除操作}
+
+  删除节点55:
+  
+  \begin{columns}[T]
+    \column{0.4\textwidth}
+    \begin{forest} 
+      [63 [55, fill=red!20 [42 [,missed] [45]] [58, fill=green!20]] [90 [70 [67] [83]] [, missed]]]
+    \end{forest}
+
+    \column{0.6\textwidth}
+
+    方法3: 用左子树的根代替之,并将右子树作为删除结点的前驱的右子树
+
+    \begin{forest} 
+      [63 [42, fill=red!10 [,missed] [45, [, missed] [58, fill=green!20]]] [90 [70 [67] [83]] [, missed]]]
+    \end{forest}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{课堂练习}
+
+  给定关键字序列:63, 90, 70, 55, 67, 42, 98, 83, 10, 45, 58
+
+  \begin{itemize}
+  \item 构建二叉排序树
+  \item 对该树中序遍历,显示其序列
+  \item 依次删除10,42,63
+  \item 再次对该树中序遍历,显示其序列
+  \end{itemize}
+\end{frame}
+
+\subsubsection{平衡二叉树}
+\begin{frame}[fragile]
+  \frametitle{平衡二叉树}
+
+  在二叉查找树中,若输入元素的顺序接近有序,那么二叉查找树将退化为链表,从而导致二叉
+  查找树的查找效率大为降低。如何使得二叉查找树无论在什么样情况下都能使它的形态最
+  大限度地接近满二叉树以保证它的查找效率呢?
+
+  前苏联科学家G.M. Adelson-Velskii 和 E.M. Landis在1962年发表的一篇名为An
+  algorithm for the organization of information的文章中提出了一种自平衡二叉查找
+  树(self-balancing binary search tree)。
+
+  该树在插入和删除操作中,通过一系列的旋转操作来保持平衡,从而保证了二叉查找树的查
+  找效率。最终这种二叉查找树以他们的名字命名为“AVL-Tree”。  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{平衡二叉树(AVL)}
+  
+  平衡二叉树(Balanced binary tree)或者是一棵空树,或者是具有下列性质的二叉排序树:
+
+  \begin{itemize}
+  \item 它的左子树和右子树都是平衡二叉树,且左子树和右子树高度之差的绝对值不超过1。
+  \item 平衡因子=左子树高度-右子树高度
+  \end{itemize}
+
+  
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \hspace{1cm}
+    \scalebox{0.5}{
+      \begin{tikzpicture}[n/.style={draw, minimum size=1cm, circle}]
+        \draw node[n] (n1) {90}  node[right=0 of n1] {\color{red} -1}
+        node[n, below left=of n1, xshift=5](n2){83}  node[right=0 of n2] {\color{red} 0}
+        node[n, below right=of n1, xshift=-5](n3){95}  node[right=0 of n3] {\color{red} -1}
+        node[n, below right=of n3, xshift=-5](n4){98} node[right=0 of n4] {\color{red} 0};
+
+        \path[draw] (n1) -- (n2);
+        \path[draw] (n1) -- (n3) --(n4);
+      \end{tikzpicture}
+    }
+    
+    \column{0.5\textwidth}
+    \scalebox{0.5}{
+      \begin{tikzpicture}[n/.style={draw, minimum size=1cm, circle}]
+        \draw node[n] (n1) {9} 
+        node[n, below=of n1, xshift=-1cm](l2){7} 
+        node[n, below=of l2, xshift=-1cm](l3){5} 
+        node[n, below=of l3, xshift=-1cm](l4){3}
+        node[n, below=of n1, xshift=1cm](r2){10} 
+        node[n, below=of r2, xshift=1cm](r3){12} 
+        node[n, below=of r3, xshift=1cm](r4){14};
+
+        \path[draw] (n1) -- (l2) --(l3) --(l4);
+        \path[draw] (n1) -- (r2) --(r3) --(r4);
+      \end{tikzpicture}
+    }
+  \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{二叉子树的平衡化}
+  \begin{itemize}
+  \item 在平衡二叉树上插入新结点,可能会导致不平衡!
+  \item 请问哪些结点的平衡因子发生变化?
+  \end{itemize}
+
+  \includegraphics[width=1.0\textwidth]{figs/AVL-1.png}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{二叉子树的平衡化(cont.)}
+  平衡化调整的原则有二:
+  \begin{itemize}
+  \item 转换后的二叉树的中序遍历不变;
+  \item 每次转换都要平衡。
+  \end{itemize}
+
+  四种情形:
+
+  \includegraphics[width=0.8\textwidth]{figs/AVL-2.png}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{单向右旋}
+  \includegraphics[width=0.8\textwidth]{figs/AVL-4.png}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{单向左旋}
+  \includegraphics[width=0.8\textwidth]{figs/AVL-5.png}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{先左后右双向旋转}
+  \includegraphics[width=0.8\textwidth]{figs/AVL-6.png}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{先右后左双向旋转}
+  \includegraphics[width=0.8\textwidth]{figs/AVL-7.png}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Why double rotation?}
+  \includegraphics[width=0.8\textwidth]{figs/AVL-8.png}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{练习}
+  \begin{itemize}
+  \item 输入关键字16,3,7,11,9,26,18,14,15,
+  \item 构造一个AVL树
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{结果}
+  \includegraphics[width=0.5\textwidth]{figs/AVL-9.png}
+\end{frame}
 

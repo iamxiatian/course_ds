@@ -788,7 +788,38 @@
 
   四种情形:
 
-  \includegraphics[width=0.8\textwidth]{figs/AVL-2.png}
+  \begin{center}
+    \begin{tabular}{c c c c}
+      单向左旋 & 先左后右双向旋转 & 单项右旋 & 先右后左双向旋转 \\
+      \scalebox{0.5}{
+      \begin{forest}
+        for tree={fill=white, color=white, draw=black, minimum size=1cm}
+        [1 [2 [4 [6] [,missed]] [5]] [3]]
+      \end{forest}
+      }
+               &
+      \scalebox{0.5}{
+       \begin{forest}
+         for tree={fill=white, color=white, draw=black, minimum size=1cm}
+	       [1 [2 [4] [5 [,missed] [6]]] [3]]
+       \end{forest}
+      }
+                                  &
+      \scalebox{0.5}{
+      \begin{forest}
+        for tree={fill=white, color=white, draw=black, minimum size=1cm}
+        [1 [2] [3 [4] [5 [,missed] [6]]]]
+      \end{forest}
+      }                                    
+                                             &
+      \scalebox{0.5}{
+      \begin{forest}
+        for tree={fill=white, color=white, draw=black, minimum size=1cm}
+        [1 [2] [3 [4 [6] [,missed]] [5]]]
+      \end{forest}
+      }                                               
+    \end{tabular}
+  \end{center}
 \end{frame}
 
 \begin{frame}[fragile]

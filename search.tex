@@ -823,22 +823,93 @@
 \begin{frame}[fragile]
   \frametitle{练习}
   \begin{itemize}
-  \item 输入关键字16,3,7,11,9,26,18,14,15,
+  \item 输入关键字序列16,3,7,11,9,26,18,14,15
   \item 构造一个AVL树
   \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{结果}
+  \frametitle{序列：16,3,7,11,9,26,18,14,15}
 
-  \scalebox{0.6}{
+  \scalebox{0.5}{
     \begin{forest}
-      for tree={fill=red!10, minimum size=1cm}
-      [11 [7 [3] [9]] [18 [15 [14] [16]] [26]]]
+      for tree={minimum size=1cm}
+      [16 [3 [, missed] [7]] [, missed]]
+    \end{forest}
+
+    \begin{forest}
+      for tree={minimum size=1cm}
+      [16 [7 [3] [, missed]] [, missed]]
+    \end{forest}
+
+    \begin{forest}
+      for tree={minimum size=1cm}
+      [7 [3] [16]]
+    \end{forest}
+
+    \begin{forest}
+      for tree={minimum size=1cm}
+      [7 [3] [16 [11] [, missed]]]
+    \end{forest}
+    
+    \begin{forest}
+      for tree={minimum size=1cm}
+      [7 [3] [16 [11 [9] [,missed]] [, missed]]]
+    \end{forest}
+
+    \begin{forest}
+      for tree={minimum size=1cm}
+      [7 [3] [11 [9] [16]]]
+    \end{forest}
+    
+    \begin{forest}
+      for tree={minimum size=1cm}
+      [7 [3] [11 [9] [16 [,missed] [26]]]]
+    \end{forest}
+  }
+
+  \scalebox{0.5}{
+    \begin{forest}
+      for tree={minimum size=1cm}
+      [11 [7 [3] [9]] [16 [,missed] [26]]]
+    \end{forest}
+
+    \begin{forest}
+      for tree={minimum size=1cm}
+      [11 [7 [3] [9]] [16 [,missed] [26 [18] [,missed]]]]
+    \end{forest}
+
+    \begin{forest}
+      for tree={minimum size=1cm}
+      [11 [7 [3] [9]] [18 [16] [26]]]
+    \end{forest}
+
+    \begin{forest}
+      for tree={minimum size=1cm}
+      [11 [7 [3] [9]] [18 [16 [14] [,missed]] [26]]]
     \end{forest}
   }
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{序列：16,3,7,11,9,26,18,14,15}
+  \scalebox{0.5}{
+    \begin{forest}
+      for tree={minimum size=1cm}
+      [11 [7 [3] [9]] [18 [16 [14 [,missed] [15]] [,missed]] [26]]]
+    \end{forest}
+
+    \begin{forest}
+      for tree={minimum size=1cm}
+      [11 [7 [3] [9]] [18 [16 [15 [14] [,missed]] [,missed]] [26]]]
+    \end{forest}
+    
+    \begin{forest}
+      for tree={fill=red!10, minimum size=1cm}
+      [11 [7 [3] [9]] [18 [15 [14] [16]] [26]]]
+    \end{forest}    
+  }
+\end{frame}
 
 \subsection{3. 哈希表}
 

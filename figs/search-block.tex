@@ -1,36 +1,38 @@
 \begin{center} 
- \begin{tikzpicture}[box/.style={draw, minimum size=0.6cm},box2/.style={draw, minimum size=0.7cm, minimum width=1cm, fill=yellow!10}]
-    \draw[draw] node[box] (b1) {14} 
-    node[box, right=0 of b1] (b2) {31}
-    node[box, right=0 of b2] (b3) {8}
-    node[box, right=0 of b3] (b4) {22}
-    node[box, right=0 of b4] (b5) {18}
-    node[box, right=0 of b5] (b6) {43}
-    node[box, right=0 of b6] (b7) {62}
-    node[box, right=0 of b7] (b8) {49}
-    node[box, right=0 of b8] (b9) {35}
-    node[box, right=0 of b9] (b10) {52}
-    node[box, right=0 of b10] (b11) {88}
-    node[box, right=0 of b11] (b12) {78}
-    node[box, right=0 of b12] (b13) {70} 
-    node[box, right=0 of b13] (b14) {82}
-    node[above left=0.2 of b1] {查找表}; 
+  \scalebox{0.8}{
+    \begin{tikzpicture}[box/.style={draw, minimum size=0.6cm},box2/.style={draw, minimum size=0.7cm, minimum width=1cm, fill=yellow!10}]
+      \draw[draw] node[box] (b1) {14} 
+      node[box, right=0 of b1] (b2) {31}
+      node[box, right=0 of b2] (b3) {8}
+      node[box, right=0 of b3] (b4) {22}
+      node[box, right=0 of b4] (b5) {18}
+      node[box, right=0 of b5] (b6) {43}
+      node[box, right=0 of b6] (b7) {62}
+      node[box, right=0 of b7] (b8) {49}
+      node[box, right=0 of b8] (b9) {35}
+      node[box, right=0 of b9] (b10) {52}
+      node[box, right=0 of b10] (b11) {88}
+      node[box, right=0 of b11] (b12) {78}
+      node[box, right=0 of b12] (b13) {70} 
+      node[box, right=0 of b13] (b14) {82}
+      node[above left=0.2 of b1] {查找表}; 
 
-    \foreach \i in {1,...,14}
-    {
-      \draw node[below=0 of b\i] (idx_\i) {\i};
-    };
+      \foreach \i in {1,...,14}
+      {
+        \draw node[below=0 of b\i] (idx_\i) {\i};
+      };
 
-    \draw[draw] node[box2, above=1.5cm of b5] (x1) {31} 
-    node[box2, right=0 of x1] (x2) {62}
-    node[box2, right=0 of x2] (x3) {88}
-    node[box2, below=0 of x1] (y1) {1}
-    node[box2, below=0 of x2] (y2) {6}
-    node[box2, below=0 of x3] (y3) {11}
-    node[left=of x1] {索引表}
-    node[right=0.2 of x3] {关键码字段}
-    node[right=0.2 of y3] {指针字段};
+      \draw[draw] node[box2, above=1.5cm of b5] (x1) {31} 
+      node[box2, right=0 of x1] (x2) {62}
+      node[box2, right=0 of x2] (x3) {88}
+      node[box2, below=0 of x1] (y1) {1}
+      node[box2, below=0 of x2] (y2) {6}
+      node[box2, below=0 of x3] (y3) {11}
+      node[left=of x1] {索引表}
+      node[right=0.2 of x3] {关键码字段}
+      node[right=0.2 of y3] {指针字段};
 
-    \path[draw] (y1.center) edge[-Latex] (b1.north) (y2.center) edge[-Latex] (b6.north) (y3.center) edge[-Latex] (b11.north);
-  \end{tikzpicture} 
+      \path[draw] (y1.center) edge[-Latex] (b1.north) (y2.center) edge[-Latex] (b6.north) (y3.center) edge[-Latex] (b11.north);
+    \end{tikzpicture}
+  }
 \end{center}

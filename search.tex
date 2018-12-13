@@ -839,3 +839,49 @@
   }
 \end{frame}
 
+
+\subsection{3. 哈希表}
+
+\begin{frame}[plain]
+  \frametitle{}
+  \centering
+  \tikzstyle{mybox} = [draw=blue, fill=green!20, very thick,
+  rectangle, rounded corners, inner sep=10pt, inner ysep=20pt]
+  \tikzstyle{fancytitle} =[fill=blue, text=white, ellipse]
+  
+  \vspace{1.0cm}
+  \begin{tikzpicture}[transform shape, rotate=0, baseline=-3.5cm]
+    \node [mybox] (box) {%
+      \begin{minipage}[t!]{0.75\textwidth}
+        哈希是一种重要的存储方法，也是一种重要的查找方法。其基本思想是以关键字为
+        自变量，使用哈希函数映射到地址集合，那么根据哈希函数便可以直接找到包含该
+        关键字的集合的存储地址。
+      \end{minipage}
+    };
+    \node[fancytitle] at (box.north) {3. 哈希表};
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Think}
+  \begin{itemize}
+  \item 顺序查找
+  \item 折半查找
+  \item 分块查找
+  \item 二叉查找树
+  \end{itemize}
+  
+  对给定值和关键字进行比较，查找效率由比较一次缩小的查找范围决定。
+
+  能否直接定位到给定值的存储位置，不用逐步缩小查找范围？
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{哈希表}
+  \begin{itemize}
+  \item 哈希方法：选取某个函数，依据关键字直接得到其对应的数据元素的存储位置。也
+    有的将哈希译为散列。
+  \item 哈希方法中使用的转换函数称为哈希函数。按这个思想构造的表称为哈希表。
+  \end{itemize}
+\end{frame}
+

@@ -1,6 +1,8 @@
 \section{Search}
 
+\begin{comment}
 
+  
 \begin{frame}[fragile]{查找表}
   查找是许多应用系统中最消耗时间的一部分，一个好的查找算法会大大提高运行速度。计
   算机需要存储包含该特定信息的表，才可以高效查找。
@@ -39,7 +41,7 @@
 \end{frame}
 
 
-\begin{frame}[fragile]{如何进行查找？}
+\begin{frame}[fragi定le]{如何进行查找？}
   \begin{easylist} \easyitem
     & 查找的方法取决于查找表的结构。
     & 如果查找表中的数据元素之间不存在明显的组织规律，就不利于快速查找
@@ -780,7 +782,7 @@
 
 \begin{frame}[fragile]
   \frametitle{二叉子树的平衡化(cont.)}
-  平衡化调整的原则有二:
+  平衡化调整的原则:
   \begin{itemize}
   \item 转换后的二叉树的中序遍历不变;
   \item 每次转换都要平衡。
@@ -790,7 +792,7 @@
 
   \begin{center}
     \begin{tabular}{c c c c}
-      单向左旋 & 先左后右双向旋转 & 单项右旋 & 先右后左双向旋转 \\
+      单向右旋 & 先左后右双向旋转 & 单项左旋 & 先右后左双向旋转 \\
       \scalebox{0.5}{
       \begin{forest}
         for tree={fill=white, color=white, draw=black, minimum size=1cm}
@@ -942,6 +944,9 @@
   }
 \end{frame}
 
+
+\end{comment}
+
 \subsection{3. 哈希表}
 
 \begin{frame}[plain]
@@ -987,3 +992,469 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{Example}
+  \begin{tabular}{| c | c | c | }
+    \hline
+    Name & Cellphone & Affiliate \\ \hline
+    Zhang & 138{\color{red}0001}1234 & RUC \\ \hline
+    Wang & 138{\color{red}0002}1235 & RUC \\ \hline
+    Zhao & 138{\color{red}0003}8322 & IRM \\ \hline
+    Qian & 138{\color{red}0004}7322 & IRM \\ \hline
+  \end{tabular}
+
+  \begin{itemize}
+  \item 该例子中我们可以直接利用红色部分作为存储单元的位置。
+  \item 理想的哈希函数应该运算简单并保证不同的关键字映射到不同单元，但这是不可能
+    的。冲突不可避免，只能尽量减少。
+  \item 存储单元涉及的范围不要过大
+  \end{itemize}
+
+  哈希方法需要解决的两个问题：
+  \begin{itemize}
+  \item 构造好的哈希函数
+  \item 制定解决冲突的方案
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Hash函数的构造方法}
+  \begin{itemize}
+  \item Hash地址(函数值) 分布应均匀
+
+    函数值尽量均匀散布在地址空间，保证空间有效利用并减少冲突
+  \item Hash函数计算应简单，保证转换的效率
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{1. 直接定址法}
+  \begin{easylist} \easyitem
+    & Hash函数是关键字的线性函数：
+
+    && 这类函数是一一对应函数，对于不同的关键字不会产生冲突；但得到的地址集合与关
+    键字集合大小相同，因此不适用于较大的关键字集合。
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{2. 数字分析法}
+  \begin{easylist} \easyitem
+    & 根据关键码在各个位上的分布情况，选取分布比较均匀的若干位组成Hash地址。 
+
+    & 适用情形：
+
+    && 能预估出全部关键码每一位上各种数字出现的频度。
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{3. 平方取中法}
+  \begin{easylist}
+    & 对关键码平方后，按散列表大小，取中间的若干位作为Hash地址。 
+
+    & 适用于：
+
+    && 事先不知道关键码的分布，且关键码位数不是很大。
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{4. 折叠法}
+  \begin{easylist}
+    & 将关键码从左到右分割成位数相等的几部分，将这几部分叠加求和，取后几位作为散列地址。 
+
+    & 适用于：
+
+    && 事先不知道关键码的分布，且关键码位数很大。 
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{5. 除留余数法}
+  \begin{easylist}
+    & 取关键字除以p的余数作为哈希地址，或者在关键字折叠、平方取中等后取模。
+   \[ Hash(key)=key MOD p \]
+
+   & 除留余数法是一种最简单、也是最常用的构造散列函数的方法，并且不要求事先知道关
+   键码的分布。
+   
+   & p最好接近表长；一般选取质数，或不包含小于20的质因数的合数。
+ \end{easylist}
+
+ Example:给定表长 m ＝ 2000，选p＝1999，则Hash(13810066001)\%1999
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{处理冲突的方法}
+  \begin{easylist}
+    & Hash地址(函数值) 分布应均匀
+
+    && 函数值尽量均匀散布在地址空间，保证空间有效利用并减少冲突
+
+    & Hash函数计算应简单，保证查找效率
+  \end{easylist}
+
+  方法：
+  
+  \begin{itemize}
+  \item 开放定址法
+  \item 再哈希法
+  \item 拉链法
+  \item 建公共溢出区
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{1. 开放定址法}
+  \begin{itemize}
+  \item 由关键码得到的散列地址一旦产生了冲突，就去寻找下一个空的散列地址，并将记
+    录存入。
+  \item 例如，关键码集合为 $\{47, 7, 29, 11, 16, 92, 22, 8, 3\}$，hash表的表
+    长$m=11$，$Hash(key) = key MOD 11$，用线性探测法处理冲突如下：
+  \end{itemize}
+
+  \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
+    \draw node[n] (n0) {0};
+    \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 10}
+    \draw node[n, right=0 of n\xp](n\x) {$\x$};
+
+    \foreach \x/\y in {0/, 1/, 2/, 3/47, 4/, 5/, 6/, 7/7, 8/, 9/, 10/}
+    \draw node[n, below=0 of n\x, draw](d\x) {$\y$};
+
+		\draw node[n, below=0 of d7, circle, fill=red!20] {29};
+  \end{tikzpicture} 
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{1. 开放定址法--示例:  $\{47, 7, 29, 11, 16, 92, 22, 8, 3\}$}
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \scalebox{0.5}{
+      \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
+        \draw node[n] (n0) {0};
+        \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 10}
+        \draw node[n, right=0 of n\xp](n\x) {$\x$};
+
+        \foreach \x/\y in {0/, 1/, 2/, 3/47, 4/, 5/, 6/, 7/7, 8/, 9/, 10/}
+        \draw node[n, below=0 of n\x, draw](d\x) {$\y$};
+
+        \draw node[n, below=0 of d7, circle, fill=red!20] (t29) {29};
+        \draw node[n, below=0 of n8, fill=green!10] {29};
+        \path[draw, ->] (t29) edge[bend right] (d8.south);
+      \end{tikzpicture}
+    }
+    
+    \pause
+    \scalebox{0.5}{
+      \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
+        \draw node[n] (n0) {0};
+        \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 10}
+        \draw node[n, right=0 of n\xp](n\x) {$\x$};
+
+        \foreach \x/\y in {0/11, 1/, 2/, 3/47, 4/, 5/, 6/, 7/7, 8/, 9/, 10/}
+        \draw node[n, below=0 of n\x, draw](d\x) {$\y$};
+
+        \draw node[n, below=0 of d7, circle, fill=red!20] (t29) {29};
+        \draw node[n, below=0 of n8, fill=green!10] {29};
+        \path[draw, ->] (t29) edge[bend right] (d8.south);
+      \end{tikzpicture}
+    }
+
+    \pause
+    \scalebox{0.5}{
+      \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
+        \draw node[n] (n0) {0};
+        \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 10}
+        \draw node[n, right=0 of n\xp](n\x) {$\x$};
+
+        \foreach \x/\y in {0/11, 1/, 2/, 3/47, 4/, 5/16, 6/, 7/7, 8/, 9/, 10/}
+        \draw node[n, below=0 of n\x, draw](d\x) {$\y$};
+
+        \draw node[n, below=0 of d7, circle, fill=red!20] (t29) {29};
+        \draw node[n, below=0 of n8, fill=green!10] {29};
+        \path[draw, ->] (t29) edge[bend right] (d8.south);
+      \end{tikzpicture}
+    }
+    
+    \pause
+    \scalebox{0.5}{
+      \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
+        \draw node[n] (n0) {0};
+        \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 10}
+        \draw node[n, right=0 of n\xp](n\x) {$\x$};
+
+        \foreach \x/\y in {0/11, 1/, 2/, 3/47, 4/92, 5/16, 6/, 7/7, 8/, 9/, 10/}
+        \draw node[n, below=0 of n\x, draw](d\x) {$\y$};
+
+        \draw node[n, below=0 of d7, circle, fill=red!20] (t29) {29};
+        \draw node[n, below=0 of n8, fill=green!10] {29};
+        \path[draw, ->] (t29) edge[bend right] (d8.south);
+      \end{tikzpicture}
+    }
+
+    \column{0.5\textwidth}
+    \scalebox{0.5}{
+      \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
+        \draw node[n] (n0) {0};
+        \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 10}
+        \draw node[n, right=0 of n\xp](n\x) {$\x$};
+
+        \foreach \x/\y in {0/11, 1/, 2/, 3/47, 4/92, 5/16, 6/, 7/7, 8/, 9/, 10/}
+        \draw node[n, below=0 of n\x, draw](d\x) {$\y$};
+
+        \draw node[n, below=0 of d7, circle, fill=red!20] (t29) {29};
+        \draw node[n, below=0 of n8, fill=green!10] {29};
+        \path[draw, ->] (t29) edge[bend right] (d8.south);
+
+        \draw node[n, below=0 of d0, circle, fill=red!20] (t22) {22};
+        \draw node[n, below=0 of n1, fill=green!10] {22};
+        \path[draw, ->] (t22) edge[bend right] (d1.south);
+      \end{tikzpicture}
+    }
+
+    \pause
+    \scalebox{0.5}{
+      \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
+        \draw node[n] (n0) {0};
+        \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 10}
+        \draw node[n, right=0 of n\xp](n\x) {$\x$};
+
+        \foreach \x/\y in {0/11, 1/, 2/, 3/47, 4/92, 5/16, 6/, 7/7, 8/, 9/, 10/}
+        \draw node[n, below=0 of n\x, draw](d\x) {$\y$};
+
+        \draw node[n, below=0 of d7, circle, fill=red!20] (t29) {29};
+        \draw node[n, below=0 of n8, fill=green!10] {29};
+        \path[draw, ->] (t29) edge[bend right] (d8.south);
+
+        \draw node[n, below=0 of d0, circle, fill=red!20] (t22) {22};
+        \draw node[n, below=0 of n1, fill=green!10] {22};
+        \path[draw, ->] (t22) edge[bend right] (d1.south);
+
+        \draw node[n, below=0.5 of d8, circle, fill=red!20] (t8) {8};
+        \draw node[n, below=0 of n9, fill=green!10] {8};
+        \path[draw, ->] (t8) edge[bend right] (d9.south);
+      \end{tikzpicture}
+    }
+
+    \pause
+    \scalebox{0.5}{
+      \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
+        \draw node[n] (n0) {0};
+        \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 10}
+        \draw node[n, right=0 of n\xp](n\x) {$\x$};
+
+        \foreach \x/\y in {0/11, 1/, 2/, 3/47, 4/92, 5/16, 6/, 7/7, 8/, 9/, 10/}
+        \draw node[n, below=0 of n\x, draw](d\x) {$\y$};
+
+        \draw node[n, below=0 of d7, circle, fill=red!20] (t29) {29};
+        \draw node[n, below=0 of n8, fill=green!10] {29};
+        \path[draw, ->] (t29) edge[bend right] (d8.south);
+
+        \draw node[n, below=0 of d0, circle, fill=red!20] (t22) {22};
+        \draw node[n, below=0 of n1, fill=green!10] {22};
+        \path[draw, ->] (t22) edge[bend right] (d1.south);
+
+        \draw node[n, below=0.5 of d8, circle, fill=red!20] (t8) {8};
+        \draw node[n, below=0 of n9, fill=green!10] {8};
+        \path[draw, ->] (t8) edge[bend right] (d9.south);
+
+        \draw node[n, below=0 of d3, circle, fill=red!20] (t3) {3};
+        \draw node[n, below=0 of n6, fill=green!10] {3};
+        \path[draw, ->] (t3) edge[bend right] (d6.south);
+      \end{tikzpicture}
+    }
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{开放定址法}
+
+  另一种冲突时空间选择的策略：
+
+  每次检查位置空间的步长以平方倍增加。也就是说,如果位置$s$被占用,则首先检查$s +
+  1^2$处,然后检查$s-1^2$, $s + 2^2$, $s - 2^2$, $s + 3^2$, $\cdots$依此类推,而不
+  是象线性挖掘那样从$s+1, s+2, \cdots$线性增长。
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{2. 再哈希法}
+
+  如果$Hash(key)=a$时产生地址冲突, 就再用$ReHash(key)=b$确定移动的步长因子,寻找空
+  的哈希地址。
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{3. 拉链法}
+  \begin{itemize}
+  \item 将所有散列地址相同的记录,即所有同义词的记录存储在一个单链表中(称为同义词
+    子表),在散列表中存储的是所有同义词子表的头指针。
+  \item 例如,关键码集合为$\{47, 7, 29, 11, 16, 92, 22, 8, 3\}$, 按$Hash(key)=key
+    MOD 11$和拉链法得到hash表如下:
+  \end{itemize}
+
+  \scalebox{0.8}{
+    \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
+      \draw node[n] (n0) {0};
+      \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 10}
+      \draw node[n, right=0 of n\xp](n\x) {$\x$};
+
+      \foreach \x/\y in {0/11, 1/, 2/, 3/47, 4/92, 5/16, 6/, 7/7, 8/8, 9/, 10/}
+      \draw node[n, below=0 of n\x, draw](d\x) {$\y$};
+
+      \draw node[n, below=0.2 of d0, fill=red!20] (t22) {22};
+      \draw node[n, below=0.2 of d3, fill=red!20] (t3) {3};
+      \draw node[n, below=0.2 of d7, fill=red!20] (t29) {29};
+    \end{tikzpicture}
+  }
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{4. 建立公共溢出区}
+  \begin{itemize}
+  \item 另分配一个溢出表。只要产生地址冲突,都将存入溢出表。
+  \item 例如,关键码集合为$\{47, 7, 29, 11, 16, 92, 22, 8, 3\}$
+  \end{itemize}
+
+  \scalebox{0.8}{
+    \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
+      \draw node[n] (n0) {0};
+      \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 10}
+      \draw node[n, right=0 of n\xp](n\x) {$\x$};
+
+      \foreach \x/\y in {0/11, 1/, 2/, 3/47, 4/92, 5/16, 6/, 7/7, 8/8, 9/, 10/}
+      \draw node[n, below=0 of n\x, draw](d\x) {$\y$};
+
+      \draw node[n, below=0.2 of d0, fill=red!20] (t22) {22};
+      \draw node[n, below=0.2 of d3, fill=red!20] (t3) {3};
+      \draw node[n, below=0.2 of d7, fill=red!20] (t29) {29};
+
+      \foreach \x/\y  in {0/29,1/22, 2/3,3/,4/,5/,6/,7/,8/,9/,10/}
+			\draw node[n, below=1.2cm of d\x, draw, fill=green!10] (y\x) {\y};
+      
+      \draw node[left=0 of y0]{溢出表};        
+    \end{tikzpicture}
+  }
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{哈希表的查找分析}
+  \begin{itemize}
+  \item 虽然hash表中关键字与记录存储位置之间建立了直接映像,但由于冲突的存在使
+    得hash表的查找仍然是一个给定值和关键字比较的过程。因此,仍需以平均查找长度衡
+    量hash表查找效率。
+  \item 查找效率取决于产生冲突的多少,产生的冲突少,需要进行关键字比较次数就少,查找
+    效率就高,反之则效率较低。
+  \item 影响产生冲突多少的因素也就是影响查找效率的因素。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{哈希表的查找分析(cont.)}
+  
+  影响产生冲突多少的因素(即影响查找效率的因素):
+
+  \begin{easylist} \easyitem
+    & 1. 哈希函数是否均匀
+
+    && 一般认为所选的哈希函数是“均匀的”,忽略此类影响
+    
+    & 2. 处理冲突的方法
+
+    && 线性探测法$ASL=(5×1+3×2+1×4)/9=5/3$
+    
+    && 二次探测法$ASL=(5×1+3×2+1×2)/9=13/9$    
+  \end{easylist}
+
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \scalebox{0.5}{
+      \begin{tikzpicture}[ n/.style={minimum size=0.8cm},
+        n2/.style={draw}]
+        \draw node[n] (n0) {0};
+        \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 10}
+        \draw node[n, right=0 of n\xp](n\x) {$\x$};
+
+        \foreach \x/\y in {0/11, 1/22, 2/, 3/47, 4/92, 5/16, 6/3, 7/7, 8/29, 9/8, 10/}
+        \draw node[n, below=0 of n\x, draw](d\x) {$\y$};
+
+        \draw[draw, -Latex, thick] (d1) ++(0,-1.5) -- (d1.south);
+        \draw[draw, -Latex, very thick, red] (d6) ++(0,-1.5) -- (d6.south);
+        \draw[draw, -Latex, thick] (d8) ++(0,-1.5) -- (d8.south);
+        \draw[draw, -Latex, thick] (d9) ++(0,-1.5) -- (d9.south);
+      \end{tikzpicture}
+    }
+    \column{0.5\textwidth}
+    \scalebox{0.5}{
+      \begin{tikzpicture}[ n/.style={minimum size=0.8cm},
+        n2/.style={draw}]
+        \draw node[n] (n0) {0};
+        \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 10}
+        \draw node[n, right=0 of n\xp](n\x) {$\x$};
+
+        \foreach \x/\y in {0/11, 1/22, 2/3, 3/47, 4/92, 5/16, 6/, 7/7, 8/29, 9/8, 10/}
+        \draw node[n, below=0 of n\x, draw](d\x) {$\y$};
+
+        \draw[draw, -Latex, thick] (d1) ++(0,-1.5) -- (d1.south);
+        \draw[draw, -Latex, very thick, red] (d2) ++(0,-1.5) -- (d2.south);
+        \draw[draw, -Latex, thick] (d8) ++(0,-1.5) -- (d8.south);
+        \draw[draw, -Latex, thick] (d9) ++(0,-1.5) -- (d9.south);
+      \end{tikzpicture}
+    }
+  \end{columns}
+
+  \begin{easylist}
+    & 3. 哈希表的装填因子
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{哈希表的查找分析(cont.)}
+
+  影响产生冲突多少的因素(即影响查找效率的因素):
+  
+  \begin{easylist}
+    & 3. 哈希表的装填因子
+    
+    \[\alpha = \dfrac{\text{填入表中的元素个数}}{\text{哈希表的长度}}\]
+
+    && $\alpha$是哈希表装满程度的标志因子。$\alpha$越大,产生冲突的可能性就越大;反
+    之则冲突的可能性越小。&& 实际上,哈希表的平均查找长度是装填因子$\alpha$的函数
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{哈希算法与数字安全}
+  \begin{itemize}
+  \item 哈希密码是对口令进行一次性的加密处理而形成的杂乱字符串。这个加密的过程被
+    认为是不可逆的,也就是说,人们认为从哈希串中是不能还原出原口令的。
+  \item 哈希算法应用于数字安全的几乎所有方面。Hash函数的种类很多,MD5和SHA-1算法是
+    目前广泛应用于金融、证券等电子商务领域的关键技术。后者在1994年便为美国政府采
+    纳,是目前美国政府广泛应用的计算机密码系统。
+  \item 指纹是人们身份惟一和安全的标志。在网络安全协议中,使用Hash函数能够产生理论
+    上独一无二的电子文件的''指纹'',形成''数字手印''。按照理想安全要求,原始信息即
+    使只改变一位,其产生的指纹也会截然不同。即使调用全球的计算机,也难以找到两个相
+    同的数字手印,因此能够保证数字签名无法被伪造。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Message Digest Algorithm- MD5}
+  \begin{itemize}
+  \item MD5是计算机安全领域广泛使用的一种散列函数,用以提供消息的完整性保护。
+    在90年代初由MIT和RSA Data Security Inc开发,经MD2、MD3和MD4发展而来。它的作用
+    是让大容量信息在用数字签名软件签署私人密钥前被变换成一定长的大整数。MD5广泛用
+    于各种软件的密码认证和钥匙识别上,通俗的讲就是人们讲的序列号。
+  \item 有学者考虑过在散列中暴力搜寻冲突的函数,他们猜测一个被设计专门用来搜
+    索MD5冲突的机器(在1994年的制造成本大约是1百万美元),可以平均每24天就找到一个冲
+    突。但尚不足以成为MD5的在实际应用中的问题。并且,由于MD5算法的使用是free的,所
+    以在一般的情况下, MD5怎么都应该算得上是很安全的了。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{基于公钥体系PKI的数字签名}
+  ~
+\end{frame}
+
+  

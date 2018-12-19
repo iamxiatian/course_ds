@@ -30,10 +30,13 @@ dot -Tpdf filename.dot -o filename.pdf
 
 ## 直接查看编译好的课件
 
-Chapter tree: pdf/tree.pdf
-Chapter graph: pdf/graph.pdf
-Chapter search: pdf/serach.pdf
+树: pdf/tree.pdf
 
+图: pdf/graph.pdf
+
+查找: pdf/serach.pdf
+
+排序: pdf/sort.pdf
 
 ## 第三方工具
 

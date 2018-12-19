@@ -1,6 +1,6 @@
 \section{Search}
 
-\begin{comment}
+%\begin{comment}
 
   
 \begin{frame}[fragile]{查找表}
@@ -41,7 +41,7 @@
 \end{frame}
 
 
-\begin{frame}[fragi定le]{如何进行查找？}
+\begin{frame}[fragile]{如何进行查找？}
   \begin{easylist} \easyitem
     & 查找的方法取决于查找表的结构。
     & 如果查找表中的数据元素之间不存在明显的组织规律，就不利于快速查找
@@ -945,7 +945,7 @@
 \end{frame}
 
 
-\end{comment}
+%\end{comment}
 
 \subsection{3. 哈希表}
 
@@ -1409,18 +1409,22 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{哈希表的查找分析(cont.)}
-
-  影响产生冲突多少的因素(即影响查找效率的因素):
+  \frametitle{哈希表的装填因子}
+  \[\alpha = \dfrac{\text{填入表中的元素个数}}{\text{哈希表的长度}}\]
   
   \begin{easylist}
-    & 3. 哈希表的装填因子
-    
-    \[\alpha = \dfrac{\text{填入表中的元素个数}}{\text{哈希表的长度}}\]
-
-    && $\alpha$是哈希表装满程度的标志因子。$\alpha$越大,产生冲突的可能性就越大;反
-    之则冲突的可能性越小。&& 实际上,哈希表的平均查找长度是装填因子$\alpha$的函数
+    & $\alpha$是哈希表装满程度的标志因子。$\alpha$越大,产生冲突的可能性就越大;反
+    之则冲突的可能性越小。哈希表的平均查找长度是装填因子$\alpha$的函数    
   \end{easylist}
+
+  \small
+  \begin{tabular}{|p{0.2\textwidth} | l | l |}
+    \hline
+    处理冲突的方法 & 查找成功时的平均长度 & 查找失败时的平均长度 \\ \hline
+    线性探测法 & $S_{nl} \approx \dfrac{1}{2}(1+\dfrac{1}{1-\alpha})$ &  $U_{nl} \approx \dfrac{1}{2}(1+\dfrac{1}{(1-\alpha)^2})$ \\ \hline
+    二次探测法与双哈希法 & $S_{nr} \approx -\dfrac{1}{\alpha}ln(1-\alpha)$ & $U_{nr} \approx \dfrac{1}{1-\alpha}$ \\ \hline
+    拉链法 & $S_{nc} \approx 1 + \dfrac{\alpha}{2}$ & $U_{nc} \approx \alpha + e^{-\alpha}$ \\ \hline
+  \end{tabular}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -1452,9 +1456,43 @@
   \end{itemize}
 \end{frame}
 
+
 \begin{frame}[fragile]
-  \frametitle{基于公钥体系PKI的数字签名}
-  ~
+  \frametitle{PKI}
+  \includegraphics[width=0.7\textwidth]{figs/pki.png}
+
+  \footnote{图片来源： http://cfile24.uf.tistory.com/image/2008E90C4AA117441BAC4C}
 \end{frame}
 
-  
+\begin{frame}[fragile]
+  \frametitle{基于公钥体系PKI的数字签名}
+  \includegraphics[width=0.75\textwidth]{figs/pki2.png}
+
+  \begin{itemize}
+  \item 散列算法的用途不是对明文加密,让别人看不懂,而是通过对信息摘要的比对,防止对
+    原文的篡改。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{MD5的安全性}
+  \begin{easylist}
+    & 2004年8月,在美国加州圣芭芭拉召开的国际密码大会上,王小云首次宣布了她及她的研
+    究小组近年来的研究成果——对MD5、HAVAL-128、MD4和RIPEMD等著名密码算法的破译结
+    果。
+
+    && 研究发现,不同的数据能够产生相同的Hash值
+
+    && 找到了的强无碰撞
+        
+    & 强无碰撞是指能找到相同的摘要信息,但无法篡改和伪造出有意义的明文。
+
+    & 弱无碰撞是对给定的消息进行运算得出相同的摘要信息,也就是说你可以控制明文的内
+    容
+    
+    % 通过强无碰撞伪造一个谁也看不懂的东西,没有实际意义。数字签名最多的是文本内
+    % 容,必须是人类可读的,如果你产生一个人类不可读的碰撞,并不会对于原文产生重大影响。
+   
+    & 理论上讲,电子签名可以伪造
+  \end{easylist}
+\end{frame}

@@ -10,7 +10,7 @@
       \item 插入排序：折半插入排序
       \item 插入排序：希尔排序
         
-      \item \color{blue} 交换排序：冒泡法
+      \item \color{blue} 交换排序：冒泡排序
       \item 交换排序：快速排序
         
       \item \color{orange} 选择排序：简单选择排序
@@ -61,8 +61,10 @@
 
     \color{blue} $<Jack,22>, <Richard, 25>, <Michel,25>, <Susie,26>$
     
-    & 稳定:若存在相同的关键字,对应位置的记录在排序后仍然保持原来的顺序,则称所使用
-    的排序方法是稳定的。反之称为不稳定的。
+    & \color{red}排序算法的稳定性
+
+    && 若存在相同的关键字,对应位置的记录在排序后仍然保持原来的顺序,则称所使用的排
+    序方法是稳定的。反之称为不稳定的。
 
   \end{easylist}
 \end{frame}
@@ -117,13 +119,13 @@
   \begin{center}
     \begin{tabular}{ c c c c c c c }
       \toprule
-      47 & 38 & 65 & 97 & 13 & 27 & \circled{47} \\ \midrule
-      \cellcolor{blue!20} 47 & \cellcolor{red!20} 38 & 65 & 97 & 13 & 27 & \circled{47} \\ \midrule
-      \cellcolor{blue!20} 38 &  \cellcolor{blue!20} 47 & \cellcolor{red!20} 65 & 97 & 13 & 27 & \circled{47} \\ \midrule
-      \cellcolor{blue!20} 38 &  \cellcolor{blue!20} 47 &  \cellcolor{blue!20} 65 & \cellcolor{red!20} 97 & 13 & 27 & \circled{47} \\ \midrule
-      \cellcolor{blue!20} 38 &  \cellcolor{blue!20} 47 &  \cellcolor{blue!20} 65 & \cellcolor{blue!20} 97 & \cellcolor{red!20} 13 & 27 & \circled{47} \\ \midrule
-      \cellcolor{blue!20} 13 &  \cellcolor{blue!20} 38 &  \cellcolor{blue!20} 47 & \cellcolor{blue!20} 65 & \cellcolor{blue!20} 97 & \cellcolor{red!20} 27 & \circled{47} \\ \midrule
-      \cellcolor{blue!20} 13 &  \cellcolor{blue!20} 27 &  \cellcolor{blue!20} 38 & \cellcolor{blue!20} 47 & \cellcolor{blue!20} 65 & \cellcolor{blue!20} 97 & \cellcolor{red!20} \circled{47} \\ \midrule
+      47 & 38 & 65 & 97 & 13 & 27 & \circled{47} \pause \\ \midrule 
+      \cellcolor{blue!20} 47 & \cellcolor{red!20} 38 & 65 & 97 & 13 & 27 & \circled{47} \pause \\ \midrule
+      \cellcolor{blue!20} 38 &  \cellcolor{blue!20} 47 & \cellcolor{red!20} 65 & 97 & 13 & 27 & \circled{47} \pause \\ \midrule
+      \cellcolor{blue!20} 38 &  \cellcolor{blue!20} 47 &  \cellcolor{blue!20} 65 & \cellcolor{red!20} 97 & 13 & 27 & \circled{47} \pause \\ \midrule
+      \cellcolor{blue!20} 38 &  \cellcolor{blue!20} 47 &  \cellcolor{blue!20} 65 & \cellcolor{blue!20} 97 & \cellcolor{red!20} 13 & 27 & \circled{47} \pause \\ \midrule
+      \cellcolor{blue!20} 13 &  \cellcolor{blue!20} 38 &  \cellcolor{blue!20} 47 & \cellcolor{blue!20} 65 & \cellcolor{blue!20} 97 & \cellcolor{red!20} 27 & \circled{47} \pause \\ \midrule
+      \cellcolor{blue!20} 13 &  \cellcolor{blue!20} 27 &  \cellcolor{blue!20} 38 & \cellcolor{blue!20} 47 & \cellcolor{blue!20} 65 & \cellcolor{blue!20} 97 & \cellcolor{red!20} \circled{47} \pause \\ \midrule
       \cellcolor{blue!20} 13 &  \cellcolor{blue!20} 27 &  \cellcolor{blue!20} 38 & \cellcolor{blue!20} 47 & \cellcolor{blue!20} \circled{47} & \cellcolor{blue!20} 65 & \cellcolor{blue!20} 97 \\ \bottomrule
     \end{tabular}
   \end{center}
@@ -219,6 +221,7 @@
     \end{center}
   \end{infobox}
 
+  \pause
   
   \begin{infobox}{第3趟：$d_3=1$}
     \begin{center}
@@ -368,83 +371,95 @@
       };
     \end{tikzpicture}
   \end{center}
+
+  SEE: \url{https://www.itcodemonkey.com/article/11276.html}
 \end{frame}
 
 \begin{frame}[plain]
   \begin{infobox}{快速排序举例(单次划分过程)}
-    \begin{tikzpicture}[box/.style={draw, minimum size=0.6cm, minimum width=1cm},
-      done/.style={fill=blue!5}]
+    \scalebox{0.8}{
+      \begin{tikzpicture}[box/.style={draw, minimum size=0.6cm, minimum width=1cm},
+        done/.style={fill=blue!5}]
 
-      \draw node[] (b0) {};
-      \foreach[count=\i, evaluate=\i as \leftx using int(\i-1)] \y in {49,38,65,97,76,13,27,49}
-      {
-        \draw node[box, right=0 of b\leftx] (b\i) {$\y$};
-        \draw node[above=0 of b\i] (idx_\i) {$\leftx$};
-      };
-      \draw node[box, right=0 of b0, fill=red!20] (b1) {49};
+        \draw node[] (b0) {};
+        \foreach[count=\i, evaluate=\i as \leftx using int(\i-1)] \y in {49,38,65,97,76,13,27,49}
+        {
+          \draw node[box, right=0 of b\leftx] (b\i) {$\y$};
+          \draw node[above=0 of b\i] (idx_\i) {$\leftx$};
+        };
+        \draw node[box, right=0 of b0, fill=red!20] (b1) {49};
 
-      \draw[-Latex, draw=blue, thick] (b1.south) ++ (0,-0.7cm) -> (b1.south);
-      \path (b8.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{1}} (b8.south);
-      \path (b7.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{2}} (b7.south);
-      
-      \draw node[below=1.2cm of b0] (b0) {}
-      node[box, right=0 of b0, done] (b1) {27}
-      node[box, right=0 of b1] (b2) {38}
-      node[box, right=0 of b2] (b3) {65}
-      node[box, right=0 of b3] (b4) {97}
-      node[box, right=0 of b4] (b5) {76}
-      node[box, right=0 of b5] (b6) {13}
-      node[box, right=0 of b6, fill=red!20] (b7) {49}
-      node[box, right=0 of b7, done] (b8) {49};
+        \draw[-Latex, draw=blue, thick] (b1.south) ++ (0,-0.7cm) -> (b1.south);
+        \path (b8.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{1}} (b8.south);
+        \path (b7.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{2}} (b7.south);
 
-
-      \draw[-Latex, draw=blue, thick] (b1.south) ++ (0,-0.7cm) -> (b1.south);
-      \path (b2.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{1}} (b2.south);
-      \path (b3.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{2}} (b3.south);
+        \pause
+        
+        \draw node[below=1.2cm of b0] (b0) {}
+        node[box, right=0 of b0, done] (b1) {27}
+        node[box, right=0 of b1] (b2) {38}
+        node[box, right=0 of b2] (b3) {65}
+        node[box, right=0 of b3] (b4) {97}
+        node[box, right=0 of b4] (b5) {76}
+        node[box, right=0 of b5] (b6) {13}
+        node[box, right=0 of b6, fill=red!20] (b7) {49}
+        node[box, right=0 of b7, done] (b8) {49};
 
 
-      \draw node[below=1.2cm of b0] (b0) {}
-      node[box, right=0 of b0, done] (b1) {27}
-      node[box, right=0 of b1, done] (b2) {38}
-      node[box, right=0 of b2, fill=red!20] (b3) {49}
-      node[box, right=0 of b3] (b4) {97}
-      node[box, right=0 of b4] (b5) {76}
-      node[box, right=0 of b5] (b6) {13}
-      node[box, right=0 of b6, done] (b7) {65}
-      node[box, right=0 of b7, done] (b8) {49};
+        \draw[-Latex, draw=blue, thick] (b1.south) ++ (0,-0.7cm) -> (b1.south);
+        \path (b2.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{1}} (b2.south);
+        \path (b3.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{2}} (b3.south);
 
-      \draw[-Latex, draw=blue, thick] (b3.south) ++ (0,-0.7cm) -> (b3.south);
-      \path (b6.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{1}} (b6.south);
+        \pause
 
+        \draw node[below=1.2cm of b0] (b0) {}
+        node[box, right=0 of b0, done] (b1) {27}
+        node[box, right=0 of b1, done] (b2) {38}
+        node[box, right=0 of b2, fill=red!20] (b3) {49}
+        node[box, right=0 of b3] (b4) {97}
+        node[box, right=0 of b4] (b5) {76}
+        node[box, right=0 of b5] (b6) {13}
+        node[box, right=0 of b6, done] (b7) {65}
+        node[box, right=0 of b7, done] (b8) {49};
 
-      \draw node[below=1.2cm of b0] (b0) {}
-      node[box, right=0 of b0, done] (b1) {27}
-      node[box, right=0 of b1, done] (b2) {38}
-      node[box, right=0 of b2, done] (b3) {13}
-      node[box, right=0 of b3] (b4) {97}
-      node[box, right=0 of b4] (b5) {76}
-      node[box, right=0 of b5,fill=red!20] (b6) {49}
-      node[box, right=0 of b6, done] (b7) {65}
-      node[box, right=0 of b7, done] (b8) {49};
+        \draw[-Latex, draw=blue, thick] (b3.south) ++ (0,-0.7cm) -> (b3.south);
+        \path (b6.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{1}} (b6.south);
 
-      \draw[-Latex, draw=blue, thick] (b6.south) ++ (0,-0.7cm) -> (b6.south);
-      \path (b4.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{1}} (b4.south);
+        \pause
 
+        \draw node[below=1.2cm of b0] (b0) {}
+        node[box, right=0 of b0, done] (b1) {27}
+        node[box, right=0 of b1, done] (b2) {38}
+        node[box, right=0 of b2, done] (b3) {13}
+        node[box, right=0 of b3] (b4) {97}
+        node[box, right=0 of b4] (b5) {76}
+        node[box, right=0 of b5,fill=red!20] (b6) {49}
+        node[box, right=0 of b6, done] (b7) {65}
+        node[box, right=0 of b7, done] (b8) {49};
 
-      \draw node[below=1.2cm of b0] (b0) {}
-      node[box, right=0 of b0, done] (b1) {27}
-      node[box, right=0 of b1, done] (b2) {38}
-      node[box, right=0 of b2, done] (b3) {13}
-      node[box, right=0 of b3,fill=red!20] (b4) {49}
-      node[box, right=0 of b4] (b5) {76}
-      node[box, right=0 of b5, done] (b6) {97}
-      node[box, right=0 of b6, done] (b7) {65}
-      node[box, right=0 of b7, done] (b8) {49};
+        \draw[-Latex, draw=blue, thick] (b6.south) ++ (0,-0.7cm) -> (b6.south);
+        \path (b4.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{1}} (b4.south);
 
-      \draw[-Latex, draw=blue, thick] (b4.south) ++ (0,-0.7cm) -> (b4.south);
-      \path (b5.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{1}} (b5.south);
-      \path (b4.south) ++ (0.2cm,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{2}} (b4.-60);
-    \end{tikzpicture}
+        \pause
+
+        \draw node[below=1.2cm of b0] (b0) {}
+        node[box, right=0 of b0, done] (b1) {27}
+        node[box, right=0 of b1, done] (b2) {38}
+        node[box, right=0 of b2, done] (b3) {13}
+        node[box, right=0 of b3,fill=red!20] (b4) {49}
+        node[box, right=0 of b4] (b5) {76}
+        node[box, right=0 of b5, done] (b6) {97}
+        node[box, right=0 of b6, done] (b7) {65}
+        node[box, right=0 of b7, done] (b8) {49};
+
+        \draw[-Latex, draw=blue, thick] (b4.south) ++ (0,-0.7cm) -> (b4.south);
+        \path (b5.south) ++ (0,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{1}} (b5.south);
+        \path (b4.south) ++ (0.2cm,-0.5cm) edge[-Latex, draw=red] node[right]{\textcircled{2}} (b4.-60);
+      \end{tikzpicture}
+    }
+
+    其中：带圆圈的数字表示比较的次序；蓝色箭头表示枢轴元素的位置；红色箭头表示要
+    比较的元素位置。
   \end{infobox}
 \end{frame}
 
@@ -794,7 +809,7 @@
 
 \begin{frame}[plain]
   \centering
-  \includegraphics[width=0.75\textwidth]{imgs/merge-sort.jpg}
+  \includegraphics[width=0.75\textwidth]{figs/merge-sort.jpg}
   
 \end{frame}
 
@@ -831,4 +846,31 @@
 
     如果对效率有所要求，而不太关心空间的使用时，可以选择用计数排序。
   \end{infobox}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Reference}
+
+  \begin{itemize}
+  \item 各种排序算法的在线动画演示：
+
+    \url{https://www.cs.usfca.edu/~galles/visualization/ComparisonSort.html}
+    
+    \url{http://www.atool.org/sort.php}
+
+  \item 搜索排序漫画系列
+    \url{https://www.itcodemonkey.com/article/11276.html}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{本周作业}
+  \begin{itemize}
+  \item 编程实现插入排序、希尔排序、冒泡排序、快速排序、选择排序、堆排序和二路归
+    并排序。
+  \item 能够对相同的一组输入，在一个地方（例如主函数里面）里面分别调用不同的方法，
+    并记录每种排序算法各自的运行时间。
+  \item 测试序列：27, 38, 1, 10, 27, 38, 3, 6, 9, 11, 18, 27, 9, 5, 100000,
+    1000001, 0, 10002220011, 11, 56, 79, 78, 5, 12, 8, 13, 9, 12, 10, 12
+  \end{itemize}
 \end{frame}

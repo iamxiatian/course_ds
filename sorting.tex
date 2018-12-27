@@ -278,6 +278,17 @@
       };
     \end{tikzpicture}
   \end{center}
+
+  \pause
+  47  13  27 9 78 38 47 66
+
+  \pause
+    
+  27 9 47 13  47 38 78 66
+
+  \pause
+  9 13 27 38 47 47 66 78
+  
 \end{frame}
 
 
@@ -839,6 +850,53 @@
 \end{frame}
 
 \subsection{基数排序}
+
+\begin{frame}[fragile]
+  \frametitle{}
+  \begin{sectionbox}{基数排序}
+    \begin{itemize}
+    \item 计数排序
+    \item 基数排序
+    \end{itemize}
+  \end{sectionbox}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{计数排序}
+  \begin{infobox}{算法思想}
+    构建一个足够大的数组，数组大小需要保证能够把所有元素都包含在这个数组上 。
+
+    在对序列$T$进行排序时，依次读取序列$T$中的元素，并修改数组中该元素值对应位置
+    上的信息即可。
+
+    一位数的序列对基数排序来说就是一个计数排序。
+  \end{infobox}  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{示例：[ 5, 8, 9, 1, 4, 2, 9, 3, 7, 1, 8, 6, 2, 3, 4, 0, 8 ]}
+  \begin{center}
+    \scalebox{0.75}{
+      \begin{tikzpicture}[box/.style={draw=gray, minimum size=0.8cm},
+        box2/.style={draw, color=red, fill=green!10, minimum size=0.8cm}]
+        \draw node[box](idx0){$0$} node[box2, right=0.2cm of idx0](d0){$1$};
+
+        \foreach[count=\i,evaluate=\i as \j using int(\i-1)] \y/\d in {1/2,2/2,3/2,4/2,5/1,6/1,7/1,8/3,9/2} {
+          \draw node[box, below=0 of idx\j] (idx\y) {$\y$};
+          \draw node[box2, right=0.2cm of idx\y] (d\y) {$\d$};
+        }
+
+        \draw [decorate,decoration={brace,amplitude=10pt,mirror,raise=10pt}] (idx0.west) -- (idx9.west) node[midway, xshift=-1.5cm]{Index};
+
+        \draw [decorate,decoration={brace,amplitude=10pt,raise=10pt}] (d0.east) -- (d9.east) node[midway, xshift=2.5cm]{Length=Max Value};
+
+        \draw node[shape=cloud, draw, minimum height=1cm, right=of d1](tip){\scriptsize{计数数组}};
+        \path[draw, -Latex] (tip) edge[in=45, out=90] (d0.north);
+      \end{tikzpicture}
+    }
+  \end{center}  
+\end{frame}
+
 \begin{frame}[fragile]
   \frametitle{基数排序}
   \begin{infobox}{算法思想}

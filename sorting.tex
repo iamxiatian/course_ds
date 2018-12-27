@@ -874,14 +874,14 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{示例：[ 5, 8, 9, 1, 4, 2, 9, 3, 7, 1, 8, 6, 2, 3, 4, 0, 8 ]}
+  \frametitle{示例：[ 9, 8, 1, 4, 9, 3, 7, 1, 8, 6, 2, 3, 4, 0, 8 ]}
   \begin{center}
     \scalebox{0.75}{
       \begin{tikzpicture}[box/.style={draw=gray, minimum size=0.8cm},
         box2/.style={draw, color=red, fill=green!10, minimum size=0.8cm}]
         \draw node[box](idx0){$0$} node[box2, right=0.2cm of idx0](d0){$1$};
 
-        \foreach[count=\i,evaluate=\i as \j using int(\i-1)] \y/\d in {1/2,2/2,3/2,4/2,5/1,6/1,7/1,8/3,9/2} {
+        \foreach[count=\i,evaluate=\i as \j using int(\i-1)] \y/\d in {1/2,2/1,3/2,4/2,5/0,6/1,7/1,8/3,9/2} {
           \draw node[box, below=0 of idx\j] (idx\y) {$\y$};
           \draw node[box2, right=0.2cm of idx\y] (d\y) {$\d$};
         }
@@ -903,6 +903,8 @@
     不需要直接对元素进行相互比较，也不需要将元素相互交换，而是对元素进行“分类”。
 
     如果对效率有所要求，而不太关心空间的使用时，可以选择用计数排序。
+
+    See: \url{https://blog.csdn.net/lemon\_tree12138/article/details/51695211}
   \end{infobox}
 \end{frame}
 

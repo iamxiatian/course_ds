@@ -3,17 +3,17 @@
 
 % if use xelatex, use the following lines before lualatex
 \usepackage{xeCJK,fontspec,xunicode,xltxtra, fancybox}
-\setCJKmainfont{FZLanTingHei-L-GBK} %方正字体，也可以改成：微软雅黑
-\setCJKfamilyfont{FZHeiR}{FZLanTingHeiS-R-GB}  
-\setCJKsansfont{FZLanTingHeiS-EL-GB} 
+\setCJKfamilyfont{Hei}{Source Han Sans Light}  
+\newcommand{\cjkem}{\CJKfamily{Hei}}
+\setCJKfamilyfont{Hei}{Source Han Sans Light}  
+\setCJKmainfont{Source Han Sans Light} %方正字体，也可以改成：微软雅黑
+\setCJKsansfont{Source Han Sans Light} 
 \setCJKmonofont{Consolas}
 
 % if use lualatex, use the following two lines.
 %\usepackage{luatexja-fontspec}
 %\setmainjfont{FZLanTingHei-L-GBK}
 
-\setsansfont[Mapping=tex-text,LetterSpace=-1.25]{Ubuntu Light}
-\setmonofont[Color=00663300]{Ubuntu Light}
 
 %box tools
 \usepackage{framed, xcolor} 
@@ -175,8 +175,6 @@ coltitle=black}
 
 \newcommand{\cjkbold}{\color[rgb]{0.29, 0.0, 0.51} \CJKfamily{FZHei}}  %http://latexcolor.com/
 
-\newcommand{\cjkem}{\CJKfamily{FZHeiR}} 
-\renewcommand{\em}[1]{\color{red} #1}
 
 %\XeTeXlinebreaklocale "zh"  
 %\XeTeXlinebreakskip = 0pt plus 1pt 
@@ -223,9 +221,9 @@ coltitle=black}
 % \date[\initclock\tdtime]{\today}  
 \frame{\titlepage}
 
-%\input{tree}
-%\input{graph}
-%\include{search}
+\input{tree}
+\input{graph}
+\include{search}
 \input{sorting}
 
 \end{document}

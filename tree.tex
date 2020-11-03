@@ -489,48 +489,53 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
+
+\begin{frame}[t,fragile]
   \frametitle{二叉树的存储结构：顺序存储}
   \begin{columns}
-    \column{0.45\textwidth}
+    \begin{column}[T]{0.45\textwidth}
+        \scalebox{0.6} {
+          \begin{forest}
+            [1, name=A,for tree={color=white,fill=black}
+            [2, for tree={dotted,color=black,fill=white}, [4 [8] [9]] [5 [10] [11]]]
+            [3, name=C [6 [12] [{}, no edge,draw=none, fill=none] ] [7] ]
+            ]
+          \end{forest}
+        }
 
-    \scalebox{0.6} {
-      \begin{forest}
-        [1, name=A,for tree={color=white,fill=black}
-        [2, for tree={dotted,color=black,fill=white}, [4 [8] [9]] [5 [10] [11]]]
-        [3, name=C [6 [12] [{}, no edge,draw=none, fill=none] ] [7] ]
-        ]
-      \end{forest}
-    }
+        \vspace{2cm}
+        \scalebox{0.6}{
+          \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
+            \draw node[] (n0) {};
+            \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 12}
+            \draw node[n, right=0 of n\xp](n\x) {\xp};
 
-    \vspace{2cm}
-    \scalebox{0.6}{
-      \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
-        \draw node[] (n0) {};
-        \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 12}
-        \draw node[n, right=0 of n\xp](n\x) {$\xp$};
 
-        \foreach \x in {2,4,5,8,9, ..., 11}
-        \draw node[n, above=0 of n\x, draw](d\x) {$\^$};
-        \foreach \x/\y in {1/1,3/3,6/6,7/7,12/12}
-        \draw node[n, above=0 of n\x, draw,white, fill=black](d\x) {$\y$};
-      \end{tikzpicture}
-    }
+            \foreach \x in {2,4,5,8,9,10,11}
+            \draw node[n, above=0 of n\x, draw] (d\x) { $\wedge$};
 
-    \column{0.55\textwidth}
-    \begin{minted}[bgcolor=yellow!20, fontsize=\scriptsize]{c}
-      #define MAX_SIZE 100
-      typedef int SqBiTree[MAX_SIZE];
-      SqBiTree bt;
-    \end{minted}
+            \foreach \x/\y in {1/1,3/3,6/6,7/7,12/12}
+            \draw node[n, above=0 of n\x, draw,white, fill=black](d\x) {\y};
+          \end{tikzpicture}
+        }
 
-    \begin{minted}[bgcolor=red!5, fontsize=\scriptsize]{java}
-      class SqBiTree {
-        //static int MAX_SIZE = 100;
-        //int[] data = new int[MAX_SIZE];
-        List<Integer> data = new ArrayList<Integer>();
-      }
-    \end{minted}
+    \end{column}
+
+    \begin{column}[T]{0.55\textwidth}
+      \begin{minted}[bgcolor=yellow!20, fontsize=\scriptsize]{c}
+#define MAX_SIZE 100
+typedef int SqBiTree[MAX_SIZE];
+SqBiTree bt;
+      \end{minted}
+
+      \begin{minted}[bgcolor=red!5, fontsize=\scriptsize]{java}
+class SqBiTree {
+  //static int MAX_SIZE = 100;
+  //int[] data = new int[MAX_SIZE];
+  List<Integer> data = new ArrayList<>();
+}
+      \end{minted}
+    \end{column}
   \end{columns}
   
   \begin{itemize}
@@ -539,6 +544,9 @@
   \end{itemize}
 \end{frame}
 
+
+
+
 \begin{frame}[fragile]
   \frametitle{二叉树的存储结构：顺序存储}
   \begin{itemize}
@@ -546,7 +554,7 @@
   \end{itemize}
 
   \begin{columns}
-    \column{0.6\textwidth}
+    \column{0.5\textwidth}
     \scalebox{0.8} {
       \begin{forest}
         [$a$, for tree={color=white,fill=black}
@@ -572,7 +580,6 @@
 
   \pause
   
-  \hspace{-1cm}
   \scalebox{0.7}{
     \begin{tikzpicture}[ n/.style={minimum size=0.8cm}]
       \draw node[n] (n0) {0};
@@ -623,18 +630,18 @@
   \begin{columns}
     \column{0.48\textwidth}
     \begin{minted}[fontsize=\scriptsize,bgcolor=red!5]{c}
-      typedef struct BiTNode  { // C Code
-        ElemType data;
-        struct BiTNode *lchild, *rchild;
-      } BiTNode, *BiTree;
+typedef struct BiTNode  { // C Code
+  ElemType data;
+  struct BiTNode *lchild, *rchild;
+} BiTNode, *BiTree;
     \end{minted}
 
     \column{0.48\textwidth}
     \begin{minted}[fontsize=\scriptsize,bgcolor=yellow!10]{c}
-      class BiTNode<T> { //Java Code
-        T data;
-        BiTNode lchild, rchild;
-      }
+class BiTNode<T> { //Java Code
+  T data;
+  BiTNode lchild, rchild;
+}
     \end{minted}
   \end{columns}
 
@@ -663,26 +670,28 @@
     
     \column{0.5\textwidth}
     \begin{minted}[fontsize=\scriptsize,bgcolor=red!5]{c}
-      typedef struct BiTNode  { // C Code
-        ElemType data;
-        struct BiTNode *lchild, *rchild, *parent;
-      } BiTNode, *BiTree;
+typedef struct BiTNode  { // C Code
+  ElemType data;
+  struct BiTNode *lchild, *rchild;
+  struct BiTNode *parent;
+} BiTNode, *BiTree;
     \end{minted}
 
     \begin{minted}[fontsize=\scriptsize,bgcolor=yellow!10]{c}
-      class BiTNode<T> { //Java Code
-        T data;
-        BiTNode lchild, rchild, parent;
-      }
+class BiTNode<T> { //Java Code
+  T data;
+  BiTNode lchild, rchild, parent;
+}
     \end{minted}
   \end{columns}
 
-  思考: 有n个结点的三叉链表有多少个空指针？
+  \small 思考: 有n个结点的三叉链表有多少个空指针？
 
   \pause
   \scriptsize
   对于二叉链表，指针域一共有$2*n$个，分支共有$N-1$,  每个分支占用一个指针域，所以空指针数量为$2*n - (n - 1) = n+1 $;  对于parent，根节点无父节点，所以共有$n+1+1=n+2$个空指针
 \end{frame}
+
 
 \begin{frame}[fragile, plain]
   ~  
@@ -757,13 +766,13 @@
     \column{0.6\textwidth}
     //先序遍历二叉树递归算法C伪代码
     \begin{minted}[bgcolor=red!5, fontsize=\small]{c}
-      status preOrderTraverse(BiTree T){
-        if(T){
-          printf(T->data);
-          preOrderTraverse(T->lchild);
-          preOrderTraverse(T->rchild);
-        }
-      }
+status preOrderTraverse(BiTree T){
+  if(T){
+    printf(T->data);
+    preOrderTraverse(T->lchild);
+    preOrderTraverse(T->rchild);
+  }
+}
     \end{minted}
     \begin{itemize}
     \item status代表什么？
@@ -790,19 +799,19 @@
     先序遍历递归算法的Java实现
   
     \begin{minted}[bgcolor=yellow!10,fontsize=\small]{java}
-      class Node {
-        String data;
-        Node left, right;
-      }
-      class Tree {
-        void preOrderTraverse(Node node) {
-          if(node != null) {
-            System.out.println(node.data);
-            preOrderTraverse(node.left);
-            preOrderTraverse(node.right);
-          }
-        }
-      }
+class Node {
+  String data;
+  Node left, right;
+}
+class Tree {
+  void preOrderTraverse(Node node) {
+    if(node != null) {
+      System.out.println(node.data);
+      preOrderTraverse(node.left);
+      preOrderTraverse(node.right);
+    }
+  }
+}
     \end{minted}
 
     \column{0.4\textwidth}
@@ -820,56 +829,56 @@
 \begin{frame}[fragile, allowframebreaks]
   \frametitle{中序遍历的Java实现}
   \begin{minted}[fontsize=\scriptsize]{java}
-    public class Tree {
-      Node root;
+public class Tree {
+  Node root;
 
-      public Tree(Node root) {
-        this.root = root;
-      }
+  public Tree(Node root) {
+    this.root = root;
+  }
 
-      void inOrderTraverse() {
-        inOrderTraverse(root);
-      }
+  void inOrderTraverse() {
+    inOrderTraverse(root);
+  }
 
-      void inOrderTraverse(Node node) {
-        if(node != null) {
-          inOrderTraverse(node.lc);
-          //visit(node);
-          System.out.println(node);
-          inOrderTraverse(node.rc);
-        }
-      }
-
-      public static void main(String[] args) {
-        Node a  =new Node("A",
-        new Node("B", new Node("D"), null),
-        new Node("C", new Node("E"), new Node("F"))
-        );
-        Tree tree = new Tree(a);
-        tree.inOrderTraverse();
-      }
-
-      static class Node {
-        String data;
-        Node lc, rc;
-
-        public Node(String data, Node lc, Node rc) {
-          this.data = data;
-          this.lc = lc;
-          this.rc = rc;
-        }
-
-        public Node(String data) {
-          this.data = data;
-          this.lc = null;
-          this.rc = null;
-        }
-
-        public String toString(){
-          return data;
-        }
-      }
+  void inOrderTraverse(Node node) {
+    if(node != null) {
+      inOrderTraverse(node.lc);
+      //visit(node);
+      System.out.println(node);
+      inOrderTraverse(node.rc);
     }
+  }
+
+  public static void main(String[] args) {
+    Node a  =new Node("A",
+    new Node("B", new Node("D"), null),
+    new Node("C", new Node("E"), new Node("F"))
+    );
+    Tree tree = new Tree(a);
+    tree.inOrderTraverse();
+  }
+
+  static class Node {
+    String data;
+    Node lc, rc;
+
+    public Node(String data, Node lc, Node rc) {
+      this.data = data;
+      this.lc = lc;
+      this.rc = rc;
+    }
+
+    public Node(String data) {
+      this.data = data;
+      this.lc = null;
+      this.rc = null;
+    }
+
+    public String toString(){
+      return data;
+    }
+  }
+}
   \end{minted}
 \end{frame}
 
@@ -878,20 +887,20 @@
   \begin{columns}[T]
     \column{0.6\textwidth}
     \begin{minted}[bgcolor=yellow,fontsize=\small]{c}
-      status traverse(BiTree T) {
-        InitStack(S);
-        p = T;
-        while(p || !StackEmpty(S)) {
-          if(p) {
-            push(S, p); p = p->lchild;
-          } else {
-            pop(S, p);
-            printf(p->data);
-            p = p->rchild;
-          }
-        }
-        return OK;
-      }
+status traverse(BiTree T) {
+  InitStack(S);
+  p = T;
+  while(p || !StackEmpty(S)) {
+    if(p) {
+      push(S, p); p = p->lchild;
+    } else {
+      pop(S, p);
+      printf(p->data);
+      p = p->rchild;
+    }
+  }
+  return OK;
+}
     \end{minted}
 
     \column{0.4\textwidth}
@@ -912,20 +921,20 @@
   \begin{columns}[T]
     \column{0.6\textwidth}
     \begin{minted}[bgcolor=yellow!10,fontsize=\small]{c}
-      void traverse(TreeNode root) {
-        Stack stack = new Stack();
-        TreeNode p = root;
-        while(p!=null || stack.notEmpty()) {
-          if(p!=null) {
-            stack.push(p);
-            p = p.lchild;
-          } else {
-            p = stack.pop();
-            printf(p.data);
-            p = p.rchild;
-          }
-        }
-      }
+void traverse(TreeNode root) {
+  Stack stack = new Stack();
+  TreeNode p = root;
+  while(p!=null || stack.notEmpty()) {
+    if(p!=null) {
+      stack.push(p);
+      p = p.lchild;
+    } else {
+      p = stack.pop();
+      printf(p.data);
+      p = p.rchild;
+    }
+  }
+}
     \end{minted}
 
     \column{0.4\textwidth}
@@ -995,16 +1004,16 @@
 \begin{frame}[fragile]
   \frametitle{广度优先遍历}
   \begin{minted}{java}
-    void bfs(TreeNode root) {
-      Queue Q = new Queue();
-      Q.enqueue(root);
-      while(Q.notEmpty()) {
-        TreeNode node = Q.dequeue();
-        printf(node);
-        if(node.left!=null) Q.enqueue(node.left);
-        if(node.right !=null) Q.enqueue(node.right);
-      }
-    }
+void bfs(TreeNode root) {
+  Queue Q = new Queue();
+  Q.enqueue(root);
+  while(Q.notEmpty()) {
+    TreeNode node = Q.dequeue();
+    printf(node);
+    if(node.left!=null) Q.enqueue(node.left);
+    if(node.right !=null) Q.enqueue(node.right);
+  }
+}
   \end{minted}
 \end{frame}
 
@@ -1113,17 +1122,17 @@
     \column{0.5\textwidth}
 
     \begin{minted}[bgcolor=red!5, fontsize=\scriptsize]{java}
-      class PtNode<T> {
-        T data;
-        int parent;
-      }
+class PtNode<T> {
+  T data;
+  int parent;
+}
     \end{minted}
 
     \begin{minted}[bgcolor=yellow!10, fontsize=\scriptsize]{c}
-      typedef struct{
-        telemtype data;
-        int parent;
-      } PtNode;
+typedef struct{
+  telemtype data;
+  int parent;
+} PtNode;
     \end{minted}
     
     因节点的度各异,从父亲指向孩子极不方便!若经常需要查找孩子结点,双亲表示法就不方
@@ -1145,7 +1154,7 @@
 
     \scalebox{0.6}{
       \begin{tikzpicture}[ n/.style={minimum height=0.8cm, minimum width=1cm},
-        n2/.style={minimum height=0.6cm, minimum width=1cm, fill=red!5},
+        n2/.style={minimum height=0.6cm, minimum width=0.7cm, fill=red!5},
         e/.style={->, very thick}]
         \draw node[n] (n0) {索引} node[n,right=0 of n0](label) {标记/父结点};
         \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 7}
@@ -1156,13 +1165,13 @@
 
         \draw node[n2, draw, right=of PR] (c11) {1} node[n2, draw, right=0 of c11] (c12) {};
         \draw node[n2, draw, right=of c12] (c21) {2} node[n2, draw, right=0 of c21] (c22) {$\wedge$};
-        \draw[e] (PR.center) -- (c11) (c12.center)--(c21);				
+        \draw[e] (PR.center) -- (c11) (c12.center)--(c21);        
 
         \draw node[n2, draw, right=of PA] (c11) {3} node[n2, draw, right=0 of c11] (c12) {};
         \draw node[n2, draw, right=of c12] (c21) {4} node[n2, draw, right=0 of c21] (c22) {};
         \draw node[n2, draw, right=of c22] (c31) {5} node[n2, draw, right=0 of c31] (c32) {$\wedge$};
 
-        \draw[e] (PA.center) -- (c11) (c12.center)--(c21) (c22.center)--(c31);				
+        \draw[e] (PA.center) -- (c11) (c12.center)--(c21) (c22.center)--(c31);        
 
         \draw node[n2, draw, right=of PB] (c11) {6} node[n2, draw, right=0 of c11] (c12) {$\wedge$};
         \draw[e] (PB.center) -- (c11);
@@ -1173,21 +1182,21 @@
 
     试写出ChildNode, CTree \pause
     
-    \begin{minted}[bgcolor=red!5, fontsize=\scriptsize]{java}
-      class TNode<T> {
-        T data;
-        ChildNode firstChild;
-      }
-      
-      class ChildNode<T> {
-        int index;
-        ChildNode nextSibling;
-      }
+    \begin{minted}[breaklines, bgcolor=red!5, fontsize=\scriptsize]{java}
+class TNode<T> {
+  T data;
+  ChildNode firstChild;
+}
 
-      class Tree {
-        TNode<String>[] nodes = new TNode<String>[]{new TNode("R"), new TNode("A")};
-        TNode root = nodes[0];
-      }
+class ChildNode<T> {
+  int index;
+  ChildNode nextSibling;
+}
+
+class Tree {
+  TNode<String>[] nodes = new TNode<String>[]{new TNode("R"), new TNode("A")};
+  TNode root = nodes[0];
+}
     \end{minted}
   \end{columns}
 \end{frame}
@@ -1216,13 +1225,13 @@
 
       \draw node[n2, draw, right=of PR] (c11) {1} node[n2, draw, right=0 of c11] (c12) {};
       \draw node[n2, draw, right=of c12] (c21) {2} node[n2, draw, right=0 of c21] (c22) {$\wedge$};
-      \draw[e] (PR.center) -- (c11) (c12.center)--(c21);				
+      \draw[e] (PR.center) -- (c11) (c12.center)--(c21);        
 
       \draw node[n2, draw, right=of PA] (c11) {3} node[n2, draw, right=0 of c11] (c12) {};
       \draw node[n2, draw, right=of c12] (c21) {4} node[n2, draw, right=0 of c21] (c22) {};
       \draw node[n2, draw, right=of c22] (c31) {5} node[n2, draw, right=0 of c31] (c32) {$\wedge$};
 
-      \draw[e] (PA.center) -- (c11) (c12.center)--(c21) (c22.center)--(c31);				
+      \draw[e] (PA.center) -- (c11) (c12.center)--(c21) (c22.center)--(c31);        
 
       \draw node[n2, draw, right=of PB] (c11) {6} node[n2, draw, right=0 of c11] (c12) {$\wedge$};
       \draw[e] (PB.center) -- (c11);
@@ -1246,10 +1255,10 @@
   使用二叉链表, 两个指针分别指向第一个孩子和下一个兄弟.
   
   \begin{minted}[bgcolor=red!5, fontsize=\scriptsize]{java}
-    class CSNode<T> {
-      T data;
-      CSNode<T> firstChild, nextSibling;
-    }  
+class CSNode<T> {
+  T data;
+  CSNode<T> firstChild, nextSibling;
+}  
   \end{minted}
 
   \begin{columns}[T]
@@ -1565,8 +1574,9 @@
   \begin{columns}[T]
     \column{0.55\textwidth}
     \scalebox{0.6}{
-      \begin{forest}        
-        [{} [{} [2] [3]] [{} [4] [7]]]       
+      \begin{forest}    
+        for tree={ minimum width=0.6cm }    
+        [{~} [{~} [2] [3]] [{~} [4] [7]]]       
       \end{forest}
     }
 
@@ -1574,7 +1584,8 @@
 
     \scalebox{0.6}{
       \begin{forest}
-        [{} [2] [{} [3] [{} [4] [7]]]]       
+        for tree={ minimum width=0.6cm } 
+        [{~} [2] [{~} [3] [{~} [4] [7]]]]       
       \end{forest}
     }
 
@@ -1582,13 +1593,14 @@
     
     \column{0.55\textwidth}
     \pause
-    \scalebox{0.8}{
+    \scalebox{0.6}{
       \begin{forest}
-        [{} [7] [{} [4] [{} [3] [2]]]]
+        for tree={ minimum width=0.6cm } 
+        [{~} [7] [{~} [4] [{~} [3] [2]]]]
       \end{forest}
     }
     
-    $WPL=1\times 7 + 2 \times 4 + 3 \times 3 + 3 \times 2 = 30$
+    $WPL= 30$
   \end{columns}
 \end{frame}
 
@@ -1628,14 +1640,14 @@
     }
 
     \begin{minted}{java}
-      class TNode {
-        String data;
-        int lc, rc;
-      }
+class TNode {
+  String data;
+  int lc, rc;
+}
     \end{minted}
 
     \column{0.3\textwidth}
-    \begin{tabular}{c | c | c | c|}
+    \begin{tabular}{| c | c | c | c|}
       \hline
       0 & A & 1 & 2 \\ \hline
       1 & B & 3 & -1 \\ \hline
@@ -1648,7 +1660,7 @@
       8 & I & -1 & -1 \\ \hline
     \end{tabular}
 
-    \column{0.4\textwidth}
+    \column[T]{0.35\textwidth}
     \begin{itemize}
     \item 给定树$T$如图所示, 请写递归程序实现如下功能：
     \item (1)遍历树T,显示其先序/中序/后序 序列;
@@ -1679,15 +1691,15 @@
 
   \begin{tabular}{|c | c || c | c || c | c| }
     \hline
-    字母	& 出现频率 &	字母	& 出现频率	& 字母	& 出现频率 \\ \hline
-    a	& 8.167\% &	j	& 0.153\% &	s	& 6.327\% \\ \hline
-    b	& 1.492\% &	k	& 0.772\% &	t	& 9.056\% \\ \hline
-    c	& 2.782\% &	l	& 4.025\% &	u	& 2.758\% \\ \hline
-    d	& 4.253\% &	m	& 2.406\% &	v	& 0.978\% \\ \hline
-    e	& 12.702\% &	n	& 6.749\% &	w	& 2.360\% \\ \hline
-    f	& 2.228\% &	o	& 7.507\% &	x	& 0.150\% \\ \hline
-    g	& 2.015\% &	p	& 1.929\% &	y	& 1.974\% \\ \hline
-    h	& 6.094\% &	q	& 0.095\% &	z	& 0.074\% \\ \hline
-    i	& 6.966\% &	r	& 5.987\% &    ~ & 		\\ \hline
+    字母  & 出现频率 &  字母  & 出现频率  & 字母  & 出现频率 \\ \hline
+    a & 8.167\% & j & 0.153\% & s & 6.327\% \\ \hline
+    b & 1.492\% & k & 0.772\% & t & 9.056\% \\ \hline
+    c & 2.782\% & l & 4.025\% & u & 2.758\% \\ \hline
+    d & 4.253\% & m & 2.406\% & v & 0.978\% \\ \hline
+    e & 12.702\% &  n & 6.749\% & w & 2.360\% \\ \hline
+    f & 2.228\% & o & 7.507\% & x & 0.150\% \\ \hline
+    g & 2.015\% & p & 1.929\% & y & 1.974\% \\ \hline
+    h & 6.094\% & q & 0.095\% & z & 0.074\% \\ \hline
+    i & 6.966\% & r & 5.987\% &    ~ &    \\ \hline
   \end{tabular}
 \end{frame}

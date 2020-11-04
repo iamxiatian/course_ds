@@ -15,18 +15,18 @@ digraph g {
   C->{F, G};
 
   node [shape =record, height=.1];
-  nhead[label="<f0> | <f1> |<f2> ⊙", color=blue]
+  nhead[label="<f0> | <f1> |<f2> ^", color=blue]
   na[label ="<f0> | <f1> A | <f2> "];
   nb[label ="<f0> |<f1> B |<f2> "];
   nc[label = "<f0> |<f1> C |<f2> "];
-  nd[label = "<f0> ⊙ |<f1> D |<f2> ⊙ "];
+  nd[label = "<f0> ^ |<f1> D |<f2> ^ "];
   ne[label ="<f0> |<f1> E |<f2>  "];
-  nf[label ="<f0> ⊙ |<f1> F |<f2> ⊙"];
-  ng[label ="<f0> ⊙ |<f1> G |<f2> ⊙"];
-  nh[label ="<f0> ⊙ |<f1> H |<f2> ⊙"];
+  nf[label ="<f0> ^ |<f1> F |<f2> ^"];
+  ng[label ="<f0> ^ |<f1> G |<f2> ^"];
+  nh[label ="<f0> ^ |<f1> H |<f2> ^"];
   ni[label ="<f0>  |<f1> I |<f2> "];
-  nj[label ="<f0> ⊙ |<f1> J|<f2> ⊙"];
-  nk[label ="<f0> ⊙ |<f1> K|<f2> ⊙"];
+  nj[label ="<f0> ^ |<f1> J|<f2> ^"];
+  nk[label ="<f0> ^ |<f1> K|<f2> ^"];
 
   "nhead":f0 -> "na":f1;
  

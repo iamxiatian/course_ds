@@ -126,6 +126,9 @@
   Style3*=\color{orange}$\circ$ ,
   Style4*=\tiny$\blacksquare$, Space=-.1em, Space*=-.1em)}
 
+\newcommand*\circled[2][black]{\tikz[baseline=(char.base)]{
+  \node[shape=circle,draw=#1,inner sep=1.5pt] (char) {#2};}}
+  
 % 设置字体信息
 \usepackage[T1]{fontenc}
 \usepackage{Alegreya}
@@ -153,10 +156,10 @@
 \frame{\titlepage}
 \easyitem
 
-\input{tree}
+% \input{tree}
 % \input{graph}
 % \include{search}
-% \input{sorting}
+\input{sorting}
 
 \end{document}
 

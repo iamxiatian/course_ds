@@ -266,7 +266,7 @@
 
 \begin{frame}[fragile]
   \frametitle{练习}
-  分析以下关键字的希尔排序过程：
+  分析以下关键字的希尔排序过程($d=\dfrac{1}{2}d$)：
 
   \begin{center}
     \begin{tikzpicture}[box/.style={draw, minimum size=0.6cm, minimum width=1cm}]
@@ -383,7 +383,6 @@
     \end{tikzpicture}
   \end{center}
 
-  SEE: \url{https://www.itcodemonkey.com/article/11276.html}
 \end{frame}
 
 \begin{frame}[plain]
@@ -632,6 +631,7 @@
   $\therefore$ 不稳定。
 \end{frame}
 
+
 \subsubsection{堆排序}
 \begin{frame}[fragile]
   \frametitle{堆排序(heap sort)}
@@ -829,7 +829,7 @@
   \begin{easylist} \easyitem
     & 空间复杂度: $O(n)$
 
-    & 在第$i$趟归并后,有序子文件长度为$2^i$ ,因此,因此,对于具有$n$个记录的序列来
+    & 在第$i$趟归并后,有序子文件长度为$2^i$ ,因此,对于具有$n$个记录的序列来
     说,需要$ \lceil log_2 n \rceil$趟归并。每趟归并的时间复杂度为$O(n)$。因此,归
     并算法的时间复杂度为$O(n\cdot log_2 n)$
 
@@ -904,12 +904,11 @@
 
     如果对效率有所要求，而不太关心空间的使用时，可以选择用计数排序。
 
-    See: \url{https://blog.csdn.net/lemon\_tree12138/article/details/51695211}
   \end{infobox}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Reference}
+  \frametitle{延伸阅读}
 
   \begin{itemize}
   \item 各种排序算法的在线动画演示：
@@ -918,8 +917,7 @@
     
     \url{http://www.atool.org/sort.php}
 
-  \item 搜索排序漫画系列
-    \url{https://www.itcodemonkey.com/article/11276.html}
+  \item 查阅timsort的排序思想
   \end{itemize}
 \end{frame}
 

@@ -40,6 +40,8 @@ dot -Tpdf filename.dot -o filename.pdf
 
 ## 直接查看编译好的课件
 
+概论：pdf/introduction.pdf
+
 树: pdf/tree.pdf
 
 图: pdf/graph.pdf

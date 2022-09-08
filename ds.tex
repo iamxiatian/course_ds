@@ -130,17 +130,21 @@
   \node[shape=circle,draw=#1,inner sep=1.5pt] (char) {#2};}}
   
 % 设置字体信息
+\usepackage{fontspec}
+\setmainfont{Ubuntu}
+\setsansfont{Ubuntu}
+\setmonofont{Ubuntu}
+
 \usepackage[T1]{fontenc}
 \usepackage{Alegreya}
-\setCJKfamilyfont{puhuiti}{SourceHanSansSC-Light.otf}
+\setCJKfamilyfont{puhuiti}{YaHeiConsolas.ttf}
 \newcommand{\defaultfont}{\CJKfamily{puhuiti}}
-%\setmainfont{Times New Roman}
 
 % 设置行间距
 \linespread{1.25}
 
 % 设置logo
-\logo{\includegraphics[height=1cm,width=1cm]{ruc_logo.png}}
+%\logo{\includegraphics[height=1cm,width=1cm]{ruc_logo.png}}
 \usetheme{Boadilla}
 \usecolortheme{dove}
 %\usecolortheme{rose}
@@ -148,20 +152,18 @@
 \title[Data Structure]{数据结构}
 \author[xiat@ruc.edu.cn]{夏天 \\ \url{xiat@ruc.edu.cn}}
 \institute[Renmin University]{中国人民大学信息资源管理学院}
-\date{ \today{} }
+\date{}
 
 
 \begin{document}
-% \defaultfont
+\defaultfont
 \frame{\titlepage}
 \easyitem
 
+\input{introduction}
 % \input{tree}
 % \input{graph}
 % \include{search}
-\input{sorting}
+%\input{sorting}
 
 \end{document}
-
-
-

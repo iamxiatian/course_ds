@@ -516,7 +516,7 @@ void bubble (int a[], int n) {
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{例：矩阵相乘}
+  \frametitle{例：矩阵相乘 (C代码示例)}
   \begin{minted}{c}
     for (i=1; i<=n; i++)
       for (j=1; j<=n; j++) {
@@ -524,6 +524,26 @@ void bubble (int a[], int n) {
         for (k=1; k<=n; k++)
           c[i][j] =c[i][j]+ a[i][k] * b[k][j]; // 该语句可看作元操作
       }
+  \end{minted}
+
+  \begin{tcolorbox}
+    整个算法的执行时间与元操作重复执行的次数$n^3$成正比，记作$T(n) = O(n^3)$
+  \end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{例：矩阵相乘 (Python代码示例)}
+  \begin{minted}{python}
+n = 3
+a = [[1,2,3],[4,5,6], [7,8,9]]
+b = [[1,2,3],[4,5,6], [7,8,9]]
+
+c = [ [0]*n for _ in range(n) ]
+for i in range(n):
+    for j in range(n):
+        c[i][j] = 0
+        for k in range(n):
+            c[i][j] = c[i][j] + a[i][k] * b[k][j]
   \end{minted}
 
   \begin{tcolorbox}

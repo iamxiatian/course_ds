@@ -1,0 +1,18 @@
+    \begin{tikzpicture}[fill=red, box/.style={draw, minimum width=2cm, minimum height=0.85cm, fill=yellow!10}]
+	      \draw node[box] (dh) {数据域}  node[box, right=0 of dh] (ph) {指针域}
+	 node[box, below=0.5 of dh] (d_li) {LI}  node[box, right=0 of d_li] (p_li) {43} node[left=0.2 of d_li] {1}
+	 node[box, below=0.5 of d_li] (d_qian) {QIAN}  node[box, right=0 of d_qian] (p_qian) {13} node[left=0.2 of d_qian] {7}
+	 node[box, below=0.5 of d_qian] (d_sun) {SUN}  node[box, right=0 of d_sun] (p_sun) {1} node[left=0.2 of d_sun] {13}
+	 node[box, below=0.5 of d_sun] (d_wang) {WANG}  node[box, right=0 of d_wang] (p_wang) {?} node[left=0.2 of d_wang] {19}
+	 node[box, below=0.5 of d_wang] (d_wu) {WU}  node[box, right=0 of d_wu] (p_wu) {37} node[left=0.2 of d_wu] {25}
+	 node[box, below=0.5 of d_wu] (d_zhao) {ZHAO}  node[box, right=0 of d_zhao] (p_zhao) {7} node[left=0.2 of d_zhao] {31}
+	 node[box, below=0.5 of d_zhao] (d_zheng) {ZHENG}  node[box, right=0 of d_zheng] (p_zheng) {?} node[left=0.2 of d_zheng] {37}
+	 node[box, below=0.5 of d_zheng] (d_zhou) {ZHOU}  node[box, right=0 of d_zhou] (p_zhou) {25} node[left=0.2 of d_zhou] {43}
+	node[box, minimum width=0.85cm, draw=red, fill=red!20, left=1 of d_li] (h) {31};
+
+	\path[draw=red] (h.center) edge[out=270, in=155, -Latex, draw=red, thick] (d_zhao.west);
+	\path[draw=blue] (p_zhao.east) edge[out=0, in=225, -Latex] (d_qian.west);
+	\path[draw=blue] (p_qian.east) edge[out=0, in=225, -Latex] (d_sun.west);
+	\path[draw=blue] (p_sun.east) edge[out=0, in=225, -Latex] (d_li.west);
+\end{tikzpicture}
+

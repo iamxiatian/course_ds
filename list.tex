@@ -588,22 +588,6 @@ r=s; // 尾指针r 指向新的尾结点
   \includegraphics[width=0.8\textwidth]{figs/list/header_node_1.png}
 \end{frame}
 
-
-\subsection{作业}
-\begin{frame}[fragile]
-  \frametitle{约瑟夫环}
-
-  在罗马人占领乔塔帕特后，约瑟夫及他的40个战友躲到一个洞中，这些犹太人宁死也不想
-  被敌人抓到，于是决定了一个自杀方式：
-
-  \begin{itemize}
-    \item 41个人排成一个圆圈，由第1个人开始报数，每报数到第3人该人就必须自杀，然
-      后再由下一个重新报数，直到所有人都自杀身亡为止。
-  \item 约瑟夫说他和另一个人逃过了这场死亡游戏: by luck or by the hand of God.
-  \item 请问约瑟夫在这个圆圈中的位置是？
-  \end{itemize}
-\end{frame}
-
 \begin{frame}[fragile]
   \frametitle{求表长}
   \begin{center}
@@ -832,6 +816,138 @@ q.next=s;
   \begin{itemize}
   \item 在单链表上当前结点之前插入、删除一个结点，必须知道其前驱结点。
   \item 单链表不具有按序号随机访问的特点，只能从头指针开始一个个顺序进行。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{链表特点}
+  \begin{center}
+    \scalebox{0.65}{
+      \begin{tikzpicture}[fill=red, box/.style={draw, minimum width=0.85cm, minimum height=0.8cm, fill=red!5}]
+	      \draw node[box] (h) {}
+        node[box, thick, double, pattern=north west lines, right=of h] (d18) { }  node[box, thick, double, right=0 of d18] (p18) {}
+        node[box, right=of p18] (d45) {45}  node[box, right=0 of d45] (p45) {}
+        node[box, right=of p45] (d25) {25}  node[box, right=0 of d25] (p25) {$\wedge$};
+	      \path[draw, -Latex] (h.center) edge[-latex] (d18) (p18.center)  edge[-latex] (d45)  (p45.center) -- (d25);
+      \end{tikzpicture}
+    }
+  \end{center}
+
+  \begin{easylist}
+    & 优点
+
+    && 插入删除方便
+
+    && 动态分配
+
+    \pause
+
+    & 缺点
+
+    && 随机访问效率低
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{顺序表 VS 链表}
+  \begin{columns}
+    \begin{column}[T]{0.5\linewidth}
+      \begin{tcolorbox}[colframe=red, title=顺序表优点]
+        \begin{itemize}
+        \item 直观
+        \item 随机访问效率高
+        \item 没有为表达结点间的逻辑关系增加的额外开销
+        \end{itemize}
+      \end{tcolorbox}
+
+      \begin{tcolorbox}[colframe=red, title=顺序表缺点]
+        \begin{itemize}
+        \item 插入删除时效率低
+        \item 需要预先分配足够大的存储空间
+        \end{itemize}
+      \end{tcolorbox}
+    \end{column}
+    \begin{column}[T]{0.5\linewidth}
+\begin{tcolorbox}[colframe=red, title=链表优点]
+        \begin{itemize}
+        \item 插入删除方便
+        \item 动态分配
+        \end{itemize}
+      \end{tcolorbox}
+
+      \begin{tcolorbox}[colframe=red, title=链表缺点]
+        \begin{itemize}
+        \item 为表达结点间的逻辑关系增加“指针域”
+        \item 随机访问效率低
+        \end{itemize}
+      \end{tcolorbox}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile, allowframebreaks]
+  \frametitle{选取恰当的存储结构}
+  \begin{enumerate}
+  \item 基于存储的考虑
+
+    \begin{itemize}
+    \item 使用顺序表，在程序执行之前要明确规定它的存储规模（对MAXSIZE要有合适的
+      设定），过大造成浪费，过小造成溢出。可见对线性表的长度或存储规模难以估计时，
+      不宜采用顺序表。
+    \item 链表不用事先估计存储规模，但链表的存储密度较低。存储密度是指一个结点中
+      数据元素所占的存储单元和整个结点所占的存储单元之比。显然链式存储结构的存储
+      密度是小于1的。
+    \end{itemize}
+
+   \newpage
+
+ \item 基于运算的考虑
+   \begin{itemize}
+   \item 在顺序表中按序号访问$a_i$的时间性能时$O(1)$，而链表中按序号访问的时间性
+     能$O(n)$，所以如果经常做的运算是按序号访问数据元素，显然顺序表优于链表；
+   \item 在顺序表中做插入、删除时平均移动表中一半的元素，如果数据元素的信息量较
+     大且表较长，不可忽视这一点；
+   \item 在链表中作插入、删除，虽然也要找插入位置，但操作主要是比较操作，从这个
+     角度考虑优于顺序表。
+   \end{itemize}
+
+   \newpage
+
+ \item 其它
+   \begin{itemize}
+   \item 顺序表容易实现，任何高级语言中都有数组类型，相对来讲简单直观，也是用户
+     考虑的一个因素。
+   \end{itemize}
+  \end{enumerate}
+
+  总之，两种存储结构各有长短，选择那一种由实际问题中的主要因素决定。通常“较稳定”
+  的线性表选择顺序存储，而频繁做插入删除的话宜选择链式存储。
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{本堂小结}
+  \begin{enumerate}
+  \item 线性表的概念和两种存储方式.
+  \item 顺序线性表的特征、基本操作.
+  \item 链表的特征、基本操作.
+  \item 循环链表和双向链表
+  \item 顺序表与链表大PK
+  \item 顺序表和链表适用的场合
+  \end{enumerate}
+\end{frame}
+
+\subsection{作业}
+\begin{frame}[fragile]
+  \frametitle{约瑟夫环}
+
+  在罗马人占领乔塔帕特后，约瑟夫及他的40个战友躲到一个洞中，这些犹太人宁死也不想
+  被敌人抓到，于是决定了一个自杀方式：
+
+  \begin{itemize}
+    \item 41个人排成一个圆圈，由第1个人开始报数，每报数到第3人该人就必须自杀，然
+      后再由下一个重新报数，直到所有人都自杀身亡为止。
+  \item 约瑟夫说他和另一个人逃过了这场死亡游戏: by luck or by the hand of God.
+  \item 请问约瑟夫在这个圆圈中的位置是？
   \end{itemize}
 \end{frame}
 

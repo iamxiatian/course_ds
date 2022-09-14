@@ -111,17 +111,19 @@
     \begin{column}[T]{.5\linewidth}
       \begin{easylist}
         & 为便于维护处理，记录3个变量
+
         && 存放表元素的数组list；
         && 表的长度length；
         && 存储容量maxSize；
-        & 常用的基本操作：
-        && 判断是否空isEmpty()
-        && 求长度 length()
-        && 取元素get(i)
-        && 插入操作：insert(i,x)
-        && 删除操作：remove(i)
-        && 查找indexOf(x)
-        && 输出display()
+
+        & 常用的基本操作
+        && 判断是否空: isEmpty()
+        && 求长度: length()
+        && 取元素: get(i)
+        && 插入操作: insert(i,x)
+        && 删除操作: remove(i)
+        && 查找: indexOf(x)
+        && 输出: display()
       \end{easylist}
     \end{column}
     \begin{column}[T]{.5\linewidth}
@@ -493,51 +495,99 @@ boolean remove(int index) {
     \begin{column}[T]{.5\linewidth}
       头部插入：
 
-      \scalebox{0.5}{
-        \begin{tikzpicture}[fill=red, box/.style={draw, minimum width=0.85cm, minimum height=0.8cm, fill=red!5}]
-	        \draw node[box] (h) {$\wedge$};
-
-	        \draw node[box, below=0.5 of h] (h) {} node[box, right=of h] (d25) {25}  node[box, right=0 of d25] (p25) {$\wedge$};
-	        \draw[draw, -Latex] (h.center) -- (d25);
-
-	        \draw node[box, below=0.5 of h] (h) {}
-          node[box, right=of h] (d45) {45}  node[box, right=0 of d45] (p45) {}
-          node[box, right=of p45] (d25) {25}  node[box, right=0 of d25] (p25) {$\wedge$};
-	        \draw[draw, -Latex] (h.center)  edge[-latex] (d45) (p45.center) -- (d25);
-
-	        \draw node[box, below=0.5 of h] (h) {}
-          node[box, right=of h] (d18) {18}  node[box, right=0 of d18] (p18) {}
-          node[box, right=of p18] (d45) {45}  node[box, right=0 of d45] (p45) {}
-          node[box, right=of p45] (d25) {25}  node[box, right=0 of d25] (p25) {$\wedge$};
-	        \path[draw, -Latex] (h.center) edge[-latex] (d18) (p18.center)  edge[-latex] (d45)  (p45.center) -- (d25);
-        \end{tikzpicture}
-      }
+      \input{figs/list/head_insert}
     \end{column}
     \begin{column}[T]{.5\linewidth}
       尾部插入：
 
-      \scalebox{0.5}{
-        \begin{tikzpicture}[fill=red, box/.style={draw, minimum width=0.85cm, minimum height=0.8cm, fill=red!5}]
-	        \draw node[box] (h) {$\wedge$};
-
-	        \draw node[box, below=0.5 of h] (h) {} node[box, right=of h] (d25) {25}  node[box, right=0 of d25] (p25) {$\wedge$};
-	        \draw[draw, -Latex] (h.center) -- (d25);
-
-	        \draw node[box, below=0.5 of h] (h) {}
-          node[box, right=of h] (d45) {25}  node[box, right=0 of d45] (p45) {}
-          node[box, right=of p45] (d25) {45}  node[box, right=0 of d25] (p25) {$\wedge$};
-	        \draw[draw, -Latex] (h.center)  edge[-latex] (d45) (p45.center) -- (d25);
-
-	        \draw node[box, below=0.5 of h] (h) {}
-          node[box, right=of h] (d18) {25}  node[box, right=0 of d18] (p18) {}
-          node[box, right=of p18] (d45) {45}  node[box, right=0 of d45] (p45) {}
-          node[box, right=of p45] (d25) {18}  node[box, right=0 of d25] (p25) {$\wedge$};
-	        \path[draw, -Latex] (h.center) edge[-latex] (d18) (p18.center)  edge[-latex] (d45)  (p45.center) -- (d25);
-        \end{tikzpicture}
-      }
+      \input{figs/list/tail_insert}
     \end{column}
   \end{columns}
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{建立单链表：头部插入}
+
+  \begin{center}
+    \input{figs/list/head_insert}
+  \end{center}
+
+  \begin{minted}[]{java}
+Node s = new Node(val);//s指向新结点
+s.next = head;//新结点后继为当前头结点
+head = s;//头指针指向新结点
+  \end{minted}
+
+  \pause
+  \color{red} 在空表时是否可行？
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{建立单链表：尾部插入}
+
+  \begin{center}
+    \input{figs/list/tail_insert}
+  \end{center}
+
+  \begin{minted}[]{java}
+Node s=new Node(val);//s指向新结点
+Node r=Findlast(Head);//找到尾结点
+r.next=s;//新结点成为尾结点的后继
+r=s;
+  \end{minted}
+
+  \pause
+  \color{red} 在空表时是否可行？
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{建立单链表：尾部插入}
+  \begin{center}
+    \input{figs/list/tail_insert}
+  \end{center}
+
+  \begin{minted}[]{java}
+Node s=new Node(val);
+if(!head)  // 空表，插入第一个结点
+    head=s; //新结点作为第一个结点
+else // 非空表
+    r.next=s;//新结点作为最后一个结点的后继
+
+r=s; // 尾指针r 指向新的尾结点
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{头结点问题}
+  \begin{easylist}
+    & 在上面的算法中，空表和非空表的处理是不同的
+
+    && 当链表为空，新结点作为第一个结点，地址放在链表头指针变量中（第一个结点没
+      有前驱，其地址就是整个链表的地址）；
+
+    && 否则，新结点地址放在其前驱的指针域。
+
+    & 上述问题在很多操作中都会遇到，为方便操作，可在链表头部加一个“头结点”。
+  \end{easylist}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{头结点问题}
+  \begin{easylist}
+    & 头结点的类型与数据结点一致，其数据域无定义，指针域中存放的是第一个数据结点
+    的地址，空表时为空。头结点的数据域可以为空，也可存放线性表长度等附加信息，但
+    此结点不能计入链表长度值。
+
+    & 加入头结点完全是为了运算的方便。有了头结点，即使是空表，头指针变量head也不为
+    空，空表和“非空表”的处理成为一致。
+  \end{easylist}
+
+  \includegraphics[width=0.8\textwidth]{figs/list/header_node_1.png}
+\end{frame}
+
 
 \subsection{作业}
 \begin{frame}[fragile]
@@ -555,19 +605,239 @@ boolean remove(int index) {
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{约瑟夫环}
+  \frametitle{求表长}
+  \begin{center}
+    \scalebox{0.65}{
+      \begin{tikzpicture}[fill=red, box/.style={draw, minimum width=0.85cm, minimum height=0.8cm, fill=red!5}]
+	      \draw node[box] (h) {}
+        node[box, thick, double, pattern=north west lines, right=of h] (d18) { }  node[box, thick, double, right=0 of d18] (p18) {}
+        node[box, right=of p18] (d45) {45}  node[box, right=0 of d45] (p45) {}
+        node[box, right=of p45] (d25) {25}  node[box, right=0 of d25] (p25) {$\wedge$};
+	      \path[draw, -Latex] (h.center) edge[-latex] (d18) (p18.center)  edge[-latex] (d45)  (p45.center) -- (d25);
+      \end{tikzpicture}
+    }
+  \end{center}
 
+  \scriptsize
   \begin{columns}
-    \begin{column}[T]{.5\linewidth}
-      \includegraphics[width=0.8\textwidth]{figs/intro/deep_blue_1.png}
-
-        1997年5月11日，国际象棋世界冠军卡斯帕罗夫与IBM公司的超级电脑深蓝（Deep Blue）对弈。
+    \begin{column}[T]{0.5\linewidth}
+      \begin{minted}{c}
+        int GetLength() {
+          Node p= head.next;
+          int  len=0;
+          while (p){
+            p=p.next;
+            len++;
+          }
+          return  len;
+        }
+      \end{minted}
     \end{column}
-    \begin{column}[T]{.5\linewidth}
-      \includegraphics[width=0.8\textwidth]{figs/intro/deep_blue_2.png}
+    \begin{column}[T]{0.5\linewidth}
+      \pause
+      \begin{minted}{python}
+class Node:
+    def __init__(self, data, next=None):
+        self.data = data
+        self.next = next
 
-      棋迷在纽约通过电视观战。当日，卡斯帕罗夫在纽约再次负于深蓝，从而在当年的
-      “人机大战”中以一胜二负三和的战绩败北。
+def get_length(hp):
+    p = hp.next
+    len = 0
+    while(p!=None):
+        p = p.next
+        len = len + 1
+    return len
+
+hp = Node(None, Node(45, Node(25)))
+print(get_length(hp))
+      \end{minted}
     \end{column}
   \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{单链表的查找}
+  \begin{center}
+    \scalebox{0.65}{
+      \begin{tikzpicture}[fill=red, box/.style={draw, minimum width=0.85cm, minimum height=0.8cm, fill=red!5}]
+	      \draw node[box] (h) {}
+        node[box, thick, double, pattern=north west lines, right=of h] (d18) { }  node[box, thick, double, right=0 of d18] (p18) {}
+        node[box, right=of p18] (d45) {45}  node[box, right=0 of d45] (p45) {}
+        node[box, right=of p45] (d25) {25}  node[box, right=0 of d25] (p25) {$\wedge$};
+	      \path[draw, -Latex] (h.center) edge[-latex] (d18) (p18.center)  edge[-latex] (d45)  (p45.center) -- (d25);
+      \end{tikzpicture}
+    }
+  \end{center}
+
+  \begin{itemize}
+  \item 按值查找index(value): 是否存在数据元素X？序号是？
+  \item 算法思路：“顺藤摸瓜”——从第一个结点开始，判断当前结点的值是否等于x，若是
+    则返回该结点的指针，否则继续检查下一个，直到表尾。如果找不到则返回空。
+  \end{itemize}
+
+  \begin{minted}{c}
+public int index(value){   //在L中查找值为x的结点
+  Node  p=Head.next;  int j=0;
+  while ( p && p.data !=value){
+    p=p->next; j++;
+  }
+  if(p) return j; else return -1;
+}
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{插入新结点：在给定结点的前后}
+  \begin{itemize}
+  \item 新结点插入到p的后面
+    \scalebox{0.65}{
+      \begin{tikzpicture}[fill=red, box/.style={draw, minimum width=0.85cm, minimum height=0.8cm, fill=red!5}]
+        \draw node[] (h) {}
+        node[box, right=of h] (d1) { }  node[box, right=0 of d1] (p1) { ~ }
+        node[box, right=of p1] (d2) {}  node[box, right=0 of d2] (p2) { ~ }
+        node[box, right=3cm of p2] (d3) {}  node[box, right=0 of d3] (p3) {};
+
+        \path[] (h.center) edge[-latex] (d1) (p1.center) edge[-latex] (d2) (p2.center) edge[draw, -Latex] node[color=red] {$\times$} (d3);
+
+        \draw node[above right=of d1](p) {$p$};
+        \draw[draw, -Latex] (p) --(d2);
+
+        \draw node[below=of p2] (s) {$s$}
+        node[box, right=of s] (ds) { }  node[box, right=0 of ds] (ps) { ~ };
+        \draw[draw, -Latex] (s) --(ds);
+
+        \path[] (p2.south) edge[draw=red, -Latex] node[below, align=center] {\textcircled{2}} (ds);
+        \path[] (ps.center) edge[draw=red, -Latex, in=215] node[above, align=center] {\textcircled{1}} (d3);
+      \end{tikzpicture}
+    }
+
+    \begin{minted}{c}
+      s.next = p.next;
+      p.next = s;
+    \end{minted}
+
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{插入新结点：在给定结点的前后}
+  \begin{itemize}
+  \item 新结点插入到p的前面
+    \scalebox{0.65}{
+      \begin{tikzpicture}[fill=red, box/.style={draw, minimum width=0.85cm, minimum height=0.8cm, fill=red!5}]
+        \draw node[] (h) {}
+        node[box, right=of h] (d1) { }  node[box, right=0 of d1] (p1) { ~ }
+        node[box, right=3cm of p1] (d2) {}  node[box, right=0 of d2] (p2) { ~ }
+        node[box, right=of p2] (d3) {}  node[box, right=0 of d3] (p3) {};
+
+        \path[] (h.center) edge[-latex] (d1) (p1.center) edge[-latex] node[color=red] {$\times$} (d2) (p2.center) edge[draw, -Latex]  (d3);
+
+        \draw node[above left=of d2](p) {$p$};
+        \draw[draw, -Latex] (p) --(d2);
+
+        \draw node[above left=of d1](q) {$q$};
+        \path (q)  edge[draw=red, -Latex] node[above] {\textcircled{1}} (d1);
+
+        \draw node[below=of p1] (s) {$s$}
+        node[box, right=of s] (ds) { }  node[box, right=0 of ds] (ps) { ~ };
+        \draw[draw, -Latex] (s) --(ds);
+
+        \path[] (p1.south) edge[draw=red, -Latex] node[below, align=center] {\textcircled{3}} (ds);
+        \path[] (ps.center) edge[draw=red, -Latex, in=215] node[above, align=center] {\textcircled{2}} (d2);
+      \end{tikzpicture}
+    }
+
+    找到p的前驱q，在q之后插入s。
+
+    \begin{minted}{c}
+q=head;
+while (q.next!=p) q=q.next;
+s.next=q.next;
+q.next=s;
+    \end{minted}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{插入新结点}
+  \begin{easylist}
+    & 时间复杂度
+    && 后插操作为$O(1)$: 不受$n$的影响
+    && 前插操作因为要先找到$p$的前驱，时间性能为$O(n)$。
+
+    \pause
+    & 一个小技巧：
+    && 将$s$插入到 $p$ 的后面，然后把$p.data$与$s.data$交换，这样能使得时间复杂性为$O(1)$。
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{删除结点}
+  \begin{itemize}
+  \item 删除p指向的结点 \\
+
+    \scalebox{0.6}{
+      \begin{tikzpicture}[fill=red, box/.style={draw, minimum width=0.85cm, minimum height=0.8cm, fill=red!5}]
+        \draw node[] (h) {}
+        node[box, right=of h] (d1) { }  node[box, right=0 of d1] (p1) { ~ }
+        node[box, right=of p1] (d2) {}  node[box, right=0 of d2] (p2) { ~ }
+        node[box, right=of p2] (d3) {}  node[box, right=0 of d3] (p3) {};
+
+        \path[] (h.center) edge[-latex] (d1) (p1.center) edge[-latex] node[color=red] {$\times$} (d2) (p2.center) edge[draw, -Latex]  (d3);
+
+        \draw node[above left=of d2](p) {$p$};
+        \draw[draw, -Latex] (p) --(d2);
+
+        \draw node[above left=of d1](q) {$q$};
+        \path (q)  edge[draw=red, -Latex] node[above] {\textcircled{1}} (d1);
+
+        \path (p1.south)  edge[draw=red, -Latex, in=240, out=300] node[above]{\textcircled{2}} (d3);
+      \end{tikzpicture}
+    }
+
+    q.next=q.next.next;
+  \item 首先要找到$p$的前驱结点$q$，其时间复杂性为$O(n)$。
+
+  \item 若要删除$p$的后继结点(假设存在)，则可以直接完成：\\
+    p.next=p.next.next;
+  \item 该操作的时间复杂性为$O(1)$ 。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{删除第i个结点}
+  \begin{minted}{c}
+    int  Del(LinkList  L，int i)  //删除链表L第i个结点
+    {
+      p=get(L, i-1);  //查找第i-1个结点
+      if (p==NULL) {
+        printf(“第i-1个结点不存在”);   return -1;
+      } else{
+        if (!p->next)
+          return 0; //第i个结点不存在
+        else {
+          p.next=p.next.next; //从链表中删除i
+          return 1;
+        }
+      }
+    }
+  \end{minted}
+
+  算法时间复杂度是$O(n)$
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{单链表操作小结}
+  \begin{itemize}
+  \item 在单链表上当前结点之前插入、删除一个结点，必须知道其前驱结点。
+  \item 单链表不具有按序号随机访问的特点，只能从头指针开始一个个顺序进行。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{约瑟夫环}
+
+  TODO
+
 \end{frame}

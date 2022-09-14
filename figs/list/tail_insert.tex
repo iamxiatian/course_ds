@@ -1,0 +1,21 @@
+\begin{tcolorbox}[]
+        \scalebox{0.5}{
+          \begin{tikzpicture}[fill=red, box/.style={draw, minimum width=0.85cm, minimum height=0.8cm, fill=red!5}]
+	          \draw node[box] (h) {$\wedge$};
+
+	          \draw node[box, below=0.5 of h] (h) {} node[box, right=of h] (d25) {25}  node[box, right=0 of d25] (p25) {$\wedge$};
+	          \draw[draw, -Latex] (h.center) -- (d25);
+
+	          \draw node[box, below=0.5 of h] (h) {}
+            node[box, right=of h] (d45) {25}  node[box, right=0 of d45] (p45) {}
+            node[box, right=of p45] (d25) {45}  node[box, right=0 of d25] (p25) {$\wedge$};
+	          \draw[draw, -Latex] (h.center)  edge[-latex] (d45) (p45.center) -- (d25);
+
+	          \draw node[box, below=0.5 of h] (h) {}
+            node[box, right=of h] (d18) {25}  node[box, right=0 of d18] (p18) {}
+            node[box, right=of p18] (d45) {45}  node[box, right=0 of d45] (p45) {}
+            node[box, right=of p45] (d25) {18}  node[box, right=0 of d25] (p25) {$\wedge$};
+	          \path[draw, -Latex] (h.center) edge[-latex] (d18) (p18.center)  edge[-latex] (d45)  (p45.center) -- (d25);
+          \end{tikzpicture}
+        }
+      \end{tcolorbox}

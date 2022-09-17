@@ -1,4 +1,4 @@
-\section{线性表 (Linear  List)}
+﻿\section{线性表 (Linear  List)}
 
 \begin{frame}[fragile]
   \frametitle{线性表 --- Linear  List}
@@ -581,8 +581,10 @@ r=s; // 尾指针r 指向新的尾结点
     的地址，空表时为空。头结点的数据域可以为空，也可存放线性表长度等附加信息，但
     此结点不能计入链表长度值。
 
-    & 加入头结点完全是为了运算的方便。有了头结点，即使是空表，头指针变量head也不为
-    空，空表和“非空表”的处理成为一致。
+    & 加入头结点完全是为了运算的方便。有了头结点，即使是空表，头指针变量head（或
+      记作h，或者hp: head pointer）也不为空，空表和“非空表”的处理成为一致。
+
+    & 注意区分：头节点和指向头节点的指针
   \end{easylist}
 
   \includegraphics[width=0.8\textwidth]{figs/list/header_node_1.png}
@@ -593,11 +595,13 @@ r=s; // 尾指针r 指向新的尾结点
   \begin{center}
     \scalebox{0.65}{
       \begin{tikzpicture}[fill=red, box/.style={draw, minimum width=0.85cm, minimum height=0.8cm, fill=red!5}]
-	      \draw node[box] (h) {}
+	      \draw node[box, dashed] (h) {$hp$}
         node[box, thick, double, pattern=north west lines, right=of h] (d18) { }  node[box, thick, double, right=0 of d18] (p18) {}
         node[box, right=of p18] (d45) {45}  node[box, right=0 of d45] (p45) {}
-        node[box, right=of p45] (d25) {25}  node[box, right=0 of d25] (p25) {$\wedge$};
-	      \path[draw, -Latex] (h.center) edge[-latex] (d18) (p18.center)  edge[-latex] (d45)  (p45.center) -- (d25);
+        node[box, right=of p45] (d25) {25}  node[box, right=0 of d25] (p25) {$\wedge$}
+	      node[below=1 of h] (tip1) {指向头节点的指针} node[below=1.5 of p18] (tip2) {头节点};
+	      \path[draw, -Latex] (h) edge[-latex] (d18) (p18.center)  edge[-latex] (d45)  (p45.center) -- (d25);
+	      \path (tip1) edge[draw=red,  thick, ->, out=45, in=270] (h) (tip2) edge[draw=red, thick, in=270, ->] (d18);
       \end{tikzpicture}
     }
   \end{center}
@@ -607,7 +611,7 @@ r=s; // 尾指针r 指向新的尾结点
     \begin{column}[T]{0.5\linewidth}
       \begin{minted}{c}
         int GetLength() {
-          Node p= head.next;
+          Node p= hp.next; // hp: head pointer
           int  len=0;
           while (p){
             p=p.next;
@@ -645,11 +649,11 @@ print(get_length(hp))
   \begin{center}
     \scalebox{0.65}{
       \begin{tikzpicture}[fill=red, box/.style={draw, minimum width=0.85cm, minimum height=0.8cm, fill=red!5}]
-	      \draw node[box] (h) {}
+	      \draw node[box, dashed] (h) {$hp$}
         node[box, thick, double, pattern=north west lines, right=of h] (d18) { }  node[box, thick, double, right=0 of d18] (p18) {}
         node[box, right=of p18] (d45) {45}  node[box, right=0 of d45] (p45) {}
         node[box, right=of p45] (d25) {25}  node[box, right=0 of d25] (p25) {$\wedge$};
-	      \path[draw, -Latex] (h.center) edge[-latex] (d18) (p18.center)  edge[-latex] (d45)  (p45.center) -- (d25);
+	      \path[draw, -Latex] (h) edge[-latex] (d18) (p18.center)  edge[-latex] (d45)  (p45.center) -- (d25);
       \end{tikzpicture}
     }
   \end{center}
@@ -662,7 +666,7 @@ print(get_length(hp))
 
   \begin{minted}{c}
 public int index(value){   //在L中查找值为x的结点
-  Node  p=Head.next;  int j=0;
+  Node  p=hp.next;  int j=0;
   while ( p && p.data !=value){
     p=p->next; j++;
   }
@@ -792,11 +796,11 @@ q.next=s;
 \begin{frame}[fragile]
   \frametitle{删除第i个结点}
   \begin{minted}{c}
-    int  Del(LinkList  L，int i)  //删除链表L第i个结点
+    int  Del(LinkList  L, int i)  //删除链表L第i个结点
     {
       p=get(L, i-1);  //查找第i-1个结点
       if (p==NULL) {
-        printf(“第i-1个结点不存在”);   return -1;
+        printf("第i-1个结点不存在");   return -1;
       } else{
         if (!p->next)
           return 0; //第i个结点不存在
@@ -817,6 +821,126 @@ q.next=s;
   \item 在单链表上当前结点之前插入、删除一个结点，必须知道其前驱结点。
   \item 单链表不具有按序号随机访问的特点，只能从头指针开始一个个顺序进行。
   \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{单循环链表}
+  \begin{easylist}
+    & 链表头尾结点相连
+
+    \begin{center}
+      \scalebox{0.65}{
+        \begin{tikzpicture}[fill=red, box/.style={draw, minimum width=0.85cm, minimum height=0.8cm, fill=red!5}]
+	        \draw node[box, dashed] (hp) {$hp$}
+          node[box, thick, double, pattern=north west lines, right=of hp] (dh) { }  node[box, thick, double, right=0 of dh] (ph) {}
+          node[box, right=of ph] (da1) {$a_1$}  node[box, right=0 of da1] (pa1) {}
+          node[box, draw=none, right=of pa1] (dai) {$\cdots$}  node[box, draw=none,  right=0 of dai] (pai) {$\cdots$}
+          node[box, right=of pai] (dan) {$a_n$}  node[box, right=0 of dan] (pan) {};
+
+	        \path[draw, -Latex] (hp) edge[-latex] (dh) (ph.center)  edge[-Latex] (da1)
+			    (pa1.center) edge[-Latex] (dai)
+			    (pai.east) edge[-Latex] (dan)
+			    (pan.center)  |- ++(0,-1) -| (dh);
+
+          \draw node[box, dashed, right=1cm of pan] (hp) {$hp$}
+          node[box, thick, double, pattern=north west lines, right=of hp] (dh) { }  node[box, thick, double, right=0 of dh] (ph) {};
+
+          \path[draw, -Latex] (hp) edge[-latex] (dh) (ph.center)
+			    (ph.center)  |- ++(0,-1) -| (dh);
+
+          \draw node[below=1cm of pa1] {(a) 非空表} node[below=1cm of dh] {(b) 空表};
+        \end{tikzpicture}
+      }
+    \end{center}
+
+    & 结点的定义有什么变化？
+
+    & 链表操作有什么变化？比如：
+
+    && 原来用头结点的next是否为NULL (None)判断空表，现在呢?
+
+    && 原来用结点的next是否为NULL (None)判断尾结点，现在呢?
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{双向链表}
+
+  \begin{center}
+    \scalebox{0.5}{
+      \begin{tikzpicture}[fill=red, box/.style={draw, minimum width=0.85cm, minimum height=0.8cm, fill=red!5},
+          e1/.style={draw=red, -Latex, in=160, out=30},
+          e2/.style={draw=red, -Latex, in=-30, out=200}
+        ]
+	      \draw node[box, dashed] (hp) {$hp$}
+		    node[box, thick, double,below right=of hp] (prevh) { }
+        node[box, thick, double, pattern=north west lines, right=0 of prevh] (datah) { }  node[box, thick, double, right=0 of datah] (nexth) {}
+
+		    node[box, right=of nexth] (prev1) {}   node[box, right=0 of prev1] (data1) {$a_1$}  node[box, right=0 of data1] (next1) {}
+
+		    node[box, right=of next1] (prev2) {}   node[box, right=0 of prev2] (data2) {$a_2$}  node[box, right=0 of data2] (next2) {}
+
+		    node[box, right=of next2, draw=none] (previ) {}   node[box, right=0 of previ, draw=none] (datai) {$\cdots$}  node[box, right=0 of datai, draw=none] (nexti) {}
+
+		    node[box, right=of nexti] (prevn) {}   node[box, right=0 of prevn] (datan) {$a_n$}  node[box, right=0 of datan] (nextn) {};
+
+        \path (hp) edge[out=0, -Latex, draw=blue] (prevh)
+	      (nexth.center) edge[e1] (prev1)
+        (next1.center) edge[e1] (prev2)
+        (next2.center) edge[e1] (previ)
+        (nexti.center) edge[e1] (prevn)
+	      (prev1.center) edge[e2] (nexth)
+        (prev2.center) edge[e2] (next1)
+        (previ.center) edge[e2] (next2)
+        (prevn.center) edge[e2] (nexti);
+
+        \path[draw=red, thick, -Latex]  (nextn.center)  |- ++(0,-1) -| (prevh.240);
+        \path[draw=red, thick, -Latex]  (prevh.center)  |- ++(0,1) -| (prevn.120);
+      \end{tikzpicture}
+    }
+
+    \scriptsize (a) 有多个节点时的双向链表
+  \end{center}
+
+  \begin{columns}
+    \begin{column}[T]{0.65\linewidth}
+      \scriptsize
+      \begin{itemize}
+      \item 为什么需要双向链表？
+      \item 在单链表中查找后继的时间性能是$O(1)$，查找前驱的时间性能是$O(n)$，如果也
+        希望找前驱的时间性能达到$O(1)$，则需要在空间上付出代价 —— 每个结点再加一个指
+        向前驱的指针域。
+      \item 结点的定义和链表的操作有什么变化？
+
+        \begin{minted}{java}
+          class Node {
+            Object data;
+            Node prior, next;
+          }
+        \end{minted}
+      \end{itemize}
+    \end{column}
+    \begin{column}[T]{0.35\linewidth}
+      \begin{center}
+        \scalebox{0.5}{
+          \begin{tikzpicture}[fill=red, box/.style={draw, minimum width=0.85cm, minimum height=0.8cm, fill=red!5},
+              e1/.style={draw=red, -Latex, in=160, out=30},
+              e2/.style={draw=red, -Latex, in=-30, out=200}
+            ]
+	          \draw node[box, dashed] (hp) {$hp$}
+		        node[box, thick, double, right=4cm of hp, yshift=-0.6cm] (prevh) { }
+            node[box, thick, double, pattern=north west lines, right=0 of prevh] (datah) { }  node[box, thick, double, right=0 of datah] (nexth) {};
+
+            \path[draw=blue, thick, -Latex]  (hp)  edge[out=0, in=180] (prevh.180);
+            \path[draw=red, thick, -Latex]  (nexth.center)  |- ++(0,-1) -- ++(-4,0) |- (prevh.210);
+            \path[draw=red, thick, -Latex]  (prevh.center)  |- ++(0,1) -- ++(-2,0)  |- (prevh.150);
+          \end{tikzpicture}
+        }
+
+      \scriptsize (b) 只有头节点的情况
+      \end{center}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -940,8 +1064,8 @@ q.next=s;
 \begin{frame}[fragile]
   \frametitle{约瑟夫环}
 
-  在罗马人占领乔塔帕特后，约瑟夫及他的40个战友躲到一个洞中，这些犹太人宁死也不想
-  被敌人抓到，于是决定了一个自杀方式：
+  在罗马人占领乔塔帕特后，约瑟夫（Joseph）及他的40个战友躲到一个洞中，这些犹太人
+  宁死也不想被敌人抓到，于是决定了一个自杀方式：
 
   \begin{itemize}
     \item 41个人排成一个圆圈，由第1个人开始报数，每报数到第3人该人就必须自杀，然
@@ -954,6 +1078,35 @@ q.next=s;
 \begin{frame}[fragile]
   \frametitle{约瑟夫环}
 
-  TODO
+  \begin{itemize}
+  \item 已知$n$个人 （以编号$1, 2, 3 \cdots n$ 分别表示） 围坐在一张圆桌周围。从
+    编号为$k$ 的人开始报数，数到$m$的那个人出列；他的下一个人又从1 开始报数，数
+    到$m$的那个人又出列；依此规律重复下去，直到圆桌周围的人全部出列。
 
+  \item 例如：n = 9, k = 1, m = 5；出局顺序如下
+
+  \end{itemize}
+  \begin{center}
+    \scalebox{0.6} {
+      \begin{tikzpicture}[fill=red, ns/.style={draw, circle, minimum width=0.85cm, minimum height=0.8cm, fill=red!5}]
+	      \node [draw, minimum size=6cm, circle] {};
+        \node (n1) at (30:3cm) [ns, thick]   {1};
+        \node (n2) at (72:3cm) [ns]   {2};
+        \node (n3) at (108:3cm) [ns]   {3};
+        \node (n4) at (144:3cm) [ns]   {4};
+        \node (n5) at (180:3cm) [ns]   {5};
+        \node (n6) at (216:3cm) [ns]   {6};
+        \node (n7) at (252:3cm) [ns]   {7};
+        \node (n8) at (288:3cm) [ns]   {8};
+        \node (n9) at (330:3cm) [ns]   {9};
+      \end{tikzpicture}
+    }
+
+    5, 1, 7, 4, 3, 6, 9, 2, 8
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{约瑟夫环动画演示}
+  见PPT动画
 \end{frame}

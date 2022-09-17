@@ -42,6 +42,8 @@ dot -Tpdf filename.dot -o filename.pdf
 
 概论：pdf/introduction.pdf
 
+线性表：pdf/list.pdf
+
 树: pdf/tree.pdf
 
 图: pdf/graph.pdf

@@ -285,3 +285,76 @@ public Elem pop() {
   \frametitle{栈的应用}
   迷宫求解（见PPT）
 \end{frame}
+
+\section{队列}
+
+\begin{frame}[fragile]
+  \frametitle{队/Queue}
+   \begin{columns}
+    \begin{column}[T]{0.5\linewidth}
+      \begin{tcolorbox}[colframe=blue!80, height=6.5cm, title=队/Queue]
+        \small
+        \begin{itemize}
+        \item 限制仅在表的一端进行插入、在另一端进行删除。
+        \item 允许插入的一端称队尾 (rear)，允许删除的一段称为队头 (front)。
+        \item FIFO：First In First Out
+        \end{itemize}
+      \end{tcolorbox}
+    \end{column}
+    \begin{column}[T]{0.5\linewidth}
+      \includegraphics[width=0.9\textwidth]{figs/queue/queueofpeople.png}
+
+      \begin{itemize}
+      \item 比如生活中排队购物、操作系统中的作业排队等。
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+\subsection{队的存储表示方法}
+\begin{frame}[fragile]
+  \frametitle{队的存储表示方法}
+
+  \begin{itemize}
+  \item 队也有两种存储表示方法:顺序队、链队
+  \item 顺序队：利用地址连续的存储单元依次存放数据元素。
+  \end{itemize}
+
+  \begin{columns}
+    \begin{column}[T]{0.5\linewidth}
+      \scalebox{0.7}{
+        \begin{tikzpicture}[scale=0.5, box/.style={draw, minimum width=1.2cm, minimum height=0.7cm}]
+		      \draw node[box] (a0) {A}
+	        node[box, right=0 of a0] (a1) {B}
+	        node[box, right=0 of a1] (a2) {C}
+	        node[box, right=0 of a2] (a3) {}
+          node[box, right=0 of a3, minimum width=2cm] (amore) {$\cdots$}
+	        node[box, right=0 of amore] (alast) {}
+		      node[above=0 of a0] {0}
+				  node[above=0 of a1] {1}
+				  node[above=0 of a2] {2}
+				  node[above=0 of a3] {3}
+				  node[above=0 of amore] {$\cdots$}
+				  node[above=0 of alast] {$MaxLen-1$}
+	        node[below=0.7cm of a0] (front) {$front$}
+	        node[below=0.7cm of a2] (rear) {$rear$};
+
+			    \draw[draw=red, thick, -Latex] (front) -> (a0);
+          \draw[draw=red, thick, -Latex] (rear) -> (a2);
+        \end{tikzpicture}
+      }
+    \end{column}
+    \begin{column}[T]{0.5\linewidth}
+      请写出顺序队的类型定义：
+
+      \begin{minted}{java}
+        class SeqQueue{
+          ElemType  data[ ];
+          int maxsize;
+          int rear; //队尾,以此计算队长
+        } // 可否??
+      \end{minted}
+    \end{column}
+  \end{columns}
+\end{frame}

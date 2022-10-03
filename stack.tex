@@ -323,7 +323,7 @@ public Elem pop() {
 
   \begin{columns}
     \begin{column}[T]{0.5\linewidth}
-      \scalebox{0.7}{
+      \scalebox{0.6}{
         \begin{tikzpicture}[scale=0.5, box/.style={draw, minimum width=1.2cm, minimum height=0.7cm}]
 		      \draw node[box] (a0) {A}
 	        node[box, right=0 of a0] (a1) {B}
@@ -353,8 +353,518 @@ public Elem pop() {
           ElemType  data[ ];
           int maxsize;
           int rear; //队尾,以此计算队长
-        } // 可否??
+        }
       \end{minted}
+
+       可否??
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{顺序队的基本操作}
+  \begin{easylist}
+    & 入队：如有空间，元素$x$入队后队尾指针加1
+
+    && data[rear++]=x;
+
+    & 出队：如有元素，队头指针加1，表明队头元素出队。
+
+    && x=sq.data[sq.front++];
+  \end{easylist}
+
+  \vspace{1cm}
+
+  \begin{tikzpicture}[scale=0.5, box/.style={draw, minimum width=1.2cm, minimum height=0.7cm}]
+		\draw node[box] (a0) {A}
+	  node[box, right=0 of a0] (a1) {B}
+	  node[box, right=0 of a1] (a2) {C}
+	  node[box, right=0 of a2] (a3) {}
+    node[box, right=0 of a3, minimum width=2cm] (amore) {$\cdots$}
+	  node[box, right=0 of amore] (alast) {}
+		node[above=0 of a0] {0}
+		node[above=0 of a1] {1}
+		node[above=0 of a2] {2}
+		node[above=0 of a3] {3}
+		node[above=0 of amore] {$\cdots$}
+		node[above=0 of alast] {$MaxLen-1$}
+	  node[below=0.7cm of a0] (front) {$front$}
+	  node[below=0.7cm of a2] (rear) {$rear$};
+
+		\draw[draw=red, thick, -Latex] (front) -> (a0);
+    \draw[draw=red, thick, -Latex] (rear) -> (a2);
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile]
+  \scriptsize
+  \begin{itemize}
+  \item 设maxsize=10。请你写出如下状态或执行某操作后的顺序队元素。
+    \begin{enumerate}
+    \item 空队；
+    \item a0, a1, a2依次入队；
+    \item a3, a4, a5, a6, a7, a8依次入队， a0, a1, a2, a3, a4, a5依次出队;
+    \item a9, a10入队。
+    \end{enumerate}
+  \end{itemize}
+
+  \begin{columns}
+    \begin{column}[T]{0.2\linewidth}
+      \scalebox{0.8}{
+        \begin{tikzpicture}[scale=0.5, box/.style={draw, minimum width=1cm, minimum height=0.5cm}]
+          \draw node[box] (a0) {} node[left=0.2cm of a0]{0};
+          \foreach \i in {1,...,9} {
+            \pgfmathtruncatemacro{\x}{\i - 1};
+            \draw node[box, above=0 of a\x] (a\i) {} node[left=0.2cm of a\i]{\i};
+          }
+
+          \draw node[left=1cm of a0, yshift=0.5cm] (front) {front}  node[left=1cm of a0, yshift=-0.5cm] (rear) {rear};
+          \draw[draw=red, thick, -Latex] (front) -> (a0);
+          \draw[draw=red, thick, -Latex] (rear) -> (a0);
+        \end{tikzpicture}
+      }
+
+      (a) 空队
+    \end{column}
+    \begin{column}[T]{0.2\linewidth}
+      \scalebox{0.8}{
+        \begin{tikzpicture}[scale=0.5, box/.style={draw, minimum width=1cm, minimum height=0.5cm}]
+          \draw node[box] (a0) {$a_0$} node[left=0.2cm of a0]{0};
+          \foreach \i in {1,...,2} {
+            \pgfmathtruncatemacro{\x}{\i - 1};
+            \draw node[box, above=0 of a\x] (a\i) {$a_\i$} node[left=0.2cm of a\i]{\i};
+          }
+          \foreach \i in {3,...,9} {
+            \pgfmathtruncatemacro{\x}{\i - 1};
+            \draw node[box, above=0 of a\x] (a\i) {} node[left=0.2cm of a\i]{\i};
+          }
+
+          \draw node[left=1.5cm of a0] (front) {}  node[left=1.5cm of a3] (rear) {};
+          \path[] (front)  edge[draw=red, thick, -Latex, above left] node{front} (a0);
+          \path[] (rear)  edge[draw=red, thick, -Latex, above left] node{rear} (a3);
+        \end{tikzpicture}
+      }
+
+      (b) 有3个元素
+    \end{column}
+    \begin{column}[T]{0.2\linewidth}
+      \scalebox{0.8}{
+        \begin{tikzpicture}[scale=0.5, box/.style={draw, minimum width=1cm, minimum height=0.5cm}]
+          \draw node[box] (a0) {} node[left=0.2cm of a0]{0};
+          \foreach \i in {1,...,5} {
+            \pgfmathtruncatemacro{\x}{\i - 1};
+            \draw node[box, above=0 of a\x] (a\i) {} node[left=0.2cm of a\i]{\i};
+          }
+          \foreach \i in {6,...,8} {
+            \pgfmathtruncatemacro{\x}{\i - 1};
+            \draw node[box, above=0 of a\x] (a\i) {$a_\i$} node[left=0.2cm of a\i]{\i};
+          }
+          \foreach \i in {9,...,9} {
+            \pgfmathtruncatemacro{\x}{\i - 1};
+            \draw node[box, above=0 of a\x] (a\i) {} node[left=0.2cm of a\i]{\i};
+          }
+
+          \draw node[left=1.5cm of a6] (front) {}  node[left=1.5cm of a9] (rear) {};
+          \path[] (front)  edge[draw=red, thick, -Latex, above left] node{front} (a6);
+          \path[] (rear)  edge[draw=red, thick, -Latex, above left] node{rear} (a9);
+        \end{tikzpicture}
+      }
+
+      (c) 一般情况
+    \end{column}
+    \begin{column}[T]{0.2\linewidth}
+      \scalebox{0.8}{
+        \begin{tikzpicture}[scale=0.5, box/.style={draw, minimum width=1cm, minimum height=0.5cm}]
+          \draw node[box] (a0) {} node[left=0.2cm of a0]{0};
+          \foreach \i in {1,...,5} {
+            \pgfmathtruncatemacro{\x}{\i - 1};
+            \draw node[box, above=0 of a\x] (a\i) {} node[left=0.2cm of a\i]{\i};
+          }
+          \foreach \i in {6,...,9} {
+            \pgfmathtruncatemacro{\x}{\i - 1};
+            \draw node[box, above=0 of a\x] (a\i) {$a_\i$} node[left=0.2cm of a\i]{\i};
+          }
+
+          \draw node[left=1.5cm of a6] (front) {}  node[left=1.5cm of a9, yshift=0.5cm] (rear) {};
+          \path[] (front)  edge[draw=red, thick, -Latex, above left] node{front} (a6);
+          \path[] (rear)  edge[draw=red, thick, -Latex, above left] node{rear} ++(3,0);
+        \end{tikzpicture}
+      }
+
+      (d) 假溢出现象
+    \end{column}
+    \begin{column}[T]{0.2\linewidth}
+      \pause
+      \begin{itemize}
+      \item 入队出队会使整个队列整体后移
+      \item “假溢出”: 队尾指针已经移到了最后,不能再执行入队操作，但此时队中并未
+        真的“满员” 。如何解决这个问题？
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{}
+  \begin{itemize}
+  \item Linear Queue入队出队会使整个队列整体后移
+  \item “假溢出”: 队尾指针已经移到了最后,不能再执行入队操作，但此时队中并未
+    真的“满员” 。如何解决这个问题？
+    \begin{enumerate}
+    \item 平移元素；
+    \item {\color{red}循环队列 (Circular Queue)：将顺序队列的存储区假想为环状空
+      间。}在假溢出时，将新元素插入到第一个位置上，这样做，虽物理上队尾在队首之
+      前，但逻辑上队首仍然在前。入列和出列仍按“先进先出”的原则进行。
+
+      \begin{itemize}
+      \item 入队时的队尾指针操作： \\
+        rear=(rear+1) \% maxsize;
+      \item 出队时的队头指针操作：\\
+		    front=(front+1) \% maxsize;
+      \end{itemize}
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{循环队列 (Circular Queue)\footnote{延伸阅读：\url{https://en.wikipedia.org/wiki/Circular\_buffer}
+  }}
+  \small
+  \begin{itemize}
+  \item head/front points to the first (oldest) used element --- the next element to be read
+  \item tail/rear points to the first (oldest) unused element --- the next element to be written
+  \item rear: 多数情况下指向尾部元素，tail: 多数情况下指向尾部的下一个元素。教材
+    中的rear等同于tail
+  \end{itemize}
+
+  \begin{columns}
+    \begin{column}[T]{0.5\linewidth}
+      \includegraphics[width=0.55\textwidth]{figs/stack/circular-queue-1.png}
+    \end{column}
+    \begin{column}[T]{0.5\linewidth}
+      \includegraphics[width=0.75\textwidth]{figs/stack/circular-queue-2.png}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{easylist}
+    & 设maxsize=10。队列状态如(a)所示。请写出分别执行如下操作后的front和rear值：
+    && 情况1: a9, a10, a11, a12, a13, a14依次入队
+    && 情况2: a5, a6, a7, a8依次出队
+  \end{easylist}
+
+  \pause
+
+  \centering
+  \begin{columns}
+    \begin{column}[T]{0.3\linewidth}
+      (a) 有4个元素
+
+      \scalebox{0.8}{
+        \begin{tikzpicture}[scale=0.5, box/.style={draw, minimum width=1cm, minimum height=0.5cm}]
+          \draw node[box] (a0) {} node[left=0.2cm of a0]{0};
+          \foreach \i in {1,...,4} {
+            \pgfmathtruncatemacro{\x}{\i - 1};
+            \draw node[box, above=0 of a\x] (a\i) {} node[left=0.2cm of a\i]{\i};
+          }
+          \foreach \i in {5,...,8} {
+            \pgfmathtruncatemacro{\x}{\i - 1};
+            \draw node[box, above=0 of a\x] (a\i) {$a_\i$} node[left=0.2cm of a\i]{\i};
+          }
+          \foreach \i in {9,...,9} {
+            \pgfmathtruncatemacro{\x}{\i - 1};
+            \draw node[box, above=0 of a\x] (a\i) {} node[left=0.2cm of a\i]{\i};
+          }
+          \draw node[left=1.5cm of a5] (front) {}  node[left=1.5cm of a8, yshift=0.5cm] (rear) {};
+          \path[] (front)  edge[draw=red, thick, -Latex, above left] node{front} (a5);
+          \path[] (rear)  edge[draw=red, thick, -Latex, above left] node{rear}  (a9);
+        \end{tikzpicture}
+      }
+    \end{column}
+    \begin{column}[T]{0.4\linewidth}
+      (b) 情况1:队满
+
+      \scalebox{0.8}{
+        \begin{tikzpicture}[scale=0.5, box/.style={draw, minimum width=1cm, minimum height=0.5cm}]
+          \draw node[box] (a0) {$a_{10}$} node[left=0.2cm of a0]{0};
+          \foreach \i in {1,...,4} {
+            \pgfmathtruncatemacro{\x}{\i - 1};
+            \pgfmathtruncatemacro{\v}{\i + 10};
+            \draw node[box, above=0 of a\x] (a\i) {$a_{\v}$} node[left=0.2cm of a\i]{\i};
+          }
+          \foreach \i in {5,...,9} {
+            \pgfmathtruncatemacro{\x}{\i - 1};
+            \draw node[box, above=0 of a\x] (a\i) {$a_\i$} node[left=0.2cm of a\i]{\i};
+          }
+
+          \draw node[left=1cm of a5,yshift=0.25cm] (front) {front}  node[left=1cm of a5,  yshift=-0.25cm] (rear) {rear};
+          \path[] (front.east)  edge[draw=red, thick, -Latex,  in=155] node{}  (a5.west);
+          \path[] (rear.east)  edge[draw=red, thick, -Latex, in=205] node{}   (a5.west);
+        \end{tikzpicture}
+      }
+
+    \end{column}
+    \begin{column}[T]{0.3\linewidth}
+      (c) 情况2:队空
+
+      \scalebox{0.8}{
+        \begin{tikzpicture}[scale=0.5, box/.style={draw, minimum width=1cm, minimum height=0.5cm}]
+          \draw node[box] (a0) {} node[left=0.2cm of a0]{0};
+          \foreach \i in {1,...,9} {
+            \pgfmathtruncatemacro{\x}{\i - 1};
+            \draw node[box, above=0 of a\x] (a\i) {} node[left=0.2cm of a\i]{\i};
+          }
+
+          \draw node[left=1cm of a9,yshift=0.25cm] (front) {front}  node[left=1cm of a9,  yshift=-0.25cm] (rear) {rear};
+          \path[] (front.east)  edge[draw=red, thick, -Latex,  in=155] node{}  (a9.west);
+          \path[] (rear.east)  edge[draw=red, thick, -Latex, in=205] node{}   (a9.west);
+        \end{tikzpicture}
+      }
+    \end{column}
+  \end{columns}
+
+  当front=rear, 队满还是队空？如何判断队满？如何判断队空？
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{循环队的队满判别}
+
+  \begin{columns}
+    \begin{column}[T]{0.7\linewidth}
+      \begin{easylist}
+        & 方法一
+
+        && 附设一个存储队中元素个数的变量如num，当num=0时队空，当num=maxsize时为
+        队满。
+
+        & 方法二
+
+        && 少用一个元素空间，把右图所示情况视为队满，此时的状态是队尾指针加1就会
+        从后面赶上队头指针： (rear+1) \% maxsize==front，从而和空队区别开来。
+      \end{easylist}
+    \end{column}
+    \begin{column}[T]{0.3\linewidth}
+      \begin{tikzpicture}[scale=0.5, box/.style={draw, minimum width=1cm, minimum height=0.5cm}]
+        \draw node[box] (a0) {$a_{10}$} node[left=0.2cm of a0]{0};
+        \foreach \i in {1,...,3} {
+          \pgfmathtruncatemacro{\x}{\i - 1};
+          \pgfmathtruncatemacro{\v}{\i + 10};
+          \draw node[box, above=0 of a\x] (a\i) {$a_{\v}$} node[left=0.2cm of a\i]{\i};
+        }
+        \draw node[box, above=0 of a3] (a4) {} node[left=0.2cm of a4]{4};
+        \foreach \i in {5,...,9} {
+          \pgfmathtruncatemacro{\x}{\i - 1};
+          \draw node[box, above=0 of a\x] (a\i) {$a_\i$} node[left=0.2cm of a\i]{\i};
+        }
+
+        \draw node[left=1cm of a5] (front) {front}  node[left=1cm of a4] (rear) {rear};
+        \path[] (front)  edge[draw=red, thick, -Latex, left] node{}  ++ (3,0);
+        \path[] (rear)  edge[draw=blue, thick, -Latex, left] node{}   ++ (3,0);
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{循环队的基本操作}
+  \scriptsize
+  \begin{minted}{java}
+    class SeqQueue  {
+      ElemType data[];
+      int maxsize;
+      int front, rear;  /*队头队尾指针*/
+      int num;          /*队中元素的个数*/
+    }
+
+    // 入队
+    int InQueue (ElemType  x){
+      if  (num==maxsize) {
+        printf("队满");  return 0;
+      } else {
+        data[rear]=x;
+        rear=(rear+1) % maxsize;
+        num++;
+        return 1;    /*入队完成*/
+      }
+    }
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{循环队的基本操作}
+  \scriptsize
+  \begin{minted}{java}
+    //出队
+    int OutQueue (ElemType  x) {
+      if  (num==0) {
+        printf("队空");
+        return –1;
+      } else {
+        x=data[front];  /*读出队头元素*/
+        front=(front+1) % maxsize;
+        num--;
+        return 1;    /*出队完成*/
+      }
+    }
+  \end{minted}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  Python:
+
+  \scriptsize
+  \begin{minted}{python}
+class SeqQueue:
+    def __init__(self, max_size=10):
+        self.max_size = max_size + 1 # 实际多放一个空间，区分对空、队满
+        self.front = 0
+        self.rear = 0
+        self.elements = [None]*max_size
+
+    def enqueue(self, element) -> bool:
+        if (self.rear + 1) % self.max_size == self.front:
+            print('Queue is Full!')
+            return False
+        else:
+            self.elements[self.rear] = element
+            self.rear = (self.rear + 1) % self.max_size
+            return True
+
+    def dequeue(self):
+        if self.front == self.rear:
+            print('Queue is Empty!')
+            return None
+        else:
+            e = self.elements[self.front]
+            self.front = (self.front + 1) % self.max_size
+            return e
+  \end{minted}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{链队}
+  \input{figs/queue/link_queue.tikz}
+
+  \begin{easylist}
+    & 带头结点吗？
+    & 尾指针rear指向队尾元素，提高插入操作效率
+    & 请写出链队的类型定义
+  \end{easylist}
+
+  \begin{minted}{java}
+    class QNode{
+      ElemType  data;
+      QNode next;
+    }
+    class LQueue{
+      Node head, rear;
+    }
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{链队的基本操作 --- 入队}
+  \input{figs/queue/link_queue.tikz}
+
+  \begin{minted}{java}
+    void InQueue(ElemType  x) {
+      rear.next=new QNode(x,null);
+      rear=rear.next;
+    }
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{链队的基本操作 --- 出队}
+  \input{figs/queue/link_queue.tikz}
+
+  \begin{minted}{java}
+    ElemType OutQueue() {
+      QNode p;
+      if (front==rear) {
+        printf ("队空");
+        return null;
+      } else {
+        p=front.next;    //把队的第一个结点取出
+        front.next=p.next;   //把队头直接指向原第二个结点
+        e=p.data;       /*队头元素放e中*/
+        if (front.next==NULL)
+          rear=front;  //若只有一个元素，出队后队空，需修改队尾指针
+        return e;
+      }
+    }
+  \end{minted}
+\end{frame}
+
+
+\subsection{队列应用}
+
+\begin{frame}[fragile]
+  \frametitle{队列应用 --- 迷宫寻路}
+  \begin{columns}
+    \begin{column}[T]{0.6\linewidth}
+      \begin{easylist}
+        & 从迷宫入口点（1,1）出发，向四周搜索，记下所有一步能到达的坐标点；然后
+        依次再从这些点出发，再记下所有一步能到达的坐标点，…，依此类推，直到到达
+        迷宫的出口点(8,8)为止，然后从出口点沿搜索路径回溯直至入口。这样就找到了
+        一条迷宫的最短路径，否则迷宫无路径。
+
+        & 与基于栈的迷宫求解的异同？
+      \end{easylist}
+    \end{column}
+    \begin{column}[T]{0.4\linewidth}
+      \includegraphics[width=0.8\textwidth]{figs/stack/maze.png}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{解法图示}
+  \begin{columns}
+    \begin{column}[T]{0.6\linewidth}
+      \scalebox{0.8}{
+        \begin{forest}
+          for tree={draw, rectangle, rounded corners},
+          [ {(1, 1)},
+            [{(1,2)} [{(2,2)} [{(3,2)}]] ]
+            [{(2,1)} [{(2,2)}, fill=yellow!50]  [{(3,1)} [{(3,2), fill=yellow!50}] [{(4,1)}]]]
+          ]
+        \end{forest}
+      }
+      \begin{easylist}
+        & 上述处理的实质：
+        && 对可通行路径的空间的\color{red}广度优先搜索
+        & 如何向前摸索？
+        & 到达出口后，如何回溯？
+      \end{easylist}
+    \end{column}
+    \begin{column}[T]{0.4\linewidth}
+      \includegraphics[width=0.8\textwidth]{figs/stack/maze.png}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{解法图示}
+  \begin{columns}
+    \begin{column}[T]{0.6\linewidth}
+      \begin{easylist}
+        & 如何向出口摸索：搜索路径的存储1
+
+        && 在搜索过程中必须记下每一个可到达的坐标点，以便从这些点出发继续向四周搜索，
+        使用 “FIFO”的队列保存已到达的点即可.
+
+        & 如何向入口回溯：搜索路径的存储2
+
+        && 为了能够从出口点沿搜索路径回溯直至入口，对于每一点，记下坐标点的同时，还
+        要记下到达该点的前驱点或者从前驱点来的方向（8个方向之一）。
+      \end{easylist}
+    \end{column}
+    \begin{column}[T]{0.4\linewidth}
+      \includegraphics[width=0.8\textwidth]{figs/stack/maze.png}
     \end{column}
   \end{columns}
 \end{frame}

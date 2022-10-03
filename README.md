@@ -44,6 +44,8 @@ dot -Tpdf filename.dot -o filename.pdf
 
 线性表：pdf/list.pdf
 
+栈+队列：pdf/stack_queue.pdf
+
 树: pdf/tree.pdf
 
 图: pdf/graph.pdf

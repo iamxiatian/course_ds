@@ -1,0 +1,17 @@
+\begin{center}
+  \begin{tikzpicture}[scale=0.5, box/.style={draw, minimum width=0.6cm, minimum height=0.5cm}]
+    \draw node[box] (data0) {} node[box, right=0 of data0](link0){};
+    \draw node[box, right=0.5 of link0] (data1) {$a_1$} node[box, right=0 of data1](link1){};
+    \draw node[box, right=0.5 of link1] (data2) {$a_2$} node[box, right=0 of data2](link2){};
+    \draw node[right=0.5 of link2] (more) {$\cdots$} ;
+    \draw node[box, right=0.5 of more] (datan) {$a_n$} node[box, right=0 of datan](linkn){};
+    \draw node[left=0.5cm of data0] (front) {front} node[below=0.5 of datan] (rear) {rear};
+
+    \path[] (link0.center)  edge[draw, -Latex] node{}  (data1)
+    (link1.center)  edge[draw, -Latex] node{}  (data2)
+    (link2.center)  edge[draw, -Latex] node{}  (more)
+    (more)  edge[draw, -Latex] node{}  (datan)
+    (front) edge[draw=black!40, -Latex] (data0)
+    (rear) edge[draw=black!40, -Latex] (datan);
+  \end{tikzpicture}
+\end{center}

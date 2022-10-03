@@ -282,8 +282,31 @@ public Elem pop() {
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{栈的应用}
-  迷宫求解（见PPT）
+  \frametitle{栈的应用 --- 迷宫求解}
+  \begin{columns}
+    \begin{column}[T]{0.6\linewidth}
+      \scalebox{0.8}{
+        \begin{forest}
+          for tree={draw, rectangle, rounded corners},
+          [ {(1, 1)},
+            [{(1,2)} [{(2,2)} [{(3,2)}]] ]
+            [{(2,1)} [{(2,2)}, fill=yellow!50]  [{(3,1)} [{(3,2)}, fill=yellow!50] [{(4,1)}]]]
+          ]
+        \end{forest}
+      }
+      \begin{easylist}
+        & 处理思路：
+        && 对可通行路径的空间的\color{red}深度优先搜索
+        && 如果当前位置是出口，找到结果
+        && 否则，保存当前位置，进入到下一个可以走的位置，探索路径
+        && 如果上一步没有成功，继续探索下一个可以走的位置。
+        && 如果四个方向都没有成功，说明这条路径不同，返回上一个位置，继续探索四周
+      \end{easylist}
+    \end{column}
+    \begin{column}[T]{0.4\linewidth}
+      \includegraphics[width=0.8\textwidth]{figs/stack/maze.png}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \section{队列}
@@ -830,7 +853,7 @@ class SeqQueue:
           for tree={draw, rectangle, rounded corners},
           [ {(1, 1)},
             [{(1,2)} [{(2,2)} [{(3,2)}]] ]
-            [{(2,1)} [{(2,2)}, fill=yellow!50]  [{(3,1)} [{(3,2), fill=yellow!50}] [{(4,1)}]]]
+            [{(2,1)} [{(2,2)}, fill=yellow!50]  [{(3,1)} [{(3,2)}, fill=yellow!50] [{(4,1)}]]]
           ]
         \end{forest}
       }
@@ -867,4 +890,19 @@ class SeqQueue:
       \includegraphics[width=0.8\textwidth]{figs/stack/maze.png}
     \end{column}
   \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{夏老师实现结果的对比}
+  \centering
+  \begin{columns}
+    \begin{column}[T]{0.5\linewidth}
+      \includegraphics[width=0.8\textwidth]{figs/queue/maze_stack.png}
+    \end{column}
+    \begin{column}[T]{0.5\linewidth}
+      \includegraphics[width=0.8\textwidth]{figs/queue/maze_queue.png}
+    \end{column}
+  \end{columns}
+
+  实现代码见ipynb/stack.ipynb和ipynb/queue.ipynb
 \end{frame}

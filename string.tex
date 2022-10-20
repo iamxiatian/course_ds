@@ -96,18 +96,44 @@
 
 \begin{frame}[fragile]
   \frametitle{改进算法}
+
+  \begin{tikzpicture}[box/.style={draw, minimum width=1cm, minimum height=0.8cm}]
+    \draw node[minimum width=2cm] (a0) {主串};
+    \foreach \i in {1,...,7} {
+      \pgfmathtruncatemacro{\x}{\i - 1};
+      \draw node[box, right=0 of a\x] (a\i) {A} ;
+    }
+
+		\draw node[box, right=0 of a7] (a8) {B}  node[box, right=0 of a8] (a9) {A}  node[box, right=0 of a9] (a10) {A} ;
+
+		\draw node[below=of a0] (b0) {子串}
+		node[box, below=of a1] (b1) {A}
+		node[box, below=of a2] (b2) {A}
+		node[box, below=of a3] (b3) {A}
+		node[box, below=of a4, fill=red!50] (b4) {B} ;
+
+	  \draw[draw=red, very thick, <-] (a4) -- ++(0,1);
+	  \draw[draw=red, very thick, <-] (b4) -- ++(0,-1);
+
+    \path (a4) edge[draw=red, in=90, out=115, ->, dotted, thick]  (a2);
+    \path (b4) edge[draw=red, in=-90, out=-115, ->, dotted, thick]  (b1);
+  \end{tikzpicture}
+
   \begin{itemize}
   \item 改进算法的目的是在每一趟匹配过程中出现不匹配时，向右“滑动”尽可能远的一段
     距离后，继续进行比较。那么，应当滑动多远呢？这正是各个算法各显神通之处！
 
   \item KMP算法: 由D. E. Knuth，J. H. Morris和V. R. Pratt同时发现
 
-  \item Boyer-Moore算法
+    % \item Boyer-Moore算法
   \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{KMP算法}
   利用已经得到的“部分匹配”的结果将模式向右滑动
+
+
+  视频讲解：\url{https://www.bilibili.com/video/BV1AY4y157yL/}
 
 \end{frame}

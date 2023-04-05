@@ -133,7 +133,96 @@
   \frametitle{KMP算法}
   利用已经得到的“部分匹配”的结果将模式向右滑动
 
-
   视频讲解：\url{https://www.bilibili.com/video/BV1AY4y157yL/}
 
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{KMP算法}
+  利用ChatGPT来完成代码，已经变得非常方便，参见string.ipynb文件。
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{练习}
+  \begin{itemize}
+  \item 从《红楼梦》中，统计主要人物出现的次数，并按照频次高低输出。
+
+  \item 文件位置：ipynb/honglou.txt
+
+  \item 人物列表：ipynb/honglou\_person.txt
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{多模式串匹配与AC自动机}
+    \begin{itemize}
+    \item BM、KMP为单模匹配，即模式串只有一个。假设主串$T[1, \cdots, m]$，
+    模式串有k个$P={P_1,\cdots,P_k}$，且模式串集合的总长度为$n$。
+    如果采用KMP来匹配多模式串，则算法复杂度为：
+
+    \[O(|P_1|+m+\cdots+|P_k|+m)=O(n+km)\]
+  
+    \item KMP并没有利用到模式串之间的重复字符结构信息，每一次模式串的匹配都需要将主串从头至尾扫描一遍。
+
+    \item 贝尔实验室的Aho与Corasick于1975年基于有限状态机（finite state machines）提出AC自动机算法
+  \footnote{AC算法比KMP提出要早，KMP于1977年提出}。
+  \end{itemize}
+  % https://www.cnblogs.com/en-heng/p/5247903.html
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{AC自动机}
+  \begin{itemize}
+  \item 自动机由状态（数字标记的圆圈）和转换（带标签的箭头）组成，每一次转换对应一个字符。AC算法的核心包括三个函数：goto、failure、output；这三个函数构成了AC自动机。对于模式串{he, his, hers, she}，goto函数表示字符按模式串的转移，暗含了模式串的共同前缀的字符结构信息\footnote{\url{from: https://www.cnblogs.com/en-heng/p/5247903.html}}。
+  \end{itemize}
+
+  \begin{center}
+  \includegraphics[width=0.55\textwidth]{figs/string/ac_goto.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{AC自动机}
+  \begin{itemize}
+  \item failure函数表示匹配失败时退回的状态：
+  \end{itemize}
+
+  \begin{center}
+  \includegraphics[width=0.6\textwidth]{figs/string/ac_failure.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{AC自动机}
+  \begin{itemize}
+  \item output函数表示模式串对应于自动机的状态：
+  \end{itemize}
+
+  \begin{center}
+  \includegraphics[width=0.4\textwidth]{figs/string/ac_output.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{AC自动机}
+  \begin{itemize}
+  \item 完整的AC自动机如下：
+  \end{itemize}
+
+  \begin{center}
+  \includegraphics[width=0.8\textwidth]{figs/string/ac.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{AC自动机匹配过程}
+  AC算法根据自动机匹配模式串，过程比较简单：从主串的首字符、自动机的初始状态0开始，
+
+  \begin{itemize}
+  \item 若字符匹配成功，则按自动机的goto函数转移到下一状态；且若转移的状态对应有output函数，则输出已匹配上的模式串；
+  \item 若字符匹配失败，则递归地按自动机的failure函数进行转移
+  \end{itemize}
+\end{frame}
+

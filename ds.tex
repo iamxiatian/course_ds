@@ -7,7 +7,7 @@
 \usepackage{framed, xcolor} 
 \usepackage{tabularx, colortbl, booktabs, multirow, makecell, longtable}
 \usepackage{animate}
-
+%\usepackage{enumitem}
 \usepackage{soul} %for strikeout
 
 \usepackage{amsmath, amsfonts, amssymb} %amssymb for varnothing symbol
@@ -129,7 +129,9 @@
 
 \newcommand*\circled[2][black]{\tikz[baseline=(char.base)]{
   \node[shape=circle,draw=#1,inner sep=1.5pt] (char) {#2};}}
-  
+
+%\setlist[itemize]{label=\color{orange}\textbullet}
+
 % 设置字体信息
 \usepackage{fontspec}
 %\setmainfont{Ubuntu}
@@ -138,8 +140,10 @@
 
 \usepackage[T1]{fontenc}
 \usepackage{Alegreya}
-\setCJKfamilyfont{puhuiti}{YaHeiConsolas.ttf}
-\newcommand{\defaultfont}{\CJKfamily{puhuiti}}
+%\setCJKfamilyfont{puhuiti}{YaHeiConsolas.ttf}
+%\setCJKfamilyfont{puhuiti}{SourceHanSansCN-Light}
+\setCJKmainfont{SourceHanSansCN-Light}
+\newcommand{\defaultfont}{\CJKfamily{SourceHanSansCN-Light}}
 
 % 设置行间距
 \linespread{1.25}
@@ -161,9 +165,9 @@
 \frame{\titlepage}
 \easyitem
 
-%\input{introduction}
+\input{introduction}
 %\input{list}
-\input{string}
+%\input{string}
 %\input{tree}
 %\input{graph}
 %\include{search}

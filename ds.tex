@@ -1,4 +1,4 @@
-﻿\documentclass[table, 13pt, slidestop,compress,mathserif]{beamer}
+\documentclass[table, 13pt, slidestop,compress,mathserif]{beamer}
 %%==========================================================
 \usepackage[english]{babel} % 如果去掉，中英文混合会有问题
 \usepackage[UTF8, zhmap = true]{ctex} %增加中文处理
@@ -119,6 +119,10 @@
 \setminted{encoding=utf-8} %注意字体，如果设置了CJKmonofont，会出现乱码
 \usemintedstyle{tango}
 
+\definecolor{red(ncs)}{rgb}{0.77, 0.01, 0.2}
+\definecolor{champagne}{rgb}{0.97, 0.91, 0.81}
+\definecolor{coolblack}{rgb}{0.0, 0.18, 0.39}
+\definecolor{vanilla}{rgb}{0.95, 0.9, 0.67}
 \usepackage[ampersand]{easylist}
 \newcommand\easyitem{\ListProperties(
   Hide=100, Hang=true, Progressive=1ex,
@@ -126,6 +130,25 @@
   Style2*=\color{orange}$\ast$ ,
   Style3*=\color{orange}$\circ$ ,
   Style4*=\tiny$\blacksquare$, Space=-.1em, Space*=-.1em)}
+
+\setbeamertemplate{itemize item}{\color{orange}$\bullet$}
+\setbeamertemplate{itemize subitem}{\tiny\raise1.5pt\hbox{\donotcoloroutermaths$\blacktriangleright$}}
+\setbeamertemplate{itemize subsubitem}{\tiny\raise1.5pt\hbox{\donotcoloroutermaths$\blacktriangleright$}}
+\setbeamertemplate{enumerate item}{\insertenumlabel.}
+\setbeamertemplate{enumerate subitem}{\insertenumlabel.\insertsubenumlabel}
+\setbeamertemplate{enumerate subsubitem}{\insertenumlabel.\insertsubenumlabel.\insertsubsubenumlabel}
+\setbeamertemplate{enumerate mini template}{\insertenumlabel}
+
+\setbeamercolor{title}{fg=coolblack, bg=orange!30}
+\setbeamercolor{frametitle}{fg=coolblack, bg=vanilla!0}
+\setbeamercolor{palette primary}{fg=black, bg=gray!15!white}
+\setbeamercolor{palette secondary}{fg=black, bg=gray!10!white}
+\setbeamercolor{palette tertiary}{fg=black, bg=gray!15!white}
+
+\parskip=3mm
+\parindent=15pt
+\linespread{1.1}
+
 
 \newcommand*\circled[2][black]{\tikz[baseline=(char.base)]{
   \node[shape=circle,draw=#1,inner sep=1.5pt] (char) {#2};}}
@@ -152,7 +175,9 @@
 %\logo{\includegraphics[height=1cm,width=1cm]{ruc_logo.png}}
 \usetheme{Boadilla}
 \usecolortheme{dove}
-%\usecolortheme{rose}
+
+\setbeamertemplate{items}[ball] 
+\setbeamertemplate{blocks}[rounded][shadow=true] 
 
 \title[Data Structure]{数据结构}
 \author[xiat@ruc.edu.cn]{夏天 \\ \url{xiat@ruc.edu.cn}}
@@ -165,10 +190,11 @@
 \frame{\titlepage}
 \easyitem
 
-\input{introduction}
+%\input{introduction}
 %\input{list}
+%\input{stack}
 %\input{string}
-%\input{tree}
+\input{tree}
 %\input{graph}
 %\include{search}
 % \input{sorting}

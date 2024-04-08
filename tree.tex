@@ -62,11 +62,11 @@
   树(Subtree)。
   \begin{columns}[T]
     \column{0.55\textwidth}
-    \begin{enumerate}
-    \item 各子树是互不相交的集合。
-    \item 除根结点,其它结点有唯一前驱。
-    \item   一个结点可以有零个或多个后继。
-    \end{enumerate}
+    \begin{easylist}
+    & 各子树是互不相交的集合。
+    & 除根结点,其它结点有唯一前驱。
+    & 一个结点可以有零个或多个后继。
+    \end{easylist}
 
     \column{0.4\textwidth}
     \begin{forest}
@@ -97,34 +97,34 @@
   \includegraphics[width=0.36\textwidth]{dot/tree-represent1.pdf}  \pause
   \scalebox{0.75}{
     \begin{tikzpicture}[b/.style={fill=black!50},n/.style={minimum width=1cm}]
-      \draw node[n] (a) {A} node[b, right=0 of a, minimum width=5cm, fill=red!50]{};	
+      \draw node[n] (a) {A} node[b, right=0 of a, minimum width=5cm, fill=red!50]{};  
 
       \draw node[minimum width=0.5cm, below=0.1 of a](bh){} 
-      node[n, right=0 of bh] (b) {B} node[b,fill=blue!50, minimum width=4.3cm,right=0 of b]{};	
+      node[n, right=0 of bh] (b) {B} node[b,fill=blue!50, minimum width=4.3cm,right=0 of b]{};  
 
       \draw node[minimum width=2cm, below=0.2 of bh](dh){} 
-      node[n, right=0 of dh] (d) {D} node[b, minimum width=3.5cm,right=0 of d]{};	
+      node[n, right=0 of dh] (d) {D} node[b, minimum width=3.5cm,right=0 of d]{}; 
 
       \draw node[minimum width=3.5cm, below=0.2 of dh](ih){} 
-      node[n, right=0 of ih] (i) {I} node[b, fill=green!50, minimum width=2.8cm,right=0 of i]{};	
+      node[n, right=0 of ih] (i) {I} node[b, fill=green!50, minimum width=2.8cm,right=0 of i]{};  
 
       \draw node[minimum width=3.5cm, below=0.2 of ih](jh){} 
-      node[n, right=0 of jh] (j) {J} node[b, fill=green!50, minimum width=2.8cm,right=0 of j]{};	
+      node[n, right=0 of jh] (j) {J} node[b, fill=green!50, minimum width=2.8cm,right=0 of j]{};  
 
       \draw node[minimum width=2cm, below=1.2 of dh](eh){} 
-      node[n, right=0 of eh] (e) {E} node[b, minimum width=3.5cm,right=0 of e]{};	
+      node[n, right=0 of eh] (e) {E} node[b, minimum width=3.5cm,right=0 of e]{}; 
 
       \draw node[minimum width=2cm, below=1.8 of dh](fh){} 
-      node[n, right=0 of fh] (f) {F} node[b, minimum width=3.5cm,right=0 of f]{};		
+      node[n, right=0 of fh] (f) {F} node[b, minimum width=3.5cm,right=0 of f]{};   
 
 
       \draw node[minimum width=0.5cm, below=3.2 of a](ch){} 
-      node[n, right=0 of ch] (c) {C} node[b, fill=blue!50, minimum width=4.3cm,right=0 of c]{};	
+      node[n, right=0 of ch] (c) {C} node[b, fill=blue!50, minimum width=4.3cm,right=0 of c]{}; 
 
       \draw node[minimum width=2cm, below=2.8 of dh](gh){} 
-      node[n, right=0 of gh] (g) {G} node[b, minimum width=3.5cm,right=0 of g]{};	
+      node[n, right=0 of gh] (g) {G} node[b, minimum width=3.5cm,right=0 of g]{}; 
       \draw node[minimum width=2cm, below=3.2 of dh](hh){} 
-      node[n, right=0 of hh] (h) {H} node[b, minimum width=3.5cm,right=0 of h]{};	
+      node[n, right=0 of hh] (h) {H} node[b, minimum width=3.5cm,right=0 of h]{}; 
 
       \draw node[below=0.1 of h] {凹入表表示法};
     \end{tikzpicture}
@@ -160,7 +160,6 @@
       \draw node[yshift=-2.2cm] {嵌套集合表示};
     \end{tikzpicture}
   }
-  
     \end{column}
   \end{columns}
 \end{frame}
@@ -192,13 +191,14 @@
       \item 森林
       \end{itemize}
 
+      \scalebox{0.8} {
       \begin{forest}
-        [R
-        [A, 
-        [C] [D]]
-        [B [E]]
+        [R, for tree={color=white,fill=black}, fill=red!85
+          [A [C] [D]]
+          [B [E]]
         ]
       \end{forest}
+      }
     \end{column}
   \end{columns}
 \end{frame}
@@ -262,7 +262,7 @@
       [A, name=A
       [B, name=B [D [H] [I]] [E [J] [K]]]
       [C, name=C [F [L] [M]] [G [N] [O]]]
-      ]
+      ];
      \draw[draw, dotted, thick] (B.north) ++(-2cm, 0.2cm)-- ++(9cm, 0cm)
      node[above, right, yshift=0.5cm]{1};
      \draw[draw, dotted, thick] (B.south) ++(-2cm, -0.2cm)-- ++(9cm, 0cm)
@@ -325,10 +325,10 @@
   \begin{columns}[T]
     \column{0.55\textwidth}
     \begin{forest}
-      [1, for tree={font=\scriptsize}
+      [1, for tree={minimum width=1.8em, minimum height=1.8em}
       [2 [4 [8] [9]] [5 [10] [11]]]
       [3 [6 [12] [{}, no edge,draw=none]] [7]]
-      ]\
+      ]
     \end{forest}
     \pause
     
@@ -390,42 +390,53 @@
   \end{forest}
 \end{frame}
 
+
+
 \begin{frame}[fragile]
   \frametitle{二叉树的性质}
-  \begin{itemize}
-  \item 性质4:具有$n$个结点的完全二叉树的深度为:
+  \begin{easylist}
+  & 性质4:具有$n$个结点的完全二叉树的深度为:
     \[ \biggl\lfloor {log_2 n} \biggr\rfloor + 1 \] 
-  \end{itemize}
+  \end{easylist}
+  
   \small
   对于完全二叉树，设深度为$k$, 由$2^{k-1}-1 < n \leq 2^k - 1$可知,
   $2^{k-1} \leq n <2^k$, 则 $k-1 \leq log_2n < k$
   (参考性质2)
   
   \begin{columns}[T]
-    \column{0.45\textwidth}
-    \scalebox{0.6}{
-      \begin{forest}
-        [1, for tree={font=\scriptsize}
-        [2 [4 [8] [9]] [5 [10] [11]]]
-        [3 [6 [12] [13]] [7 [14] [15]]]
-        ]
-      \end{forest}
-    }
-    
-    满二叉树
-    \column{0.45\textwidth}
-    \scalebox{0.6}{
-      \begin{forest}
-        [1, for tree={font=\scriptsize}
-        [2 [4 [8] [9]] [5 [10] [11]]]
-        [3 [6 [12] [{}, no edge, draw=none]] [7]]
-        ]
-      \end{forest}
-    }
-    
-    完全二叉树
+    \begin{column}{0.45\linewidth}      
+      \scalebox{0.6}{
+        \begin{forest}
+          [1, for tree={minimum width=2.5em, minimum height=2.5em}
+          [2 [4 [8] [9]] [5 [10] [11]]]
+          [3 [6 [12] [13]] [7 [14] [15]]]
+          ]
+        \end{forest}
+      }
+      
+      满二叉树
+    \end{column}
+    \begin{column}{0.45\linewidth}
+      \scalebox{0.6}{
+        \begin{forest}
+          [1, for tree={minimum width=2.5em, minimum height=2.5em}
+          [2 [4 [8] [9]] [5 [10] [11]]]
+          [3 [6 [12] [{}, no edge, draw=none]] [7]]
+          ]
+        \end{forest}
+      }
+      
+      完全二叉树
+    \end{column}
   \end{columns}
 \end{frame}
+
+
+
+
+
+
 
 \begin{frame}[fragile]
   \frametitle{测试}
@@ -543,6 +554,9 @@ class SqBiTree {
   \item 便于“随机存取”
   \end{itemize}
 \end{frame}
+
+
+
 
 
 
@@ -1237,7 +1251,6 @@ class Tree {
       \draw[e] (PB.center) -- (c11);
     \end{tikzpicture}
   }
-
 \end{frame}
 
 \begin{frame}[fragile]

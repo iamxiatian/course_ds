@@ -673,22 +673,12 @@ class BiTNode<T> { //Java Code
 
   \begin{columns}[T]
     \column{0.5\textwidth}
-    \scalebox{0.5}{
-      \begin{forest}
-        [1
-        [2 [{}, no edge, draw=none] [4 [5] [6]]]
-        [3]]
-      \end{forest}
-    }
-    \includegraphics[width=0.8\textwidth]{dot/tree-store-trilink.pdf}
-    
-    \column{0.5\textwidth}
-    \begin{minted}[fontsize=\scriptsize,bgcolor=red!5]{c}
-typedef struct BiTNode  { // C Code
-  ElemType data;
-  struct BiTNode *lchild, *rchild;
-  struct BiTNode *parent;
-} BiTNode, *BiTree;
+    \begin{minted}[fontsize=\scriptsize,bgcolor=red!5]{python}
+class BiTNode:
+  def __init__(self, lc, rc, parent):
+    self.lc = lc
+    self.rc = rc
+    self.parent = parent
     \end{minted}
 
     \begin{minted}[fontsize=\scriptsize,bgcolor=yellow!10]{c}
@@ -697,13 +687,23 @@ class BiTNode<T> { //Java Code
   BiTNode lchild, rchild, parent;
 }
     \end{minted}
+
+    \column{0.5\textwidth}
+    \scalebox{0.6}{
+      \begin{forest}
+        [1
+        [2 [{}, no edge, draw=none] [4 [5] [6]]]
+        [3]]
+      \end{forest}
+    }
+    \includegraphics[width=0.75\textwidth]{dot/tree-store-trilink.pdf}
+    
+    \scriptsize 思考: 有n个结点的三叉链表有多少个空指针？
+
+    \pause
+    
+    对于二叉链表，指针域一共有$2*n$个，分支共有$N-1$,  每个分支占用一个指针域，所以空指针数量为$2*n - (n - 1) = n+1 $;  对于parent，根节点无父节点，所以共有$n+1+1=n+2$个空指针
   \end{columns}
-
-  \small 思考: 有n个结点的三叉链表有多少个空指针？
-
-  \pause
-  \scriptsize
-  对于二叉链表，指针域一共有$2*n$个，分支共有$N-1$,  每个分支占用一个指针域，所以空指针数量为$2*n - (n - 1) = n+1 $;  对于parent，根节点无父节点，所以共有$n+1+1=n+2$个空指针
 \end{frame}
 
 
@@ -740,17 +740,11 @@ class BiTNode<T> { //Java Code
   \frametitle{二叉树的遍历}
   \begin{easylist}
     & 1、先序遍历二叉树的操作定义为: 若二叉树为空,则空操作;否则
-    && (1)访问根结点;
-    && (2)先序遍历左子树;
-    && (3)先序遍历右子树。
+    && (1)访问根结点; (2)先序遍历左子树; (3)先序遍历右子树。
     & 2、中序遍历二叉树的操作定义为:若二叉树为空,则空操作;否则
-    && (1)中序遍历左子树;
-    && (2)访问根结点;
-    && (3)中序遍历右子树。
+    && (1)中序遍历左子树; (2)访问根结点;  (3)中序遍历右子树。
     & 3、后序遍历二叉树的操作定义为:若二叉树为空,则空操作;否则
-    && (1)后序遍历左子树;
-    && (2)后序遍历右子树;
-    && (3)访问根结点。
+    && (1)后序遍历左子树;  (2)后序遍历右子树; (3)访问根结点。
   \end{easylist}
 \end{frame}
 
@@ -1696,7 +1690,26 @@ class TNode {
     && B: 0001
     && ...
   \end{easylist}
+%   树形结构部分的程序作业与要求：
+
+% 1. 根据26个英文字母的频度表, 构建哈夫曼算法，为每一个字母赋予一个唯一的最优编码。
+% 2. 在notebook中能够输出每一个英文字母的编码结果，输出时每一个英文字母一行，格式为：字母:编码
+% 3. 将字符串“hello world again” 写入程序当前目录下的文件"hello.txt"
+% 4. 利用第1步构建的树，读取hello.txt文件中的内容并进行哈夫曼编码和压缩，压缩后的结果保存到"hello_huffman.dat"文件中
+% 5. 读取文件"hello_huffman.dat"，并将其内容根据哈夫曼编码关系，还原出原始内容
+% 5. 代码采用notebook编写，需要安装的依赖、程序说明、代码和注释均记录在该文件中，保存的文件名称为:  huffman_姓名.ipynb
+% 6. 截止时间：5月7日23:00
+% 7. 提交形式：以: 哈夫曼树-学号-姓名 为标题，ipynb文件为附件，发送邮件到助教邮箱。
+
+% 得分点：
+%  1. 邮件标题、文件命名等符合上面的要求 10%
+%  2. 通过notebook文件，程序正常运行 20%
+%  3. 对所有类和方法的注释 10%
+%  4. 英文字符的哈夫曼编码正常输出 30%
+%  5. “hello.txt“压缩和解压正常  30%
+ 
 \end{frame}
+
 
 
 \begin{frame}[fragile]

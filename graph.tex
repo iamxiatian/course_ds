@@ -40,6 +40,76 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitle{图的用途}
+  \begin{easylist}
+    & 用数学语言来说，网络通常被视为一种加权图（Weighted Graph），其中节点（Node）代表实体，边（Edge）代表实体间的关系，而边的权重（Weight）则代表了这种关系的某种度量（如距离、成本、流量等）。
+
+    & 除了数学上的定义，网络还具有实际的物理含义，它是从相同类型的实际问题中抽象出来的模型。这些实际问题包括但不限于交通系统、物流运输、通信系统等，因此习惯上会根据其应用领域称之为相应的网络类型，如交通网络、运输网络、通信网络等。
+
+    & 现实生活中的许多问题，如交通路线的优化、ERP（企业资源规划）系统的工作计划制定等，都可以借助图与网络的模型进行建模和求解。这些模型能够帮助我们更好地理解和分析问题的本质，从而找到有效的解决方案。
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{社会网络(social network)}
+  \small
+  \begin{easylist}
+    & 社会网络是指由社会个体成员之间因互动而形成的相对稳定的关系体系。
+    & 社会网络分析（SNA）作为社会学的一个重要分支，自上世纪30年代末起逐步发展，成为研究社会结构的重要方法和技术。从30年代到60年代，这一领域吸引了来自心理学、社会学、人类学以及数学、物理、统计、概率等领域的学者，他们共同推动了SNA的理论、方法和技术的发展，使其成为研究社会结构的重要范式。
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile, allowframebreaks]
+  \frametitle{六度分隔(Six Degrees of Separation)}
+  \small
+  \begin{easylist}
+    & 六度空间理论（也称为小世界现象或六度分隔理论）最初是在1929年由匈牙利作家弗里奇斯·卡林思（Frigyes Karinthy）在他的短篇小说中提出的，他提出世界上所有人都可以通过至多五个中间人联系起来。
+
+    & 1967年，哈佛大学的社会心理学教授Stanley Milgram (1933-1984)进行了一项著名的实验来验证这一理论。他设计了一个连锁信件实验，从Nebraska和Kansas随机选择了300多名志愿者，请他们寄一封信函给指定的一名住在波士顿的股票经纪人。实验结果表明，有六十多封信函最终到达了目标人手中，并且这些信函在传递过程中经过的中间人的数目平均只有大约5个。这一发现验证了六度空间理论，并使其受到了全世界的广泛关注。
+
+    \newpage
+    
+    & 此外，Milgram还发现了漏斗效应，即大部分的信件传递都是由少数几个“明星人物”完成的，这些人在社交网络中具有很高的连接性，能够更快地传递信息。
+
+    & 六度空间理论不仅激发了学术界的深入研究，还催生了电影《六度空间》（又称《六度分离》或《连锁反应》）等文化产品，进一步增强了公众对这一理论的兴趣和认知。
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile, allowframebreaks]
+  \frametitle{150法则(Rule of 150)}
+  \begin{easylist}
+    & 从欧洲发源的“赫特兄弟会”是一个自给自足的农民自发组织，他们有一个不成文的
+    严格规定：每当聚居人数超过150人的规模，他们就把它变成两个，再各自发展。
+
+    & 150也被称为“邓巴数字(Dunbar’s number)”，该理论认为人的大脑新皮层大小有限，
+    提供的认知能力只能使一个人维持与大约150人的稳定人际关系。
+
+    & 把人群控制在150人以下似乎是管理人群的一个最佳和最有效的方式。早期中国移动的动
+    感地带sim卡最多保存150个手机号，早期一个MSN帐号只能对应150个联系人。
+
+    & 不管你认识多少人，或者与更多人建立了弱链接，那些强链接仍然在此次此刻符合
+    150法则。这也符合“二八”法则，即80\%的社会活动可能被150个强链接所占有。
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile, allowframebreaks]
+  \frametitle{网络模型}
+  \begin{easylist}
+    & 随机网络：
+    && 在交通网络中，随机网络可以模拟道路拥堵的情况。假设道路的连接（箭线）和交叉口（节点）的实现具有一定的随机性，这取决于交通流量、道路状况等多种因素。
+    && 用途：随机网络用于描述那些节点和连接具有不确定性的系统。在交通网络中，随机网络模型可以帮助预测和规划交通流量，优化交通设计，减少拥堵。此外，随机网络还广泛应用于计算机科学、社会学、生物学等领域，用于模拟和分析各种复杂系统的行为。
+    \newpage
+    & 小世界网络
+    && 社交网络可以看作是一个小世界网络。在社交网络中，虽然大多数人只与少数人保持紧密联系（短路径），但几乎每个人都可以通过少数几个熟人联系到网络中的任何其他人（小世界现象）。
+    && 用途：小世界网络模型用于描述那些具有较短的平均路径长度和较高的聚类系数的网络。这种网络结构使得信息在网络中传播得非常快，因此小世界网络模型在信息传播、社交网络分析、推荐系统等领域具有广泛应用。此外，小世界网络还用于研究生物网络、神经网络等复杂系统的行为。
+    \newpage
+    & 无标度网络
+    && 互联网可以看作是一个无标度网络。在互联网中，少数大型网站（Hub点）拥有大量的链接，而大多数网站只有少量的链接。这种网络结构使得互联网呈现出无标度性，即节点的连接数（度数）分布严重不均匀。
+    && 用途：无标度网络模型用于描述那些具有严重不均匀分布特性的网络。在互联网中，无标度网络模型有助于理解网络的拓扑结构、稳定性和鲁棒性等特性。此外，无标度网络还广泛应用于社交网络、金融网络、生物网络等领域的研究，以揭示这些复杂系统的内在规律和运行机制。
+  \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitle{图(Graph)}
   \begin{itemize}
   \item 图$G=(V, E)$, $V$是顶点(Vertex)集合,$E$是边/弧(Edge/Arc)的集合.
@@ -274,11 +344,11 @@
         \draw node[n2, draw, right=of PA] (c11) {2} node[n2, draw, right=0 of c11] (c12) {};
         \draw node[n2, draw, right=of c12] (c21) {1} node[n2, draw, right=0 of c21] (c22) {$\wedge$};
         \draw[e] (PA.center) -- (c11);
-        \draw[e] (c12.center)--(c21);				
+        \draw[e] (c12.center)--(c21);
 
         \draw node[n2, draw, right=of PB] (c11) {3} node[n2, draw, right=0 of c11] (c12) {};
         \draw node[n2, draw, right=of c12] (c21) {0} node[n2, draw, right=0 of c21] (c22) {$\wedge$};
-        \draw[e] (PB.center) -- (c11) (c12.center)--(c21);				
+        \draw[e] (PB.center) -- (c11) (c12.center)--(c21);
 
         \draw node[n2, draw, right=of PC] (c11) {0} node[n2, draw, right=0 of c11] (c12) {$\wedge$};
         \draw[e] (PC.center) -- (c11);
@@ -327,7 +397,7 @@
         \draw node[n2, draw, right=of PA] (c11) {3} node[n2, draw, right=0 of c11] (c12) {};
         \draw node[n2, draw, right=of c12] (c21) {1} node[n2, draw, right=0 of c21] (c22) {$\wedge$};
         \draw[e] (PA.center) -- (c11);
-        \draw[e] (c12.center)--(c21);				
+        \draw[e] (c12.center)--(c21);
 
         \draw node[n2, draw, right=of PB] (c11) {2} node[n2, draw, right=0 of c11] (c12) {$\wedge$};
         \draw[e] (PB.center) -- (c11);
@@ -371,7 +441,7 @@
         \draw node[n2, draw, right=of PD] (c11) {2} node[n2, draw, right=0 of c11] (c12) {};
         \draw node[n2, draw, right=of c12] (c21) {0} node[n2, draw, right=0 of c21] (c22) {$\wedge$};
         \draw[e] (PD.center) -- (c11);
-        \draw[e] (c12.center)--(c21);		
+        \draw[e] (c12.center)--(c21);
 
         \draw node[n2, draw, right=of PE] (c11) {3} node[n2, draw, right=0 of c11] (c12) {$\wedge$};
         \draw[e] (PE.center) -- (c11);
@@ -459,6 +529,7 @@
 
 \begin{frame}[fragile, allowframebreaks]
   \frametitle{邻接表表示}
+  \scriptsize
   \begin{minted}{java}
     class VertexNode {
       String data;
@@ -535,17 +606,33 @@
   \frametitle{有向图的十字链表(Orthogonal List)}
   \begin{columns}[T]
     \column{0.4\textwidth}
-    \begin{tikzpicture}[scale=1.2]
-      \GraphInit[vstyle=Normal]
-      \SetVertexMath
-      \begin{scope}[rotate=135]
-        \Vertices{circle}{A, C, D, B}
-      \end{scope}
-      \Edges[style={-Latex}](C,D,A,B)
-      \Edges[style={-Latex}](D,B)
-      \Edges[style={-Latex, bend left}](C,A,C)
-    \end{tikzpicture}
+    \scalebox{0.6}{
+      \begin{tikzpicture}[
+          % 定义样式
+          node distance = 2cm,
+          auto,
+          every node/.style={
+            circle,
+            draw,
+            font=\sffamily\Large\bfseries
+          },
+          edge/.style={draw,->,thick}
+        ]
+        % 定义节点
+        \node (v0) at (0,0) {$v_0$};
+        \node[right=of v0] (v1) {$v_1$};
+        \node[below left=of v0] (v2) {$v_2$};
+        \node[below right=of v0] (v3) {$v_3$};
 
+        % 绘制边
+        \path[edge] (v0) -- (v1);
+        \path[edge, bend right] (v0) to (v2);
+        \path[edge, bend right] (v2) to (v0);
+        \path[edge] (v2) -- (v3);
+        \path[edge] (v3) -- (v0);
+        \path[edge] (v3) -- (v1);
+      \end{tikzpicture}
+    }
     \column{0.6\textwidth}
     将邻接表、逆邻接表结合起来.
     \begin{itemize}
@@ -555,17 +642,17 @@
   \end{columns}
   \scalebox{0.7}{
     \begin{tikzpicture}[ n/.style={minimum height=0.8cm, minimum width=1cm},
-      n2/.style={minimum height=0.6cm, minimum width=1cm, fill=red!5},
-      n3/.style={minimum height=0.6cm, minimum width=1cm},
-      e/.style={->, thick, red},
-      e2/.style={->, thick, blue}]
+        n2/.style={minimum height=0.6cm, minimum width=1cm, fill=red!5},
+        n3/.style={minimum height=0.6cm, minimum width=1cm},
+        e/.style={->, thick, red},
+        e2/.style={->, thick, blue}]
       \draw node[n] (n0) {索引} node[n,right=0 of n0](label) {头节点};
 
       \foreach \x  [evaluate = \x as \xp using int(\x-1)] in {1, ..., 4}
       \draw node[n, below=0 of n\xp](n\x) {$\xp$};
 
-      \foreach \x/\y/\z/\v in {1/A//,2/B//,3/C//,4/D//}
-      \draw node[n, right=0 of n\x, draw, fill=yellow!10](\y) {$\y$} node[n, right=0 of \y, draw] (firstIn\y) {\z} node[n, right=0 of firstIn\y, draw] (firstOut\y) {\v};
+      \foreach \x/\y/\z/\i/\v in {1/A//0/,2/B//1/,3/C//2/,4/D//3/}
+      \draw node[n, right=0 of n\x, draw, fill=yellow!10](\y) {$v_\i$} node[n, right=0 of \y, draw] (firstIn\y) {\z} node[n, right=0 of firstIn\y, draw] (firstOut\y) {\v};
 
       \draw node[n2, draw, right=of firstOutA] (headAB) {0} node[n2, draw, right=0 of headAB] (tailAB) {1} node[n3, draw, right=0 of tailAB] (headLinkAB) {} node[n3, draw, right=0 of headLinkAB] (tailLinkAB) {};
 
@@ -604,7 +691,7 @@
   \frametitle{有向图的十字链表}
   \begin{columns}
     \column{0.5\textwidth}
-    \begin{minted}[fontsize=\small]{java}
+    \begin{minted}[fontsize=\scriptsize]{java}
       class VertexNode {
         String data;
         ArcBox firstIn;
@@ -840,7 +927,7 @@
 
 \begin{frame}[fragile, plain, allowframebreaks]
   %\frametitle{DFS}
-  \begin{minted}[fontsize=\small]{java}
+  \begin{minted}[fontsize=\scriptsize]{java}
     class VertexNode {
       String data;
       EdgeNode firstAdj = null;
@@ -1166,7 +1253,7 @@
 \begin{frame}[fragile]
   \frametitle{非连通图的连通分量}
 
-  对于非连通图则遍历生成森林, 下图是深度优先遍历生成森林
+  对于非连通图，则遍历生成森林
 
   \scalebox{0.8}{    
     \begin{tikzpicture}[scale=1]

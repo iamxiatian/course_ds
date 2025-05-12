@@ -1,7 +1,7 @@
 \section{字符串}
 \begin{frame}[fragile]
   \frametitle{字符串}
-  计算机非数值处理的对象经常是字符串数据。如文本检索、文本聚类、文本理解等。
+  计算机非数值处理的对象经常是字符串数据。如信息检索、文本聚类、文本理解等。
 
   \begin{itemize}
   \item 串的定义及表示
@@ -28,7 +28,7 @@
   \begin{itemize}
   \item 顺序存储: 用一组地址连续的存储单元存储串值中的字符序列。
   \item 链式存储: 考虑到存储密度，可以按块分配。
-  \item 在C++/Java等语言中，String就是字符串。在C语言中没有string类型变量，字符串用字符数组表示。
+  \item 在Python/C/Java等语言中，String就是字符串。在C语言中没有string类型变量，字符串用字符数组表示。
   \end{itemize}
 \end{frame}
 
@@ -60,6 +60,47 @@
     \end{column}
   \end{columns}
 \end{frame}
+
+\begin{frame}[fragile, allowframebreaks]
+  \frametitle{Python示例代码}
+  \small
+  \begin{minted}{python}
+def bf_search(source, target) -> tuple:
+    """
+    从source中查找出现的target，返回第一个位置的二元组
+    主串中的位置, 比较次数)，未找到返回(-1, 比较次数)
+    """
+    compare_count = 0
+    for i in range(len(source)):
+        found = True
+        for j in range(len(target)):
+            compare_count = compare_count + 1
+            if source[i+j] != target[j]:
+                found = False
+                break
+        if found:
+            return i, compare_count
+    return -1, compare_count
+
+source = 'aaaaaaaaaaab'
+target = 'aaaab'
+position, compare_count = bf_search(source, target)
+
+print('返回位置：', position)
+print(f'在{source}的第{position}个位置开始，发现了{target}，共比较了{compare_count}次')
+print(source)
+print('*'*position, end='')
+print(target)
+  \end{minted}
+
+  \begin{minted}{text}
+返回位置： 7
+在aaaaaaaaaaab的第7个位置开始，发现了aaaab，共比较了40次
+aaaaaaaaaaab
+*******aaaab
+  \end{minted}
+\end{frame}
+
 
 \begin{frame}[fragile]
   \frametitle{BF算法时间复杂度分析}
@@ -96,8 +137,8 @@
 
 \begin{frame}[fragile]
   \frametitle{改进算法}
-
-  \begin{tikzpicture}[box/.style={draw, minimum width=1cm, minimum height=0.8cm}]
+  \scriptsize
+  \begin{tikzpicture}[box/.style={draw, minimum width=0.6cm, minimum height=0.4cm}]
     \draw node[minimum width=2cm] (a0) {主串};
     \foreach \i in {1,...,7} {
       \pgfmathtruncatemacro{\x}{\i - 1};
@@ -118,7 +159,7 @@
     \path (a4) edge[draw=red, in=90, out=115, ->, dotted, thick]  (a2);
     \path (b4) edge[draw=red, in=-90, out=-115, ->, dotted, thick]  (b1);
   \end{tikzpicture}
-
+  \small
   \begin{itemize}
   \item 改进算法的目的是在每一趟匹配过程中出现不匹配时，向右“滑动”尽可能远的一段
     距离后，继续进行比较。那么，应当滑动多远呢？这正是各个算法各显神通之处！
@@ -133,13 +174,16 @@
   \frametitle{KMP算法}
   利用已经得到的“部分匹配”的结果将模式向右滑动
 
-  视频讲解：\url{https://www.bilibili.com/video/BV1AY4y157yL/}
-
+  视频讲解：
+  \begin{itemize}
+    \item \url{https://www.bilibili.com/video/BV1AY4y157yL/}
+    \item \url{https://www.bilibili.com/video/BV1Er421K7kF/}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{KMP算法}
-  利用ChatGPT来完成代码，已经变得非常方便，参见string.ipynb文件。
+  利用大语言模型来完成代码，已经变得非常方便，参见string.ipynb文件。
 
 \end{frame}
 

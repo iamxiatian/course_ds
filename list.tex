@@ -794,10 +794,9 @@ q.next=s;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{删除第i个结点}
+  \frametitle{删除链表$L$第$i$个结点}
   \begin{minted}{c}
-    int  Del(LinkList  L, int i)  //删除链表L第i个结点
-    {
+    int  Del(LinkList  L, int i) {
       p=get(L, i-1);  //查找第i-1个结点
       if (p==NULL) {
         printf("第i-1个结点不存在");   return -1;
@@ -829,7 +828,7 @@ q.next=s;
     & 链表头尾结点相连
 
     \begin{center}
-      \scalebox{0.65}{
+      \scalebox{0.5}{
         \begin{tikzpicture}[fill=red, box/.style={draw, minimum width=0.85cm, minimum height=0.8cm, fill=red!5}]
 	        \draw node[box, dashed] (hp) {$hp$}
           node[box, thick, double, pattern=north west lines, right=of hp] (dh) { }  node[box, thick, double, right=0 of dh] (ph) {}
@@ -859,7 +858,11 @@ q.next=s;
 
     && 原来用头结点的next是否为NULL (None)判断空表，现在呢?
 
+    &&& head.next == head
+
     && 原来用结点的next是否为NULL (None)判断尾结点，现在呢?
+
+    &&& p.next == head 
   \end{easylist}
 \end{frame}
 

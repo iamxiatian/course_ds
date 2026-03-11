@@ -118,6 +118,22 @@
 \usepackage{minted} %compile： lualatex/xelatex -shell-escape spark.tex
 \setminted{encoding=utf-8} %注意字体，如果设置了CJKmonofont，会出现乱码
 \usemintedstyle{tango}
+\setminted{linenos=true,
+		frame=none, % 单线边框:single
+    	framesep=2mm,
+    	baselinestretch=1.2,
+		tabsize=4, 
+		xleftmargin=1mm,
+		breaklines, 
+		breakanywhere
+	}
+%\definecolor{bg}{rgb}{0.98,0.98,0.98}
+%\setminted{bgcolor=bg}
+\setminted{numbersep=2mm}
+\setminted{fontsize=\small}
+
+
+
 
 \definecolor{red(ncs)}{rgb}{0.77, 0.01, 0.2}
 \definecolor{champagne}{rgb}{0.97, 0.91, 0.81}
@@ -157,9 +173,9 @@
 
 % 设置字体信息
 \usepackage{fontspec}
-\setmainfont{Maple Mono NF CN}
-\setsansfont{Maple Mono NF CN}
-\setmonofont{Maple Mono NF CN}
+%\setmainfont{Maple Mono NF CN}
+%\setsansfont{Maple Mono NF CN}
+%\setmonofont{Maple Mono NF CN}
 
 \usepackage[T1]{fontenc}
 \usepackage{Alegreya}
@@ -191,9 +207,9 @@
 \easyitem
 
 %\input{introduction}
-%\input{list}
+\input{list}
 %\input{stack}
-\input{string}
+% \input{string}
 %\input{tree}
 %\input{graph}
 %\include{search}

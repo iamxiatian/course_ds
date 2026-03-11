@@ -1,0 +1,326 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+% !Mode:: "TeX:UTF-8"
+\documentclass[10pt,fancyhdr,UTF8, fontset = mac]{ctexbook}
+\usepackage[centering,paperwidth=180mm,paperheight=260mm, body={390pt,600pt}]{geometry}
+%\usepackage[centering,paperwidth=180mm,paperheight=230mm, body={390pt,530pt},showframe]{geometry}
+
+%\documentclass[a4paper,11pt, svgnames]{scrbook} %如果不加oneside，则奇偶页的边距会不同，以方便装订
+%\usepackage[a4paper, top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+\usepackage{ulem}
+
+\usepackage[scheme=plain]{ctex}
+%\usepackage{xeCJK}
+
+\usepackage{fontspec, xunicode, xltxtra, fancybox, setspace}
+%\usepackage{ fontspec, xunicode, xltxtra, fancybox, setspace,xcolor}
+\usepackage[dvipsnames,table,xcdraw, svgnames]{xcolor}
+\usepackage{pifont} % special symbols like circle number etc. 
+
+\usepackage{amsmath, amsthm, amsfonts, amssymb, mathrsfs} %数学公式相关 amssymb用于斜体字符，如varnothing,  masthm用于定理, mathrsfs用于花体字母
+\newtheorem{theorem}{\hskip 2em \cjkem 定理}[chapter]
+\newtheorem{lemma}{\hskip 2em \cjkem 引理}[chapter]
+\newtheorem{definition}{\hskip 2em 定义}[chapter]
+% \newtheorem{example}{\hskip 2em \cjkem 例} [chapter] % 该用tcolorbox实现
+\renewcommand{\proofname}{\hskip 2em \cjkem 证明}
+%\usepackage[sort]{natbib}
+
+\usepackage[ruled, lined, linesnumbered, algochapter]{algorithm2e}
+\renewcommand{\algorithmcfname}{算法}
+\SetKwInput{KwIn}{输入}
+\SetKwInput{KwOut}{输出}
+
+\usepackage{colortbl, booktabs, multirow, longtable, makecell} %表格处理相关的Package
+\usepackage{array}
+\newcolumntype{x}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+
+\usepackage{tikz, flowchart} % tikz绘图
+\usepackage{pgfplots}
+\usetikzlibrary{decorations.pathmorphing} 
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{calc, arrows, arrows.meta, shapes, shadows,  shapes.geometric, positioning}
+\usetikzlibrary{topaths}
+\usetikzlibrary{matrix}
+\usetikzlibrary{calc}
+\usepackage{forest}
+
+\usepackage[tikz]{bclogo}  %see http://mirrors.ctan.org/graphics/bclogo/README
+\DeclareGraphicsRule{.mps}{eps}{*}{} %解决xelatex处理bclogo时的mps问题
+\newcommand{\infobox}[2]{ 
+    \begin{bclogo}[couleur=yellow!10, logo=\bcfleur, ombre=true]{#1}
+    #2
+    \end{bclogo}
+}
+\newcommand{\warnbox}[2]{ 
+    \begin{bclogo}[couleur=yellow!10, logo=\bctakecare, ombre=true]{#1}
+    #2
+    \end{bclogo}
+}
+
+\newcommand{\shellbox}[1]{ 
+    \begin{bclogo}[couleur=gray!10, logo=\bccrayon, ombre=true]{命令}
+    #1
+    \end{bclogo}
+}
+
+\usepackage{indentfirst}  %首行缩进
+\setlength{\parindent}{2em} 
+
+\usepackage{fancyhdr}
+\thispagestyle{empty}
+
+% 设置 plain style 的属性
+\fancypagestyle{plain}{%
+		\fancyhf{} % 清空当前设置
+
+		% 设置页眉 (head)
+		\fancyhead[RE]{\leftmark} % 在偶数页的右侧显示章名
+		\fancyhead[LO]{\rightmark} % 在奇数页的左侧显示小节名
+		\fancyhead[LE,RO]{~\thepage~} % 在偶数页的左侧，奇数页的右侧显示页码
+
+		% 设置页脚：在每页的右下脚以斜体显示书名
+		%\fancyfoot[RO,RE]{ {\it Written by Summer XIA}, Email: {\it xiat@ruc.edu.cn}}
+
+		\renewcommand{\headrulewidth}{0.7pt} % 页眉与正文之间的水平线粗细
+		\renewcommand{\footrulewidth}{0pt}
+}
+
+\pagestyle{fancy} % 选用 fancy style
+\fancyhf{}
+\fancyhead[RE]{\normalfont\small\rmfamily\nouppercase{\leftmark}}
+\fancyhead[LO]{\normalfont\small\rmfamily\nouppercase{\rightmark}}
+\fancyhead[LE,RO]{\thepage}
+%\fancyfoot[LE,LO]{\small Book Title}
+
+
+%%%%%%%%%% 一些重定义 %%%%%%%%%%
+\usepackage{makeidx}
+\usepackage{imakeidx}
+\makeindex[title=索引, columns=2]
+\renewcommand{\contentsname}{目录}     % 将Contents改为目录
+\renewcommand{\indexname}{索引}
+\renewcommand{\figurename}{图}
+\renewcommand{\tablename}{表}
+%\usepackage[figurename=图, tablename=表]{caption}
+\renewcommand{\appendixname}{附录}
+\renewcommand{\bibname}{参考文献}
+\usepackage{caption} 
+\captionsetup[table]{skip=6pt} % 设置表格标题和表格之间的间距大小
+
+\usepackage{xurl} % 支持URL换行
+\usepackage{diagbox} % 斜线表格
+
+\let\oldbibliography\thebibliography
+\renewcommand\thebibliography[1]{
+	\oldbibliography{#1}
+	\setlength{\parskip}{0pt}
+	\setlength{\itemsep}{0pt plus 0.2ex}
+}
+
+\newcommand{\tab}{\phantom{o}\hspace{2ex}}
+
+
+%\usepackage{draftwatermark}
+%\SetWatermarkText{Xia Tian}%设置水印文字
+%\SetWatermarkLightness{0.9}%设置水印亮度
+%\SetWatermarkScale{0.5}%设置水印大小
+
+\usepackage[bookmarks=true, bookmarksnumbered=true]{hyperref} %生成pdf索引
+\usepackage{bookmark}
+\hypersetup{colorlinks, citecolor=black,  filecolor=black, linkcolor=black,  urlcolor=black}
+
+\usepackage{kpfonts}
+\usepackage[bf, explicit]{titlesec} %对标题的式样进行设置
+\newcommand*\chapterlabel{}
+\titlespacing*{\chapter}{0pt}{50pt}{-60pt}
+\renewcommand{\chaptername}{}
+\titleformat{\section}[hang]{\color{SteelBlue}\LARGE\bfseries}{\color{SteelBlue}{\thesection}}{.8em}{#1}
+\titleformat{\subsection}[hang]{\color{SteelBlue}\Large\bfseries}{\color{SteelBlue}{\thesubsection}}{.8em}{#1}
+\titleformat{\subsubsection}[hang]{\color{SteelBlue}\large\bfseries}{\color{SteelBlue}{\thesubsubsection}}{.8em}{#1}
+
+\titleformat{\paragraph}[hang]{\large\bfseries}{\theparagraph}{.8em}{\hspace{1em}$\blacksquare$ #1}
+
+%\newcommand*{\hei}{\fontfamily{FZLanTingHeiS-H-GB}\selectfont}
+%\DeclareTextFontCommand{\texthei}{\hei}
+
+%\setCJKfamilyfont{SourceHanSansCN-Light.ttf}
+%\setCJKmainfont{Source Han Sans SC VF Light} %方正字体，也可以改成：微软雅黑
+%\setCJKsansfont{Source Han Sans SC VF Light}
+%\setCJKfamilyfont{SourceHanSansCN-Light}
+\setCJKmainfont{SourceHanSansCN-Light}
+\setCJKmonofont{Consolasligaturizedv2.ttf}
+
+\newenvironment{block}[2]{\color{#1} \vspace{0.3cm} #2 \vspace{0.5cm} }{}
+
+
+% Fix problem in tcolorbox:  ! LaTeX Error: Not in outer par mode.
+% Add \usepackage{float} and use the option [H] in the figure.
+\usepackage{float}
+% \usepackage{multicol} % 解决tcolorbox跨页问题
+\usepackage[many]{tcolorbox}
+\tcbset{colback=white,colframe=black!60,fonttitle=\bfseries,
+  coltitle=black}
+\tcbuselibrary{theorems}
+\tcbuselibrary{skins}
+\newtcbtheorem[number within=chapter]{example}{例 }%
+{ enhanced,
+  toptitle=3mm,bottomtitle=5mm,
+  breakable, pad at break=2mm,break at=-\baselineskip/0pt,
+  colback=white,colbacklower=yellow,
+  colbacktitle=black!5,colframe=black!60, fonttitle=\bfseries, arc=1mm,
+  before skip=10pt,after skip=10pt,
+  before upper={\parindent 2em}, before lower={\parindent 2em},
+  arc=4mm,outer arc=1mm,
+  attach boxed title to top left= {xshift=3.2mm,yshift=-0.10mm},
+  boxed title style={skin=enhancedfirst jigsaw, arc=2mm,bottom=-1mm},
+  segmentation style={draw,solid,decorate,decoration={coil,aspect=0,segment length=10.1mm}}
+}{ex} % ex表示例子的label的开始字符
+
+\usepackage{minted} %compile： lualatex/xelatex -shell-escape spark.tex
+\definecolor{bg}{rgb}{0.975,0.975,0.975}
+\setminted{encoding=utf-8} %注意字体，如果设置了CJKmonofont，会出现乱码
+\setminted{linenos=true,tabsize=4, xleftmargin=1mm, breaklines, fontfamily=courier,fontsize=\small}
+\setminted{bgcolor=bg, numbersep=2mm}
+\usemintedstyle{pastie}
+
+\usepackage{enumitem}
+%\setlist[itemize]{align=parleft,left=0pt..1em, leftmargin=3em}
+\setenumerate[1]{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=0pt,}
+\setitemize[1]{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=0pt}
+\setdescription{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=0pt}
+
+%自定义的一些命令，方便使用
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+  \node[shape=circle,draw,inner sep=1.5pt] (char) {#1};}}
+%加入upcite，实现上标引用文献
+\newcommand{\upcite}[1]{\textsuperscript{\textsuperscript{\cite{#1}}}} 
+
+% 利用pifont在heading前加上方框符号
+\newcommand{\heading}[1]{  {\vspace{4pt} \color{darkgray}\ding{111} \textbf{#1}} \vspace{2pt}}
+
+% 重定义数学向量符号的形式
+\renewcommand{\vec}[1]{\symbf{#1}}  
+%\renewcommand{\vec}[1]{\overrightarrow{#1}} 
+
+% 设置表格的行高
+\renewcommand{\arraystretch}{1.5}
+\renewcommand{\toprule}{\Xhline{0.8pt}}
+\renewcommand{\midrule}{\Xhline{0.5pt}}
+\renewcommand{\bottomrule}{\Xhline{0.7pt}}
+
+
+\setstretch{1.35} % 利用setspace包提供的命令，设置行间距
+\begin{document}
+    \include{cover}       % include title page
+
+    \frontmatter %用于生成罗马计数的前言
+    \pagestyle{plain}
+
+	\titleformat{\chapter}
+	  {\gdef\chapterlabel{}
+	   \normalfont\sffamily\Huge\bfseries\scshape}
+	  {\gdef\chapterlabel{\thechapter\ }}{0pt}
+	  {
+		\begin{tikzpicture}[remember picture,overlay]
+		\node[yshift=-4cm] at (current page.north west)
+		  {\begin{tikzpicture}[remember picture, overlay]
+		  	\draw[fill=LightSkyBlue!20, draw=black!20] (0,0) rectangle
+			  (\paperwidth,4cm);
+			\draw node[anchor=east,
+				  xshift=.9\paperwidth, 
+			      yshift=0.2cm,
+				  rectangle,
+				  fill=white, 
+				  draw=black!20,
+				  rounded corners=10pt,
+				  inner sep=11pt,
+				  minimum width=6cm](name)
+				  {  {\chapterlabel} \color{black}  #1   };
+		   \end{tikzpicture}
+		  };
+	   \end{tikzpicture}
+	   \vspace{2em}
+	  }
+
+    \include{preface}
+
+    %generate book content list
+    \setcounter{secnumdepth}{4}  % 编号定位到subsubsection
+    \setcounter{tocdepth}{4}
+    \small % 目录字体变小
+    \tableofcontents
+    \normalsize{}
+
+    \mainmatter
+
+	\titleformat{\chapter}
+	  {\gdef\chapterlabel{}
+	   \normalfont\sffamily\Huge\bfseries\scshape}
+	  {\gdef\chapterlabel{\thechapter\ }}{0pt}
+	  {
+		\begin{tikzpicture}[remember picture,overlay]
+		\node[yshift=-5cm] at (current page.north west)
+		  {
+		  	\begin{tikzpicture}[remember picture, overlay]
+				\draw[fill=red!5, draw=black!20] (0,0) rectangle (\paperwidth,5cm);
+				\draw node[scale=1.3, 
+						rounded corners=5pt, 
+						line width=1pt,  
+						minimum width=2cm, 
+						minimum height=2cm] at (3.5,2.5) { 
+						 \color{black!80}~$\chapterlabel$ $\hookleftarrow$ 
+					 	};
+				\draw node[anchor=east,
+							xshift=.9\paperwidth,
+							yshift=0.2cm,
+							rectangle,
+					  		rounded corners=20pt,
+					  		inner sep=11pt,draw=black!20,
+					  		fill=white, 
+					  		minimum width=7cm](name) {  \color{black!80}  #1   };
+		   \end{tikzpicture}
+		  };
+	   \end{tikzpicture}
+		\vspace{4em}
+	  }
+
+     \include{chapter/introduction}
+     \include{chapter/list}
+
+    \appendix
+    %\include{history}       % include first appendix
+    %\include{tables}        % include second appendix, etc.
+    
+    \backmatter
+
+    \titleformat{\chapter}
+	  {\gdef\chapterlabel{}
+	   \normalfont\sffamily\Huge\bfseries\scshape}
+	  {\gdef\chapterlabel{\thechapter\ }}{0pt}
+	  {
+		\begin{tikzpicture}[remember picture,overlay]
+		\node[yshift=-4cm] at (current page.north west)
+		  {\begin{tikzpicture}[remember picture, overlay]
+		  	\draw[fill=blue!10, draw=black!20] (0,0) rectangle
+			  (\paperwidth,4cm);
+			\draw node[anchor=east,xshift=.9\paperwidth, 
+			      yshift=0.2cm,
+				  rectangle,
+				  fill=white, draw=black!20,
+				  rounded corners=10pt,inner sep=11pt,
+				  minimum width=6cm](name)
+				  {  {\chapterlabel} \color{black}  #1   };
+		   \end{tikzpicture}
+		  };
+	   \end{tikzpicture}
+	   \vspace{2em}
+	  }
+
+    \renewcommand\bibname{参考文献}
+	\bibliographystyle{chinesebst}
+    \bibliography{refs}
+    \printindex
+    %\include{chapter/thanks}
+\end{document}
+

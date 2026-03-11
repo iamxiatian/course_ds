@@ -9,3 +9,12 @@
 **/auto/*
 /auto/
 **/auto/*
+**/.DS_Store
+**/*.bkp
+**/*.pygtex
+**/*.idx
+**/*.ind
+**/*.ilg
+**/*.glo
+**/*.gls
+**/*.pygstyle

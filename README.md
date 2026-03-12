@@ -6,15 +6,32 @@
 
 欢迎反馈问题和建议。
 
-## 知识地图
-### 线性结构
-  - 结构之一：线性表, 实例：约瑟夫环
-  - 结构之二：栈（Stack）：同一端进行插入删除， 实例：迷宫
-  - 结构之三：队列（Queue）：一端插入、一端删除，实例：迷宫
-  - 两种存储：顺序（数组）、离散（链）
-  - 递归：实例：汉诺塔，迷宫
-  - 两个字符串相关算法：KMP, AC
+## 直接查看编译好的课件
 
+- [概论](pdf/introduction.pdf)
+
+- [线性表](pdf/list.pdf)
+
+- [栈+队列](pdf/stack_queue.pdf)
+
+- [树](pdf/tree.pdf)
+
+- [图](pdf/graph.pdf)
+
+- [查找](pdf/serach.pdf)
+
+- [排序](pdf/sort.pdf)
+
+## 知识地图
+
+### 线性结构
+
+- 结构之一：线性表, 实例：约瑟夫环
+- 结构之二：栈（Stack）：同一端进行插入删除， 实例：迷宫
+- 结构之三：队列（Queue）：一端插入、一端删除，实例：迷宫
+- 两种存储：顺序（数组）、离散（链）
+- 递归：实例：汉诺塔，迷宫
+- 两个字符串相关算法：KMP, AC
 
 ## 如何编译
 
@@ -37,18 +54,13 @@ xelatex -shell-escape ds.tex
 ```
 dot -Tpdf filename.dot -o filename.pdf
 ```
+
 仓库中已经提交了dot编译后得到的pdf文件。
 
-本课件在Ubuntu系统下编译，使用了Ubuntu自带的字体，如果在其他系统中编译，可以删除或注释掉如下几行：
-
-```tex
-\setmainfont{Ubuntu}
-\setsansfont{Ubuntu}
-\setmonofont{Ubuntu}
-```
 ## 章节
 
 ### 第一章 概论
+
 1.1 课程介绍
 
 1.2 问题求解
@@ -70,6 +82,7 @@ dot -Tpdf filename.dot -o filename.pdf
 2.4 顺序表和链表的比较
 
 ### 第三章 栈与队列
+
 3.1 栈
 
 3.2 栈与递归
@@ -134,33 +147,14 @@ dot -Tpdf filename.dot -o filename.pdf
 
 8.3 哈希表
 
-## 直接查看编译好的课件
-
-概论：pdf/introduction.pdf
-
-线性表：pdf/list.pdf
-
-栈+队列：pdf/stack_queue.pdf
-
-树: pdf/tree.pdf
-
-图: pdf/graph.pdf
-
-查找: pdf/serach.pdf
-
-排序: pdf/sort.pdf
 
 ## 第三方工具
 
 1. forest – Drawing (linguistic) trees  https://www.ctan.org/pkg/forest
-
-1. tikz-graph http://mirrors.ctan.org/macros/latex/contrib/tkz/tkz-graph/doc/tkz-graph-screen.pdf
-
-1. graphviz: http://mirrors.huaweicloud.com/repository/toolkit/CTAN/macros/latex/contrib/graphviz/graphviz.pdf
-
-1. dot: https://graphviz.gitlab.io/_pages/pdf/dotguide.pdf
-
-1. dot2texi https://ctan.org/pkg/dot2texi
+2. tikz-graph http://mirrors.ctan.org/macros/latex/contrib/tkz/tkz-graph/doc/tkz-graph-screen.pdf
+3. graphviz: http://mirrors.huaweicloud.com/repository/toolkit/CTAN/macros/latex/contrib/graphviz/graphviz.pdf
+4. dot: https://graphviz.gitlab.io/_pages/pdf/dotguide.pdf
+5. dot2texi https://ctan.org/pkg/dot2texi
 
   dot2texi与xelatex冲突，minted与lualatex冲突，暂时不用dot2texi，改用tkz-graph绘制图。
 

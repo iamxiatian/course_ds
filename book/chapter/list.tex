@@ -1,1 +1,244 @@
-\chapter{线性结构}
+\chapter{线性表：从排队到数据组织的艺术}
+
+在计算机的世界里，如果要组织一组同类型的数据，最直观的方式就是把它们排成一队。这种逻辑结构，我们称为线性表。线性表就像生活中的排队：每个人都有自己的位置，除了第一个人和最后一个人，每个人都知道自己前面是谁、后面是谁。
+
+\section{什么是线性表？}
+
+\subsection{定义与直观理解}
+
+线性表是由 \(n\) 个具有相同特性的数据元素组成的有限序列。你可以把它想象成：
+
+\textbf{英文字母表}：(A, B, C, …, Z) – 每个字母都是一个元素，顺序固定。
+
+\textbf{奶茶店的排队队列}：每个人就是一个数据元素，除了第一个和最后一个，每个人都有一个前排和后排。队伍的长度可以变化，但元素之间的前后关系始终存在。
+
+\subsection{核心特征}
+
+\begin{itemize}
+    \item \emph{唯一性}：有且仅有一个第一个元素和一个最后一个元素。
+    \item \emph{有序偶关系}：除了头尾，每个元素都有一个前驱（它前面的元素）和一个后继（它后面的元素）。
+    \item \emph{同质性}：虽然元素的值可以不同，但同一线性表中的元素必须具有相同的数据类型（比如都是整数，或者都是学生信息）。
+\end{itemize}
+
+\begin{quote}
+现代应用视角：在大语言模型处理文本时，输入的单词序列本质上就是一个线性表。模型会根据当前单词（前驱）来预测下一个可能的单词（后继）。这体现了线性表在人工智能领域的应用。
+\end{quote}
+
+\section{顺序表：排好座位的电影院}
+
+\subsection{原理分析}
+
+顺序表在计算机内存中申请了一块连续的存储空间，元素一个挨一个地存放。这就像电影院里的一排座位，座位号是连续的（1, 2, 3, …）。如果你知道第一个座位的位置，以及每个座位占用的空间大小，那么你就可以直接算出任意座位的位置。
+
+假设第一个元素存储在地址 \(b\)，每个元素占用的空间大小为 \(l\)，那么第 \(i\) 个元素的存储地址就是：
+
+\[
+\text{Address}(a_i) = b + (i - 1) \times l
+\]
+
+这个公式意味着，我们可以直接通过下标计算出元素的位置，不需要逐个查找。这就是顺序表“随机访问”快的原因。
+
+\subsection{生活中的例子}
+
+想象你是一个电影院的工作人员，手里有一张座位表。如果有人问你第 5 排的观众是谁，你立刻就能找到。但如果有人要插队到第 2 个座位，那么从第 2 个座位开始，后面所有的人都要往后挪一个位置，非常麻烦。
+
+\subsection{Python 实现}
+
+Python 的内置列表 \texttt{list} 就是一种动态的顺序表，它可以根据需要自动扩容。下面我们模拟一个简单的顺序表：
+
+\begin{minted}{python}
+class SequenceList:
+    def __init__(self, max_size, elements=None):
+        self.max_size = max_size
+        self.elements = [None] * max_size   # 预先分配连续空间
+        self.length = 0
+
+        if elements:
+            for i, val in enumerate(elements):
+                self.elements[i] = val
+            self.length = len(elements)
+
+    def get(self, index):
+        """随机访问：直接通过下标计算地址，效率极高 O(1)"""
+        if 0 <= index < self.length:
+            return self.elements[index]
+        raise IndexError("索引越界！")
+
+    def insert(self, index, value):
+        """插入操作：为了给新元素腾位置，后面的元素都要往后挪 O(n)"""
+        if self.length >= self.max_size:
+            return "表已满，无法插入"
+
+        # 从后往前挪动元素
+        for j in range(self.length - 1, index - 1, -1):
+            self.elements[j + 1] = self.elements[j]
+
+        self.elements[index] = value
+        self.length += 1
+\end{minted}
+
+\subsection{顺序表的优缺点}
+
+优点：查找元素非常快（随机存取），不需要额外的存储空间（只存数据）。
+
+缺点：插入和删除操作需要移动大量元素，平均要移动一半的元素；而且空间大小在定义时就要确定，容易造成空间浪费或溢出。
+
+
+\section{链表：寻宝游戏}
+
+\subsection{原理分析}
+
+链表不要求物理内存连续。每个元素（节点）除了存储自己的数据外，还存了一个“指南针”——指向下一个节点的指针。这样，我们只要知道第一个节点的位置，就可以顺着指针找到所有元素。
+
+这就像一场寻宝游戏：第一个树洞里的纸条告诉你去喷泉找下一条线索，喷泉的线索指向长椅……你不需要知道所有地点的分布，只要顺着线索走就行。
+
+\subsection{节点定义}
+
+在 Python 中，我们可以用一个类来表示节点：
+
+\begin{minted}{python}
+class Node:
+    def __init__(self, data, next_node=None):
+        self.data = data
+        self.next = next_node   # 指向下一个节点的指针
+
+# 快速创建一个链表：1 -> 2 -> 3
+first = Node(1)
+second = Node(2)
+last = Node(3)
+first.next = second
+second.next = last
+
+# 访问第二个元素的数据
+print(f"第二个元素的数据是: {first.next.data}")
+\end{minted}
+
+\subsection{插入操作的艺术}
+
+在链表中插入一个新节点，不需要像顺序表那样移动后面的元素，只需要修改两个指针：
+
+（1）让新节点的 \texttt{next} 指向它要插入位置的后继。
+
+（2）让它前驱的 \texttt{next} 指向新节点。
+
+
+例如，在节点 \texttt{first} 和 \texttt{second} 之间插入一个新节点 \texttt{new\_node}：
+
+\begin{minted}{python}
+new_node = Node(1.5)
+first.next = new_node
+new_node.next = second
+\end{minted}
+
+这个操作的时间复杂度是 O(1)，非常快。
+
+\subsection{为什么需要头节点？}
+
+通常在链表的第一个节点之前会设置一个“头节点”，它不存储实际数据，只是为了方便操作。头节点的作用是：当我们在第一个位置插入或删除节点时，不需要单独处理空表的情况，操作逻辑与中间位置完全一致。
+
+\subsection{链表的优缺点}
+
+\begin{itemize}
+    \item \textbf{优点}：插入和删除操作非常快（只需修改指针），不需要预先分配连续空间，可以根据需要动态分配内存。
+    \item \textbf{缺点}：查找元素需要从头开始逐个遍历（顺序存取），效率低；每个节点除了存储数据外，还要存储指针，存储密度较低。
+\end{itemize}
+
+\section{更多形式的链表}
+
+\subsection{双向链表}
+
+在双向链表中，每个节点不仅知道它的后继，还知道它的前驱。这样，我们可以方便地从一个节点向前或向后遍历。就像浏览器的“前进”和“后退”按钮，你可以随时回到上一页或进入下一页。
+
+节点定义：
+
+\begin{minted}{python}
+class DoublyNode:
+    def __init__(self, data, prev_node=None, next_node=None):
+        self.data = data
+        self.prev = prev_node
+        self.next = next_node
+\end{minted}
+
+\subsection{循环链表}
+
+在循环链表中，最后一个节点的指针不再指向空，而是指向头节点，形成一个环。这样，我们可以从任意节点出发遍历整个链表。操作系统的轮询调度（Round Robin）就是使用循环链表来实现的，每个进程轮流获得 CPU 时间。
+
+\section{顺序表与链表的选择}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{特性} & \textbf{顺序表} & \textbf{链表} \\
+\hline
+存储密度 & 高（只存数据） & 较低（存数据+指针） \\
+随机访问 & 极快 O(1) & 慢 O(n)，需要遍历 \\
+插入/删除 & 慢 O(n)，需要移动元素 & 快 O(1)，只需修改指针 \\
+空间分配 & 静态分配，容易浪费或溢出 & 动态分配，按需申请 \\
+\hline
+\end{tabular}
+\caption{顺序表与链表的对比}
+\end{table}
+
+如果经常需要按索引访问元素，或者元素数量固定且变化少，使用顺序表。如果经常插入和删除元素，或者元素数量变化很大，使用链表。
+
+\section{实战挑战：约瑟夫环问题}
+
+约瑟夫环是一个经典问题：\(n\) 个人围成一圈，从第一个人开始报数，数到 \(m\) 的人出列，然后从下一个人继续报数，直到所有人都出列。求最后的幸存者编号。
+
+这个问题非常适合用循环链表来解决。我们用循环链表模拟围坐的人群，每次数到 \(m\) 就删除对应的节点。
+
+\begin{minted}{python}
+def josephus(n, m):
+    # 步骤 1: 构建循环链表
+    nodes = [Node(i) for i in range(1, n + 1)]
+    for i in range(n - 1):
+        nodes[i].next = nodes[i + 1]
+    nodes[-1].next = nodes[0]   # 首尾相连，形成环
+
+    # 步骤 2: 开始报数
+    current = nodes[-1]          # 从头的前一个开始，方便删除
+    while current.next != current:
+        # 数 m-1 下，停在待删除者的前驱节点
+        for _ in range(m - 1):
+            current = current.next
+
+        # 删除节点（让当前节点的 next 指向下下个节点）
+        print(f"出局者编号: {current.next.data}")
+        current.next = current.next.next
+
+    return current.data
+
+# 例子：9 个人，数到 5 的人出局
+winner = josephus(9, 5)
+print(f"最后的幸存者是: {winner}")
+\end{minted}
+
+运行结果（部分输出）：
+
+\begin{verbatim}
+出局者编号: 5
+出局者编号: 1
+出局者编号: 7
+出局者编号: 4
+出局者编号: 3
+出局者编号: 6
+出局者编号: 9
+出局者编号: 2
+最后的幸存者是: 8
+\end{verbatim}
+
+\section{课后作业}
+
+为了帮助巩固线性表的知识，下面给出几道练习题。你可以尝试用顺序表和链表分别实现，并比较它们的性能差异。
+
+\begin{enumerate}
+    \item \textbf{合并两个有序列表}：给定两个已排序的线性表（例如 [1, 3, 5] 和 [2, 4, 6]），将它们合并成一个新的有序线性表。
+    \item \textbf{反转单链表}：实现一个函数，输入一个单链表的头节点，输出反转后的链表。
+    \item \textbf{判断回文链表}：给定一个单链表，判断它是否回文（例如 1->2->2->1 是回文，1->2->3 不是）。
+    \item \textbf{删除链表中倒数第 n 个节点}：给定一个链表，删除倒数第 \(n\) 个节点，并返回头节点。
+    \item \textbf{实现循环队列（用顺序表）}：利用顺序表实现一个循环队列，支持入队、出队、判空、判满操作。
+    \item \textbf{用链表实现多项式的加法}：假设多项式用链表表示（每个节点包含系数和指数），实现两个多项式的加法。
+    \item \textbf{找出链表的中间节点}：给定一个单链表，找出它的中间节点。如果节点数为偶数，返回第二个中间节点。
+    \item \textbf{约瑟夫环的数学解法}：除了模拟，约瑟夫环还有一个数学递推公式：\(f(1) = 0\)，\(f(n) = (f(n-1) + m) \% n\)。尝试用这个公式直接计算出幸存者，验证结果是否正确。
+\end{enumerate}

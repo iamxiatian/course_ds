@@ -1,11 +1,14 @@
 \section{字符串}
 \begin{frame}[fragile]
   \frametitle{字符串}
-  计算机非数值处理的对象经常是字符串数据。如信息检索、文本聚类、文本理解等。
+  计算机非数值处理的对象经常是字符串数据。如信息检索、文本聚类、文本理解、搜索引擎、敏感词过滤、生物序列分析等。
 
   \begin{itemize}
   \item 串的定义及表示
-  \item 串的模式匹配
+  \item 串的存储结构
+  \item 串的模式匹配（核心重点）
+  \item 经典匹配算法：BF、KMP、AC自动机
+  \item 实战应用：Python高效实现
   \end{itemize}
 \end{frame}
 
@@ -13,11 +16,17 @@
   \frametitle{串 (String)的定义}
 
   \begin{itemize}
-  \item 串是由零个或多个任意字符组成的字符序列。它也是一种特殊的线性表，其数据元
-    素仅由一个字符组成，而且它通常是作为一个整体来处理。
+  \item 串是由零个或多个任意字符组成的字符序列。它也是一种特殊的线性表，其数据元素仅由一个字符组成，而且它通常是作为一个整体来处理。
 
-例：s="Renmin University"，s是串名， Renmin University为串值，其中一个个的字符称
-为串的元素。
+  例：s="Renmin University"，s是串名， Renmin University为串值，其中一个个的字符称为串的元素。
+
+  \item 基本概念：
+    \begin{itemize}
+    \item 空串：长度为0的串
+    \item 子串：串中任意连续字符组成的序列
+    \item 主串：包含子串的串
+    \item 模式串：用于匹配查找的目标子串
+    \end{itemize}
 
   \item 请思考如何实现上述串的存储？
   \end{itemize}
@@ -27,8 +36,21 @@
   \frametitle{字符串的存储}
   \begin{itemize}
   \item 顺序存储: 用一组地址连续的存储单元存储串值中的字符序列。
+    \begin{itemize}
+    \item 优点：随机访问快
+    \item 缺点：插入、删除效率低
+    \end{itemize}
   \item 链式存储: 考虑到存储密度，可以按块分配。
-  \item 在Python/C/Java等语言中，String就是字符串。在C语言中没有string类型变量，字符串用字符数组表示。
+    \begin{itemize}
+    \item 优点：插入、删除灵活
+    \item 缺点：存储密度低，访问效率低
+    \end{itemize}
+  \item 高级语言封装：
+    \begin{itemize}
+    \item 在Python/C/Java等语言中，String就是字符串。
+    \item 在C语言中没有string类型变量，字符串用字符数组表示。
+    \item 现代语言均对字符串做了优化，兼顾效率与易用性
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
@@ -37,6 +59,7 @@
   \begin{itemize}
   \item 设s和t是给定的两个串，在主串s中寻找等于子串t的部分的过程称为模式匹配， t也称为模式。
   \item 如果在s中找到等于t的子串，则称匹配成功，返回t在s中的首次出现的存储位置，否则匹配失败。
+  \item 模式匹配是字符串最核心的操作，广泛用于文本查找、数据过滤、搜索引擎
   \item 例：
 
     s="ababcabcacbab"
@@ -52,7 +75,9 @@
       s="ababcabcacbab" \\ t="abcac"
 
       \begin{itemize}
-      \item Brute-Force算法
+      \item Brute-Force算法（暴力匹配）
+      \item 核心思想：逐位比较，失配则回溯
+      \item 直观易懂，但效率低下
       \end{itemize}
     \end{column}
     \begin{column}[T]{0.5\linewidth}
@@ -74,6 +99,10 @@ def bf_search(source, target) -> tuple:
     for i in range(len(source)):
         found = True
         for j in range(len(target)):
+            # 防止索引越界
+            if i + j >= len(source):
+                found = False
+                break
             compare_count = compare_count + 1
             if source[i+j] != target[j]:
                 found = False
@@ -109,10 +138,8 @@ aaaaaaaaaaab
     \begin{itemize}
     \item 在最好情况下，即每趟不成功的匹配都发生在第一对字符比较时。
     \item 例如：s=“aaaaaaaaaabc”，t=“bc”，设匹配成功发生在$s_i$处。
-    \item 在前面i-1趟不成功的匹配中共比较了i-1次，第i趟成功的匹配共比较了m次，所
-      以总共比较了i-1+m次。
-    \item 所有匹配成功的可能共有n-m+1种，设从si开始与t串匹配成功的概率为$p_i$，
-      在等概率情况下$p_i=1/(n-m+1)$，因此最好情况下平均比较的次数是：
+    \item 在前面i-1趟不成功的匹配中共比较了i-1次，第i趟成功的匹配共比较了m次，所以总共比较了i-1+m次。
+    \item 所有匹配成功的可能共有n-m+1种，设从si开始与t串匹配成功的概率为$p_i$，在等概率情况下$p_i=1/(n-m+1)$，因此最好情况下平均比较的次数是：
       \[\sum_{i=1}^{n-m+1} p_i \times (i-1+m) = \sum_{i=1}^{n-m+1} \dfrac{1}{n-m+1} \times (i-1+m) = \dfrac{(n+m)}{2}\]
 
     \item 即最好情况下的时间复杂度是$O(n+m)$
@@ -121,17 +148,17 @@ aaaaaaaaaaab
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitle{BF算法时间复杂度分析}
   \begin{itemize}
   \item 在最坏情况下，即每趟不成功的匹配都发生在t的最后一个字符。
   \item 例如：s=“aaaaaaaaaaab”，t=“aaab”，设匹配成功发生在$s_i$处.
-  \item 在前面$i-1$趟匹配中共比较了$(i-1) \times m$次，第$i$趟成功的匹配共比较了
-    $m$次，所以总共比较了$i \times m$次，因此最坏的情况下平均比较的次数是：
+  \item 在前面$i-1$趟匹配中共比较了$(i-1) \times m$次，第$i$趟成功的匹配共比较了$m$次，所以总共比较了$i \times m$次，因此最坏的情况下平均比较的次数是：
     \[\sum_{i=1}^{n-m+1} p_i \times (i \times m) = \sum_{i=1}^{n-m+1} \dfrac{1}{n-m+1} \times (i \times m) = \dfrac{m \times (n-m+2)}{2}\]
   \item 即最坏情况下的时间复杂度是$O(n×m)$
   \end{itemize}
 
   \begin{tcolorbox}[title=为什么BF算法时间性能低？]
-    在每趟匹配不成功时存在大量回溯 (每次移动一位开始新的比较)
+    在每趟匹配不成功时存在大量回溯 (每次移动一位开始新的比较)，没有利用已匹配信息，造成重复比较
   \end{tcolorbox}
 \end{frame}
 
@@ -161,18 +188,38 @@ aaaaaaaaaaab
   \end{tikzpicture}
   \small
   \begin{itemize}
-  \item 改进算法的目的是在每一趟匹配过程中出现不匹配时，向右“滑动”尽可能远的一段
-    距离后，继续进行比较。那么，应当滑动多远呢？这正是各个算法各显神通之处！
-
-  \item KMP算法: 由D. E. Knuth，J. H. Morris和V. R. Pratt同时发现
-
-    % \item Boyer-Moore算法
+  \item 核心思想：
+    \textbf{不回溯主串指针，利用已匹配信息，让模式串多滑动几位}
+  \item 改进算法的目的是在每一趟匹配过程中出现不匹配时，向右“滑动”尽可能远的一段距离后，继续进行比较。
+  \item 经典高效算法：
+    \begin{itemize}
+    \item KMP算法: 由D. E. Knuth，J. H. Morris和V. R. Pratt同时发现
+    \item Boyer-Moore算法（实际工程中常用）
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}[fragile, allowframebreaks]
   \frametitle{KMP算法}
-  利用已经得到的“部分匹配”的结果将模式向右滑动
+  \begin{itemize}
+  \item 核心思想：
+    利用已经得到的“部分匹配”的结果将模式向右滑动，避免主串回溯，将时间复杂度优化至 $O(n+m)$
+
+    \begin{enumerate}
+    \item 当匹配失败时，看看模式串前面有没有重复的“头尾”
+    \item 有的话，直接把模式串跳到能接上的位置，不用从头比
+    \item 例子：模式：A ~ B ~ C ~ A ~ B ~ C ~ D匹配到D失败，但前面匹配了A ~ B ~ C
+    \item 发现模式串前缀 A ~ B ~ C = 后缀 A ~ B ~ C
+    \item $\Rightarrow$ 直接把模式串跳过去，主串不动
+    \end{enumerate}
+
+  \item 关键结构：
+    \textbf{next数组} —— 记录模式串的最长相等前后缀，决定失配后滑动的位置
+  \item 优势：
+    处理长文本、重复字符多的场景时，效率远高于BF算法
+  \end{itemize}
+
+  \newpage
 
   视频讲解：
   \begin{itemize}
@@ -183,18 +230,38 @@ aaaaaaaaaaab
 
 \begin{frame}[fragile]
   \frametitle{KMP算法}
-  利用大语言模型来完成代码，已经变得非常方便，参见string.ipynb文件。
-
+  \begin{itemize}
+  \item 算法流程：
+    \begin{enumerate}
+    \item 预处理模式串，构建next数组
+    \item 主串与模式串指针均不回溯
+    \item 失配时，模式串根据next数组滑动
+    \item 匹配成功则返回位置
+    \end{enumerate}
+  \item 代码实现：
+    利用大语言模型来完成代码，已经变得非常方便，参见string.ipynb文件。
+  \item 应用场景：
+    单一模式串、长文本高效匹配
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{练习}
+  \frametitle{课堂练习}
   \begin{itemize}
-  \item 从《红楼梦》中，统计主要人物出现的次数，并按照频次高低输出。
-
-  \item 文件位置：ipynb/honglou.txt
-
-  \item 人物列表：ipynb/honglou\_person.txt
+  \item 任务：从《红楼梦》中，统计主要人物出现的次数，并按照频次高低输出。
+  \item 输入数据：
+    \begin{itemize}
+    \item 文本文件：ipynb/honglou.txt
+    \item 人物列表：ipynb/honglou\_person.txt
+    \end{itemize}
+  \item 实现思路：
+    \begin{itemize}
+    \item 读取文本与人物列表
+    \item 使用字符串匹配算法查找人物
+    \item 统计频次并排序输出
+    \end{itemize}
+  \item 进阶思考：
+    人物数量成百上千时，用KMP逐一遍历效率低，如何优化？
   \end{itemize}
 \end{frame}
 
@@ -202,24 +269,38 @@ aaaaaaaaaaab
 \begin{frame}[fragile]
   \frametitle{多模式串匹配与AC自动机}
     \begin{itemize}
-    \item BM、KMP为单模匹配，即模式串只有一个。假设主串$T[1, \cdots, m]$，
-    模式串有k个$P={P_1,\cdots,P_k}$，且模式串集合的总长度为$n$。
+    \item 单模式匹配 VS 多模式匹配：
+      \begin{itemize}
+      \item BM、KMP为单模匹配：一次只匹配一个模式串
+      \item 多模式匹配：同时匹配成千上万个模式串
+      \end{itemize}
+    \item 假设主串$T[1, \cdots, m]$，模式串有k个$P={P_1,\cdots,P_k}$，总长度为$n$。
     如果采用KMP来匹配多模式串，则算法复杂度为：
 
     \[O(|P_1|+m+\cdots+|P_k|+m)=O(n+km)\]
   
-    \item KMP并没有利用到模式串之间的重复字符结构信息，每一次模式串的匹配都需要将主串从头至尾扫描一遍。
+    \item KMP缺陷：
+      没有利用模式串之间的重复字符结构，主串需要重复扫描k次
 
-    \item 贝尔实验室的Aho与Corasick于1975年基于有限状态机（finite state machines）提出AC自动机算法
-  \footnote{AC算法比KMP提出要早，KMP于1977年提出}。
+    \item 解决方案：
+      \textbf{AC自动机（Aho-Corasick）}
+      贝尔实验室的Aho与Corasick于1975年基于有限状态机提出
+      \footnote{AC算法比KMP提出要早，KMP于1977年提出}
   \end{itemize}
-  % https://www.cnblogs.com/en-heng/p/5247903.html
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{AC自动机}
+  \frametitle{AC自动机核心结构}
   \begin{itemize}
-  \item 自动机由状态（数字标记的圆圈）和转换（带标签的箭头）组成，每一次转换对应一个字符。AC算法的核心包括三个函数：goto、failure、output；这三个函数构成了AC自动机。对于模式串{he, his, hers, she}，goto函数表示字符按模式串的转移，暗含了模式串的共同前缀的字符结构信息\footnote{\url{from: https://www.cnblogs.com/en-heng/p/5247903.html}}。
+  \item AC自动机 = Trie树（前缀树） + 失败指针 + 输出函数
+  \item 三大核心函数：
+    \begin{itemize}
+    \item \textbf{goto}：字符匹配成功的状态转移
+    \item \textbf{failure}：匹配失败时的回退状态（类似KMP的next数组）
+    \item \textbf{output}：匹配成功时输出结果
+    \end{itemize}
+  \item 示例模式串：\{he, his, hers, she\}
+  \item goto函数：利用模式串公共前缀构建Trie树
   \end{itemize}
 
   \begin{center}
@@ -230,7 +311,8 @@ aaaaaaaaaaab
 \begin{frame}[fragile]
   \frametitle{AC自动机}
   \begin{itemize}
-  \item failure函数表示匹配失败时退回的状态：
+  \item failure函数：
+    匹配失败时，跳转到最长可匹配后缀节点，避免从头匹配
   \end{itemize}
 
   \begin{center}
@@ -241,7 +323,8 @@ aaaaaaaaaaab
 \begin{frame}[fragile]
   \frametitle{AC自动机}
   \begin{itemize}
-  \item output函数表示模式串对应于自动机的状态：
+  \item output函数：
+    记录每个终止状态对应的匹配成功的模式串
   \end{itemize}
 
   \begin{center}
@@ -252,7 +335,8 @@ aaaaaaaaaaab
 \begin{frame}[fragile]
   \frametitle{AC自动机}
   \begin{itemize}
-  \item 完整的AC自动机如下：
+  \item 完整的AC自动机：
+    整合goto、failure、output，一次遍历完成所有模式串匹配
   \end{itemize}
 
   \begin{center}
@@ -262,19 +346,52 @@ aaaaaaaaaaab
 
 \begin{frame}[fragile]
   \frametitle{AC自动机匹配过程}
-  AC算法根据自动机匹配模式串，过程比较简单：从主串的首字符、自动机的初始状态0开始，
+  AC算法根据自动机匹配模式串，过程简单高效：
+  从主串的首字符、自动机的初始状态0开始遍历
 
   \begin{itemize}
-  \item 若字符匹配成功，则按自动机的goto函数转移到下一状态；且若转移的状态对应有output函数，则输出已匹配上的模式串；
-  \item 若字符匹配失败，则递归地按自动机的failure函数进行转移
+  \item 若字符匹配成功：
+    按goto函数转移到下一状态；若当前状态有output，则输出匹配结果
+  \item 若字符匹配失败：
+    递归按failure函数转移，无需回溯主串
+  \item 最终复杂度：
+    $O(n + m + z)$，n=主串长度，m=模式串总长度，z=匹配结果数
+  \item 优势：
+    海量关键词匹配场景下，性能远超循环KMP
   \end{itemize}
 \end{frame}
 
 
 \begin{frame}[fragile]
-  \frametitle{Python实现：pyahocorasick}
+  \frametitle{Python实战：pyahocorasick}
   \begin{itemize}
-  \item \url{https://pypi.org/project/pyahocorasick/}
-  \item \url{https://www.bilibili.com/video/BV1yA4y1Z74t/}
+  \item 工业级AC自动机库：底层C实现，速度极快
+  \item 官方地址：\url{https://pypi.org/project/pyahocorasick/}
+  \item 教学视频：\url{https://www.bilibili.com/video/BV1yA4y1Z74t/}
+  \item 核心用法：
+    \begin{enumerate}
+    \item 构建自动机
+    \item 添加所有关键词
+    \item 生成AC自动机
+    \item 扫描文本，一次性获取所有匹配结果
+    \end{enumerate}
+  \item 典型应用：敏感词过滤、人物统计、日志检索、生物信息分析
   \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{字符串匹配算法总结}
+  \begin{itemize}
+  \item BF算法：简单易懂，效率低，$O(nm)$，适合小规模数据
+  \item KMP算法：无回溯，$O(n+m)$，适合单模式串匹配
+  \item AC自动机：Trie+失败指针，$O(n+m+z)$，适合海量多模式串匹配
+  \item 工程选择：
+    \begin{itemize}
+    \item 关键词少：BF/KMP
+    \item 关键词成千上万：AC自动机（pyahocorasick）
+    \end{itemize}
+  \end{itemize}
+  \begin{tcolorbox}[title=学习重点]
+  理解算法思想 + 掌握Python工具库 + 能解决实际文本处理问题
+  \end{tcolorbox}
 \end{frame}

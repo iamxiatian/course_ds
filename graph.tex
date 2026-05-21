@@ -1345,10 +1345,9 @@
   最小权值(代价)的边,其中$u \in U$, $v \in V-U$, 则必存在一棵包含边(u, v)的最小生
   成树。
 
-  \begin{tikzpicture}[]
-    \draw node[](ls) {}
-    node[] (rs) {};
-  \end{tikzpicture}
+  \begin{figure}[ht!]
+    \includegraphics[width=0.35\textwidth]{figs/graph/Spanning_Tree_Idea.pdf}
+  \end{figure}
 \end{frame}
 
 
@@ -1356,11 +1355,28 @@
   \frametitle{Prim算法}
   从顶点出发：找连通部分和未连通部分之间的最小代价的一条路
 
-  \begin{tikzpicture}[]
-    \draw node[](ls) {}
-    node[] (rs) {};
-  \end{tikzpicture}
+  \begin{figure}[ht!]
+    \includegraphics[width=0.9\textwidth]{figs/graph/PRIM.pdf}
+  \end{figure}
 \end{frame}
+
+
+\begin{frame}[fragile, allowframebreaks]
+  \frametitle{Prim算法实现}
+  可使用两个数组动态地维护每个点到生成树T的点最短距离信息，提高找最短边的效率。
+  \begin{itemize}
+  \item lowcost：每个顶点到生成树中的最小代价
+  \item closest：最小代价对应边的相邻节点
+  \end{itemize}
+  
+  \newpage
+
+  \begin{figure}[ht!]
+    \includegraphics[width=0.9\textwidth]{figs/graph/PRIM2.pdf}
+  \end{figure}
+\end{frame}
+
+
 
 
 \begin{frame}[fragile, allowframebreaks]
